@@ -21,4 +21,6 @@ Auth::routes(['verify' => true]);
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
+Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser');
+
 
