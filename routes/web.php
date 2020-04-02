@@ -24,3 +24,9 @@ Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser');
 
 
+Route::get('/admin', [
+    'uses' => 'Admin\AdminController@getAdminPage',
+    'as' => 'admin',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);

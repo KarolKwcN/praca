@@ -80,8 +80,8 @@ class RegisterController extends Controller
           \Mail::to($user->email)->send(new VerifyMail($user));
 
     //przypisywanie domyślnej wartości user w tabeli user_role
-   // $role_user = Role::where('name',  'User')->first();
-    //$user->roles()-> attach($role_user);
+    $role_user = Role::where('name',  'User')->first();
+    $user->roles()-> attach($role_user);
 
     return $user;
 
