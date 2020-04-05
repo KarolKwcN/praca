@@ -30,3 +30,18 @@ Route::get('/admin', [
     'middleware' => 'roles',
     'roles' => ['Admin']
 ]);
+
+
+Route::get('api/ShowUser', [
+    'uses' => 'Admin\AdminController@viewUser',
+    'as' => 'admin',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::delete('api/DeleteUser/{id}', [
+    'uses' => 'Admin\AdminController@destroy',
+    'as' => 'admin',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);

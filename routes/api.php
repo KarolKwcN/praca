@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/ShowUser','Admin\AdminController@viewUser');
+
+
+Route::delete('/DeleteUser/{id}','Admin\AdminController@destroy');
