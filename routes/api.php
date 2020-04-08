@@ -23,3 +23,11 @@ Route::get('/ShowUser','Admin\AdminController@viewUser');
 
 
 Route::delete('/DeleteUser/{id}','Admin\AdminController@destroy');
+
+Route::delete('/AddSerwisant/{id}','Admin\AdminController@addSerwisant');
+
+Route::delete('/AddAdmin/{id}','Admin\AdminController@addAdmin');
+
+Route::delete('/DeleteAdmin/{id}','Admin\AdminController@deleteAdmin');
+
+Route::delete('/DeleteSerwisant/{id}','Admin\AdminController@deleteSerwisant');

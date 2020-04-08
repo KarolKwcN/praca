@@ -1943,10 +1943,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      users: {}
+      users: []
     };
   },
   methods: {
@@ -1968,6 +1983,66 @@ __webpack_require__.r(__webpack_exports__);
             Swal("Failed!", "Coś poszło nie tak.", "Uwaga");
           });
         }
+      });
+    },
+    addSerwisant: function addSerwisant(id) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500
+      }).then(function (result) {
+        axios["delete"]('api/AddSerwisant/' + id).then(function () {
+          Fire.$emit('AfterDelete');
+        })["catch"](function () {
+          Swal("Failed!", "Coś poszło nie tak.", "Uwaga");
+        });
+      });
+    },
+    addAdmin: function addAdmin(id) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500
+      }).then(function (result) {
+        axios["delete"]('api/AddAdmin/' + id).then(function () {
+          Fire.$emit('AfterDelete');
+        })["catch"](function () {
+          Swal("Failed!", "Coś poszło nie tak.", "Uwaga");
+        });
+      });
+    },
+    deleteSerwisant: function deleteSerwisant(id) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500
+      }).then(function (result) {
+        axios["delete"]('api/DeleteSerwisant/' + id).then(function () {
+          Fire.$emit('AfterDelete');
+        })["catch"](function () {
+          Swal("Failed!", "Coś poszło nie tak.", "Uwaga");
+        });
+      });
+    },
+    deleteAdmin: function deleteAdmin(id) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500
+      }).then(function (result) {
+        axios["delete"]('api/DeleteAdmin/' + id).then(function () {
+          Fire.$emit('AfterDelete');
+        })["catch"](function () {
+          Swal("Failed!", "Coś poszło nie tak.", "Uwaga");
+        });
       });
     },
     loadUsers: function loadUsers() {
@@ -41143,6 +41218,102 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(user.email) + " ")]),
                 _vm._v(" "),
+                _c("td", [_vm._v("tak/nie")]),
+                _vm._v(" "),
+                user.roles[0] && user.roles[0].id === 1
+                  ? _c("td", [_vm._m(1, true)])
+                  : _c("td", [_vm._m(2, true)]),
+                _vm._v(" "),
+                user.roles[1] && user.roles[1].id === 2
+                  ? _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteSerwisant(user.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-check-square" })]
+                      )
+                    ])
+                  : user.roles[2] && user.roles[2].id === 2
+                  ? _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteSerwisant(user.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-check-square" })]
+                      )
+                    ])
+                  : _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.addSerwisant(user.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-square" })]
+                      )
+                    ]),
+                _vm._v(" "),
+                user.roles[2] && user.roles[2].id === 3
+                  ? _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteAdmin(user.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-check-square" })]
+                      )
+                    ])
+                  : user.roles[1] && user.roles[1].id === 3
+                  ? _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteAdmin(user.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-check-square" })]
+                      )
+                    ])
+                  : _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.addAdmin(user.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-square" })]
+                      )
+                    ]),
+                _vm._v(" "),
                 _c("td", [
                   _c(
                     "a",
@@ -41173,14 +41344,38 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", { staticClass: "text-center bg-info text-light" }, [
-        _c("th", [_vm._v("Lp.")]),
+        _c("th", [_vm._v("ID")]),
         _vm._v(" "),
         _c("th", [_vm._v("Imię")]),
         _vm._v(" "),
         _c("th", [_vm._v("E-Mail")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Ban")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("User")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Serwisant")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Admin")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Usuń")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "#" } }, [
+      _c("i", { staticClass: "far fa-check-square" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "#" } }, [
+      _c("i", { staticClass: "far fa-square" })
     ])
   }
 ]
