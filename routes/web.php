@@ -74,3 +74,17 @@ Route::delete('api/DeleteSerwisant/{id}', [
     'middleware' => 'roles',
     'roles' => ['Admin']
 ]);
+
+Route::delete('api/DeleteBan/{id}', [
+    'uses' => 'Admin\AdminController@deleteBan',
+    'as' => 'admin',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::delete('api/AddBan/{id}', [
+    'uses' => 'Admin\AdminController@addBan',
+    'as' => 'admin',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);

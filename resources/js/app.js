@@ -6,6 +6,8 @@ window.Event = new Vue();
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('adminuser-component', require('./components/AdminUser.vue').default);
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 
 import Swal from 'sweetalert2';
 window.Swal = Swal;

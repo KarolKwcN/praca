@@ -18,12 +18,13 @@
                 </thead>
                 <tbody>
 
-                    <tr v-for="user in users" :key="user.id">
+                    <tr v-for="user in users.data" :key="user.id">
 
                         <td>{{user.id}}</td>
                         <td>{{user.name}}</td>
                         <td>{{user.email}} </td>
-                        <td>tak/nie</td>
+                        <td v-if="user.banned_until === null"><a href="#" @click="addBan(user.id)"><button type="button" class="btn btn-success">Nie</button></a></td>
+                        <td v-else><a href="#" @click="deleteBan(user.id)"><button type="button" class="btn btn-warning">Tak</button></a></td>
                         <td v-if="user.roles[0] && user.roles[0].id === 1"><a href="#"><i class="far fa-check-square"></i></a></td>
                         <td v-else><a href="#"><i class="far fa-square"></i></a></td>
                         <td v-if="user.roles[1] && user.roles[1].id === 2"><a href="#" @click="deleteSerwisant(user.id)"><i class="far fa-check-square"></i></a></td>
@@ -41,7 +42,9 @@
                 </tbody>
 
             </table>
-
+            <div class="card-footer">
+                <pagination :data="users" @pagination-change-page="getResults"></pagination>
+            </div>
         </div>
 
     </div>
@@ -54,31 +57,35 @@ export default {
     data() {
 
         return {
-            users: [],
+            users: {},
 
         }
     },
     methods: {
+        getResults(page = 1) {
+            axios.get('api/ShowUser?page=' + page)
+                .then(response => {
+                    this.users = response.data;
+                });
+        },
         deleteUser(id) {
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Napewno chcesz usunąć użytkownika ?',
+                text: "Nie będzie można tego cofnąć.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Tak, usuń!'
             }).then((result) => {
                 if (result.value) {
                     axios.delete('api/DeleteUser/' + id).then(() => {
                         Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
+                            'Użytkownik został usunięty.',
                         )
                         Fire.$emit('AfterDelete');
                     }).catch(() => {
-                        Swal("Failed!", "Coś poszło nie tak.", "Uwaga");
+                        Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
                     });
                 }
             })
@@ -88,7 +95,7 @@ export default {
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Your work has been saved',
+                title: 'Rola została dodana',
                 showConfirmButton: false,
                 timer: 1500
             }).then((result) => {
@@ -97,7 +104,7 @@ export default {
 
                     Fire.$emit('AfterDelete');
                 }).catch(() => {
-                    Swal("Failed!", "Coś poszło nie tak.", "Uwaga");
+                    Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
                 });
 
             })
@@ -107,7 +114,7 @@ export default {
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Your work has been saved',
+                title: 'Rola została dodana',
                 showConfirmButton: false,
                 timer: 1500
             }).then((result) => {
@@ -126,7 +133,7 @@ export default {
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Your work has been saved',
+                title: 'Rola została usunięta',
                 showConfirmButton: false,
                 timer: 1500
             }).then((result) => {
@@ -135,7 +142,7 @@ export default {
 
                     Fire.$emit('AfterDelete');
                 }).catch(() => {
-                    Swal("Failed!", "Coś poszło nie tak.", "Uwaga");
+                    Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
                 });
 
             })
@@ -145,7 +152,7 @@ export default {
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Your work has been saved',
+                title: 'Rola została usunięta',
                 showConfirmButton: false,
                 timer: 1500
             }).then((result) => {
@@ -154,7 +161,49 @@ export default {
 
                     Fire.$emit('AfterDelete');
                 }).catch(() => {
-                    Swal("Failed!", "Coś poszło nie tak.", "Uwaga");
+                    Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+                });
+
+            })
+        },
+
+        addBan(id) {
+            Swal.fire({
+                title: 'Napewno chcesz zbanować użytkownika ?',
+                text: "Nie będzie można tego cofnąć.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Tak!'
+            }).then((result) => {
+
+                axios.delete('api/AddBan/' + id).then(() => {
+
+                    Fire.$emit('AfterDelete');
+                }).catch(() => {
+                    Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+                });
+
+            })
+        },
+
+        deleteBan(id) {
+            Swal.fire({
+                title: 'Napewno chcesz odbanować użytkownika ?',
+                text: "Nie będzie można tego cofnąć.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Tak!'
+            }).then((result) => {
+
+                axios.delete('api/DeleteBan/' + id).then(() => {
+
+                    Fire.$emit('AfterDelete');
+                }).catch(() => {
+                    Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
                 });
 
             })

@@ -31,3 +31,7 @@ Route::delete('/AddAdmin/{id}','Admin\AdminController@addAdmin');
 Route::delete('/DeleteAdmin/{id}','Admin\AdminController@deleteAdmin');
 
 Route::delete('/DeleteSerwisant/{id}','Admin\AdminController@deleteSerwisant');
+
+Route::delete('/AddBan/{id}','Admin\AdminController@addBan');
+
+Route::delete('/DeleteBan/{id}','Admin\AdminController@deleteBan');
