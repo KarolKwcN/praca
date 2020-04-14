@@ -98,4 +98,9 @@ class AdminController extends Controller
         $user->save();
 
     }
+
+    public function getAdminRepairPage()
+    {
+        return view('admin.naprawy');
+    }
 }

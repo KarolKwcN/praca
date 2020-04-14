@@ -88,3 +88,10 @@ Route::delete('api/AddBan/{id}', [
     'middleware' => 'roles',
     'roles' => ['Admin']
 ]);
+
+Route::get('/admin/naprawy', [
+    'uses' => 'Admin\AdminController@getAdminRepairPage',
+    'as' => 'admin.repairs',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
