@@ -95,3 +95,17 @@ Route::get('/admin/naprawy', [
     'middleware' => 'roles',
     'roles' => ['Admin']
 ]);
+
+Route::post('api/admin/addCategory', [
+    'uses' => 'Admin\AdminController@addCategory',
+    'as' => 'admin.repairs',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::get('/api/admin/showCategory', [
+    'uses' => 'Admin\AdminController@showCategory',
+    'as' => 'admin.repairs',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);

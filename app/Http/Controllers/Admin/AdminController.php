@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use App\Category;
 use DB;
 
 class AdminController extends Controller
@@ -102,5 +103,22 @@ class AdminController extends Controller
     public function getAdminRepairPage()
     {
         return view('admin.naprawy');
+    }
+
+    public function addCategory(Request $request)
+    {
+        $category = New Category;
+        $category->name = $request->name;
+        $category->slug = str_slug($request->name);
+        $category->save();
+
+    return ['message' => 'Kategoria dodana'];
+    }
+
+    public function showCategory()
+    {
+
+        $categories = Category::paginate(5);
+        return $categories;
     }
 }

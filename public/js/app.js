@@ -1948,7 +1948,109 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      name: "",
+      categories: {}
+    };
+  },
+  methods: {
+    getResults: function getResults() {
+      var _this = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/admin/showCategory?page=" + page).then(function (response) {
+        _this.categories = response.data;
+      });
+    },
+    addCategory: function addCategory() {
+      axios.post("/api/admin/addCategory", {
+        name: this.name
+      });
+      Event.$emit("categoryCreated", {
+        name: this.name
+      });
+      this.name = "";
+    },
+    show: function show() {
+      this.$modal.show("modal-step");
+    },
+    hide: function hide() {
+      this.$modal.hide("modal-step");
+    }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    axios.get("/api/admin/showCategory").then(function (response) {
+      return _this2.categories = response.data;
+    });
+    Event.$on("categoryCreated", function (name) {
+      _this2.categories.push(name);
+    });
+  }
+});
 
 /***/ }),
 
@@ -41893,6 +41995,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card-body" }, [
     _vm._m(0),
+    _vm._v(" "),
     _c("br"),
     _vm._v(" "),
     _c("hr", { staticClass: "bg-info" }),
@@ -41907,19 +42010,213 @@ var render = function() {
               attrs: { type: "button" },
               on: {
                 click: function($event) {
-                  return _vm.addCategory()
+                  $event.preventDefault()
+                  return _vm.show($event)
                 }
               }
             },
-            [_vm._v("Dodaj kategorię")]
+            [_vm._v("Modal")]
           )
         ]),
         _vm._v(" "),
-        _vm._m(1),
+        _c("table", { staticClass: "table table-bordered table-striped" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.categories.data, function(category, index) {
+              return _c(
+                "tr",
+                { key: category.id, staticClass: "text-center" },
+                [
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("a", { attrs: { href: "" } }, [
+                      _vm._v(_vm._s(category.name))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(2, true),
+                  _vm._v(" "),
+                  _vm._m(3, true)
+                ]
+              )
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-footer" },
+          [
+            _c("pagination", {
+              attrs: { data: _vm.categories },
+              on: { "pagination-change-page": _vm.getResults }
+            })
+          ],
+          1
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "col-12 d-flex justify-content-center" })
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      [
+        _c(
+          "modal",
+          {
+            attrs: {
+              name: "modal-step",
+              height: "auto",
+              classes: "demo-modal-class"
+            }
+          },
+          [
+            _c(
+              "div",
+              {
+                attrs: {
+                  id: "exampleModal",
+                  tabindex: "-1",
+                  role: "dialog",
+                  "aria-labelledby": "exampleModalLabel",
+                  "aria-hidden": "true"
+                }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "modal-dialog", attrs: { role: "document" } },
+                  [
+                    _c("div", { staticClass: "modal-content" }, [
+                      _c("div", { staticClass: "modal-header" }, [
+                        _c(
+                          "h5",
+                          {
+                            staticClass: "modal-title",
+                            attrs: { id: "exampleModalLabel" }
+                          },
+                          [_vm._v("Nowa kategoria")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "close",
+                            attrs: {
+                              type: "button",
+                              "data-dismiss": "modal",
+                              "aria-label": "Close"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.hide($event)
+                              }
+                            }
+                          },
+                          [
+                            _c("span", { attrs: { "aria-hidden": "true" } }, [
+                              _vm._v("×")
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "form",
+                        {
+                          attrs: {
+                            action: "/api/admin/addCategory",
+                            method: "POST"
+                          },
+                          on: {
+                            submit: function($event) {
+                              $event.preventDefault()
+                              return _vm.addCategory()
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "modal-body" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "col-form-label",
+                                  attrs: { for: "recipient-name" }
+                                },
+                                [_vm._v("Nazwa kategorii:")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.name,
+                                    expression: "name"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  name: "name",
+                                  id: "recipient-name"
+                                },
+                                domProps: { value: _vm.name },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.name = $event.target.value
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "modal-footer" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-secondary",
+                                attrs: {
+                                  type: "button",
+                                  "data-dismiss": "modal"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.hide($event)
+                                  }
+                                }
+                              },
+                              [_vm._v("Zamknij")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "submit", value: "Dodaj" }
+                            })
+                          ])
+                        ]
+                      )
+                    ])
+                  ]
+                )
+              ]
+            )
+          ]
+        )
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = [
@@ -41937,42 +42234,38 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("table", { staticClass: "table table-bordered table-striped" }, [
-      _c("thead", [
-        _c("tr", { staticClass: "text-center bg-info text-light" }, [
-          _c("th", [_vm._v("Id.")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Nazwa kategorii")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Edytuj")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Usuń")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("tbody", [
-        _c("tr", { staticClass: "text-center" }, [
-          _c("td"),
-          _vm._v(" "),
-          _c("td", [_c("a", { attrs: { href: "" } })]),
-          _vm._v(" "),
-          _c("td", [
-            _c(
-              "button",
-              { staticClass: "btn btn-info", attrs: { type: "button" } },
-              [_c("i", { staticClass: "fas fa-edit" })]
-            )
-          ]),
-          _vm._v(" "),
-          _c("td", [
-            _c(
-              "button",
-              { staticClass: "btn btn-danger", attrs: { type: "button" } },
-              [_c("i", { staticClass: "far fa-trash-alt" })]
-            )
-          ])
-        ])
+    return _c("thead", [
+      _c("tr", { staticClass: "text-center bg-info text-light" }, [
+        _c("th", [_vm._v("Lp.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nazwa kategorii")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Edytuj")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Usuń")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("button", { staticClass: "btn btn-info", attrs: { type: "button" } }, [
+        _c("i", { staticClass: "fas fa-edit" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c(
+        "button",
+        { staticClass: "btn btn-danger", attrs: { type: "button" } },
+        [_c("i", { staticClass: "far fa-trash-alt" })]
+      )
     ])
   }
 ]

@@ -35,3 +35,7 @@ Route::delete('/DeleteSerwisant/{id}','Admin\AdminController@deleteSerwisant');
 Route::delete('/AddBan/{id}','Admin\AdminController@addBan');
 
 Route::delete('/DeleteBan/{id}','Admin\AdminController@deleteBan');
+
+Route::post('/admin/addCategory','Admin\AdminController@addCategory');
+
+Route::get('/admin/showCategory','Admin\AdminController@showCategory');

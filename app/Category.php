@@ -10,8 +10,5 @@ class Category extends Model
         'name'
     ];
 
-    protected function brands()
-    {
-        return $this->hasMany(Brand::class);
-    }
+    
 }
