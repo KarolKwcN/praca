@@ -121,4 +121,26 @@ class AdminController extends Controller
         $categories = Category::paginate(5);
         return $categories;
     }
+
+    public function deleteCategory($id)
+    {
+        $category = Category::findOrFail($id);
+
+        $category->delete();
+
+        //usuwanie roli usunietego uzytkownika
+    
+    
+        return ['message' => 'Category Deleted'];
+    }
+
+    public function updateCategory(Request $request, $id)
+    {
+
+            $category = Category::findOrFail($id);
+            
+            $category->name = $request->name;
+            $category->slug = str_slug($request->name);
+            $category->update();
+    }
 }

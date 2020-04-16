@@ -39,3 +39,7 @@ Route::delete('/DeleteBan/{id}','Admin\AdminController@deleteBan');
 Route::post('/admin/addCategory','Admin\AdminController@addCategory');
 
 Route::get('/admin/showCategory','Admin\AdminController@showCategory');
+
+Route::delete('/admin/deleteCategory/{id}','Admin\AdminController@deleteCategory');
+
+Route::put('/admin/updateCategory/{id}','Admin\AdminController@updateCategory');

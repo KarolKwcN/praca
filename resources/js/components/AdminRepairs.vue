@@ -8,30 +8,30 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="float-right">
-          <button type="button" @click.prevent="show" class="btn btn-success">Modal</button>
+          <button type="button" @click.prevent="show" class="btn btn-success">Dodaj kategorię</button>
         </div>
         <table class="table table-bordered table-striped">
           <thead>
             <tr class="text-center bg-info text-light">
-              <th>Lp.</th>
+              <th>Id.</th>
               <th>Nazwa kategorii</th>
               <th>Edytuj</th>
               <th>Usuń</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(category, index) in categories.data" :key="category.id" class="text-center">
-              <td>{{index +1}}</td>
+            <tr v-for="category in categories.data" :key="category.id" class="text-center">
+              <td>{{ category.id }}</td>
               <td>
-                <a href>{{category.name}}</a>
+                <a href>{{ category.name }}</a>
               </td>
               <td>
-                <button type="button" class="btn btn-info">
+                <button @click="editModal(category)" type="button" class="btn btn-info">
                   <i class="fas fa-edit"></i>
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-danger">
+                <button @click="deleteCategory(category.id)" type="button" class="btn btn-danger">
                   <i class="far fa-trash-alt"></i>
                 </button>
               </td>
@@ -56,7 +56,8 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nowa kategoria</h5>
+                <h5 class="modal-title" v-show="!editmode" id="exampleModalLabel">Nowa kategoria</h5>
+                <h5 class="modal-title" v-show="editmode" id="exampleModalLabel">Edytuj kategorię</h5>
                 <button
                   @click.prevent="hide"
                   type="button"
@@ -67,13 +68,17 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form action="/api/admin/addCategory" method="POST" @submit.prevent="addCategory()">
+              <form
+                action="/api/admin/addCategory"
+                method="POST"
+                @submit.prevent="editmode ? updateCategory() : addCategory()"
+              >
                 <div class="modal-body">
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Nazwa kategorii:</label>
                     <input
                       type="text"
-                      v-model="name"
+                      v-model="form.name"
                       name="name"
                       class="form-control"
                       id="recipient-name"
@@ -87,7 +92,8 @@
                     class="btn btn-secondary"
                     data-dismiss="modal"
                   >Zamknij</button>
-                  <input type="submit" value="Dodaj" class="btn btn-primary" />
+                  <input v-show="editmode" type="submit" value="Zmień" class="btn btn-primary" />
+                  <input v-show="!editmode" type="submit" value="Dodaj" class="btn btn-primary" />
                 </div>
               </form>
             </div>
@@ -99,47 +105,86 @@
 </template>
 
 <script>
+import Vue from "vue";
+import Form from "vform";
 export default {
   data() {
     return {
-      name: "",
-      categories: {}
+      editmode: false,
+      categories: {},
+      form: new Form({
+        id: "",
+        name: ""
+      })
     };
   },
   methods: {
+    updateCategory() {
+      this.form.put("/api/admin/updateCategory/" + this.form.id).then(() => {
+        Fire.$emit("AfterDelete");
+        this.$modal.hide("modal-step");
+      });
+    },
+    editModal(category) {
+      this.editmode = true;
+      this.$modal.show("modal-step");
+      this.form.fill(category);
+    },
     getResults(page = 1) {
       axios.get("/api/admin/showCategory?page=" + page).then(response => {
         this.categories = response.data;
       });
     },
     addCategory() {
-      axios.post("/api/admin/addCategory", {
-        name: this.name
+      this.form.post("/api/admin/addCategory").then(() => {
+        Fire.$emit("AfterDelete");
+        this.$modal.hide("modal-step");
       });
-      Event.$emit("categoryCreated", {
-        name: this.name
+    },
+    deleteCategory(id) {
+      Swal.fire({
+        title: "Napewno chcesz usunąć kategorię ?",
+        text: "Nie będzie można tego cofnąć.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Tak, usuń!"
+      }).then(result => {
+        if (result.value) {
+          axios
+            .delete("/api/admin/deleteCategory/" + id)
+            .then(() => {
+              Swal.fire("Kategoria została usunięta");
+              Fire.$emit("AfterDelete");
+            })
+            .catch(() => {
+              Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+            });
+        }
       });
-
-      this.name = "";
     },
     show() {
+      this.editmode = false;
+      this.form.reset();
       this.$modal.show("modal-step");
     },
     hide() {
       this.$modal.hide("modal-step");
+    },
+    loadCategories() {
+      axios
+        .get("/api/admin/showCategory")
+        .then(response => (this.categories = response.data));
     }
   },
   created() {
-    axios
-      .get("/api/admin/showCategory")
-      .then(response => (this.categories = response.data));
-
-    Event.$on("categoryCreated", name => {
-      this.categories.push(name);
+    this.loadCategories();
+    Fire.$on("AfterDelete", () => {
+      this.loadCategories();
     });
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>
