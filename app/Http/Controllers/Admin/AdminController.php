@@ -143,4 +143,11 @@ class AdminController extends Controller
             $category->slug = str_slug($request->name);
             $category->update();
     }
+
+    public function getAdminNaprawyMarkaPage($slug)
+    {
+        $category = Category::where('slug', $slug)->first();
+   
+    return view('admin.marka', compact('category'));
+    }
 }

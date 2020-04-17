@@ -124,3 +124,11 @@ Route::put('api/admin/updateCategory/{id}', [
     'roles' => ['Admin']
 ]);
 
+
+Route::get('/admin/naprawy/{slug}', [
+    'uses' => 'Admin\AdminController@getAdminNaprawyMarkaPage',
+    'as' => 'admin.repairs.marka',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+

@@ -21,6 +21,8 @@ import Swal from "sweetalert2";
 window.Swal = Swal;
 window.Fire = new Vue();
 import VModal from "vue-js-modal";
+import VueRouter from "vue-router";
+Vue.use(VueRouter);
 
 Vue.use(VModal);
 const app = new Vue({
