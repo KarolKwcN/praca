@@ -3,33 +3,32 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="float-right">
-                <button type="button" @click.prevent="show" class="btn btn-success">Dodaj kategorię</button>
+                <button type="button" @click.prevent="show" class="btn btn-success">Dodaj markę</button>
             </div>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr class="text-center bg-info text-light">
                         <th>Id.</th>
-                        <th>Nazwa kategorii</th>
+                        <th>Nazwa marki</th>
+                        <th>Opis</th>
                         <th>Edytuj</th>
                         <th>Usuń</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="category in categories.data" :key="category.id" class="text-center">
-                        <td>{{ category.id }}</td>
+                    <tr v-for="brand in brands" :key="brand.id" class="text-center">
+                        <td>{{brand.id}}</td>
                         <td>
-                            <a :href="`/admin/naprawy/`+category.slug">
-                                {{ category.name }}
-                            </a>
-
+                            {{brand.name}}
                         </td>
+                        <td>{{brand.description}}</td>
                         <td>
-                            <button @click="editModal(category)" type="button" class="btn btn-info">
+                            <button @click="editModal(brand)" type="button" class="btn btn-info">
                                 <i class="fas fa-edit"></i>
                             </button>
                         </td>
                         <td>
-                            <button @click="deleteCategory(category.id)" type="button" class="btn btn-danger">
+                            <button @click="deleteBrand(brand.id)" type="button" class="btn btn-danger">
                                 <i class="far fa-trash-alt"></i>
                             </button>
                         </td>
@@ -37,7 +36,7 @@
                 </tbody>
             </table>
             <div class="card-footer">
-                <pagination :data="categories" @pagination-change-page="getResults"></pagination>
+
             </div>
             <div class="col-12 d-flex justify-content-center"></div>
         </div>
@@ -48,17 +47,21 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" v-show="!editmode" id="exampleModalLabel">Nowa kategoria</h5>
-                            <h5 class="modal-title" v-show="editmode" id="exampleModalLabel">Edytuj kategorię</h5>
+                            <h5 class="modal-title" v-show="!editmode" id="exampleModalLabel">Nowa marka</h5>
+                            <h5 class="modal-title" v-show="editmode" id="exampleModalLabel">Edytuj markę</h5>
                             <button @click.prevent="hide" type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="/api/admin/addCategory" method="POST" @submit.prevent="editmode ? updateCategory() : addCategory()">
+                        <form action="/api/admin/addBrand" method="POST" @submit.prevent="editmode ? updateBrand() : addBrand()">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Nazwa kategorii:</label>
+                                    <label for="recipient-name" class="col-form-label">Nazwa marki:</label>
                                     <input type="text" v-model="form.name" name="name" class="form-control" id="recipient-name" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Opis marki:</label>
+                                    <textarea v-model="form.description" class="form-control" id="recipient-description"></textarea>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -79,43 +82,40 @@
 import Vue from "vue";
 import Form from "vform";
 export default {
+    props: ['category'],
     data() {
         return {
             editmode: false,
-            categories: {},
+            brands: {},
             form: new Form({
                 id: "",
-                name: ""
+                name: "",
+                description: ""
             })
-        };
+        }
+
     },
     methods: {
-
-        updateCategory() {
-            this.form.put("/api/admin/updateCategory/" + this.form.id).then(() => {
+        updateBrand() {
+            this.form.put("/api/admin/updateBrand/" + this.form.id).then(() => {
                 Fire.$emit("AfterDelete");
                 this.$modal.hide("modal-step");
             });
         },
-        editModal(category) {
+        editModal(brand) {
             this.editmode = true;
             this.$modal.show("modal-step");
-            this.form.fill(category);
+            this.form.fill(brand);
         },
-        getResults(page = 1) {
-            axios.get("/api/admin/showCategory?page=" + page).then(response => {
-                this.categories = response.data;
-            });
-        },
-        addCategory() {
-            this.form.post("/api/admin/addCategory").then(() => {
+        addBrand() {
+            this.form.post("/api/admin/addBrand/"+this.category).then(() => {
                 Fire.$emit("AfterDelete");
                 this.$modal.hide("modal-step");
             });
         },
-        deleteCategory(id) {
+        deleteBrand(id) {
             Swal.fire({
-                title: "Napewno chcesz usunąć kategorię ?",
+                title: "Napewno chcesz usunąć markę ?",
                 text: "Nie będzie można tego cofnąć.",
                 icon: "warning",
                 showCancelButton: true,
@@ -125,9 +125,9 @@ export default {
             }).then(result => {
                 if (result.value) {
                     axios
-                        .delete("/api/admin/deleteCategory/" + id)
+                        .delete("/api/admin/deleteBrand/" + id)
                         .then(() => {
-                            Swal.fire("Kategoria została usunięta");
+                            Swal.fire("Marka została usunięta");
                             Fire.$emit("AfterDelete");
                         })
                         .catch(() => {
@@ -144,19 +144,21 @@ export default {
         hide() {
             this.$modal.hide("modal-step");
         },
-        loadCategories() {
+        loadBrands() {
             axios
-                .get("/api/admin/showCategory")
-                .then(response => (this.categories = response.data));
+                .get("/api/admin/showBrands/" + this.category)
+                .then(response => (this.brands = response.data));
         }
     },
     created() {
-        this.loadCategories();
+        this.loadBrands();
         Fire.$on("AfterDelete", () => {
-            this.loadCategories();
+            this.loadBrands();
         });
     }
-};
+}
 </script>
 
-<style></style>
+<style>
+
+</style>

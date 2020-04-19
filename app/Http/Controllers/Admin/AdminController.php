@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\Category;
+use App\Brand;
 use DB;
 
 class AdminController extends Controller
@@ -149,5 +150,48 @@ class AdminController extends Controller
         $category = Category::where('slug', $slug)->first();
    
     return view('admin.marka', compact('category'));
+    }
+
+    public function showBrands($id)
+    {
+       
+        $brands = Brand::where('category_id', $id)->get();
+        return $brands;
+        
+    }
+
+    public function deleteBrand($id)
+    {
+        $brand = Brand::findOrFail($id);
+
+        $brand->delete();
+
+        //usuwanie roli usunietego uzytkownika
+    
+    
+        return ['message' => 'Brand Deleted'];
+    }
+
+    public function updateBrand(Request $request, $id)
+    {
+
+            $brand = Brand::findOrFail($id);
+            
+            $brand->name = $request->name;
+            $brand->description = $request->description;
+            $brand->slugi = str_slug($request->name);
+            $brand->update();
+    }
+
+    public function addBrand(Request $request, $id)
+    {
+        $brand = New Brand;
+        $brand->name = $request->name;
+        $brand->description = $request->description;
+        $brand->slugi = str_slug($request->name);
+        $brand->category_id = $id;
+        $brand->save();
+
+    return ['message' => 'Marka dodana'];
     }
 }

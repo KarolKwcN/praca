@@ -5,7 +5,7 @@
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
-                    <a href="{{ route('admin') }}">
+                    <a class="nav-link" href="{{ route('admin') }}">
                         <h5 class="text-info">Użytkownicy</h5>
                     </a>
                 </li>
@@ -19,7 +19,16 @@
                 </li>
             </ul>
         </div>
-
+        <div class="card-body">
+            <div class="float-left">
+                <a class="text-reset" href="{{ route('admin.repairs') }}">Kategorie </a>>
+                <a class="text-reset"
+                    href="{{ route('admin.repairs.marka',$category->slug) }}">{{ $category->name }}</a>
+            </div>
+            <br />
+            <hr class="bg-info" />
+            <adminmarka-component :category="{{ $category->id }}"></adminmarka-component>
+        </div>
     </div>
 
 </div>

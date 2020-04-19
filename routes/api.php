@@ -43,3 +43,11 @@ Route::get('/admin/showCategory','Admin\AdminController@showCategory');
 Route::delete('/admin/deleteCategory/{id}','Admin\AdminController@deleteCategory');
 
 Route::put('/admin/updateCategory/{id}','Admin\AdminController@updateCategory');
+
+Route::get('/admin/showBrands/{id}','Admin\AdminController@showBrands');
+
+Route::delete('/admin/deleteBrand/{id}','Admin\AdminController@deleteBrand');
+
+Route::put('/admin/updateBrand/{id}','Admin\AdminController@updateBrand');
+
+Route::post('/admin/addBrand/{id}','Admin\AdminController@addBrand');

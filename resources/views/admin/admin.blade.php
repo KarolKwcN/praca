@@ -19,7 +19,7 @@
                 </li>
             </ul>
         </div>
-            <adminuser-component></adminuser-component>
+        <adminuser-component></adminuser-component>
     </div>
 
 </div>

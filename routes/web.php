@@ -132,3 +132,31 @@ Route::get('/admin/naprawy/{slug}', [
     'roles' => ['Admin']
 ]);
 
+Route::get('/api/admin/showBrands/{id}', [
+    'uses' => 'Admin\AdminController@showBrands',
+    'as' => 'admin.repairs.marka',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+
+Route::delete('api/admin/deleteBrand/{id}', [
+    'uses' => 'Admin\AdminController@deleteBrand',
+    'as' => 'admin.repairs.marka',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::put('api/admin/updateBrand/{id}', [
+    'uses' => 'Admin\AdminController@updateBrand',
+    'as' => 'admin.repairs.marka',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::post('api/admin/addBrand/{id}', [
+    'uses' => 'Admin\AdminController@addBrand',
+    'as' => 'admin.repairs.marka',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
