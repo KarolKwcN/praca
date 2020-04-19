@@ -160,3 +160,17 @@ Route::post('api/admin/addBrand/{id}', [
     'middleware' => 'roles',
     'roles' => ['Admin']
 ]);
+
+Route::get('/api/admin/categoryName/{id}', [
+    'uses' => 'Admin\AdminController@categoryName',
+    'as' => 'admin.repairs.marka',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::get('/admin/naprawy/{slug}/{slugi}', [
+    'uses' => 'Admin\AdminController@getAdminNaprawyDevicePage',
+    'as' => 'admin.repairs.device',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);

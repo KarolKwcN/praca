@@ -8,6 +8,7 @@ use App\User;
 use App\Role;
 use App\Category;
 use App\Brand;
+use App\Device;
 use DB;
 
 class AdminController extends Controller
@@ -193,5 +194,20 @@ class AdminController extends Controller
         $brand->save();
 
     return ['message' => 'Marka dodana'];
+    }
+
+    public function categoryName($id)
+    {
+        $category = Category::where('id', $id)->firstOrFail();
+        return $category;
+        
+    }
+
+    public function getAdminNaprawyDevicePage($slug,$slugi)
+    {
+        $brand = Brand::where('slugi', $slugi)->firstOrFail();
+        $category = Category::where('id',$brand->category_id)->firstOrFail();
+   
+    return view('admin.device', compact('brand','category'));
     }
 }

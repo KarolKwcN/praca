@@ -1992,6 +1992,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2000,6 +2002,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       editmode: false,
       brands: {},
+      categoryName: {},
       form: new vform__WEBPACK_IMPORTED_MODULE_1___default.a({
         id: "",
         name: "",
@@ -2065,14 +2068,22 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("/api/admin/showBrands/" + this.category).then(function (response) {
         return _this3.brands = response.data;
       });
+    },
+    loadcategoryName: function loadcategoryName() {
+      var _this4 = this;
+
+      axios.get("/api/admin/categoryName/" + this.category).then(function (response) {
+        return _this4.categoryName = response.data;
+      });
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.loadBrands();
+    this.loadcategoryName();
     Fire.$on("AfterDelete", function () {
-      _this4.loadBrands();
+      _this5.loadBrands();
     });
   }
 });
@@ -43290,10 +43301,24 @@ var render = function() {
                 _c("td", [_vm._v(_vm._s(brand.id))]),
                 _vm._v(" "),
                 _c("td", [
-                  _vm._v(
-                    "\r\n                            " +
-                      _vm._s(brand.name) +
-                      "\r\n                        "
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href:
+                          "/admin/naprawy/" +
+                          _vm.categoryName.slug +
+                          "/" +
+                          brand.slugi
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\r\n                                " +
+                          _vm._s(brand.name) +
+                          "\r\n                            "
+                      )
+                    ]
                   )
                 ]),
                 _vm._v(" "),
@@ -59374,6 +59399,7 @@ Vue.component("example-component", __webpack_require__(/*! ./components/ExampleC
 Vue.component("adminuser-component", __webpack_require__(/*! ./components/AdminUser.vue */ "./resources/js/components/AdminUser.vue")["default"]);
 Vue.component("adminrepairs-component", __webpack_require__(/*! ./components/AdminRepairs.vue */ "./resources/js/components/AdminRepairs.vue")["default"]);
 Vue.component("adminmarka-component", __webpack_require__(/*! ./components/AdminMarka.vue */ "./resources/js/components/AdminMarka.vue")["default"]);
+Vue.component("admindevice-component", __webpack_require__(/*! ./components/AdminDevice.vue */ "./resources/js/components/AdminDevice.vue")["default"]);
 Vue.component("pagination", __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
 
 window.Swal = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a;
@@ -59430,6 +59456,38 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/AdminDevice.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/AdminDevice.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
+  script,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+component.options.__file = "resources/js/components/AdminDevice.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 

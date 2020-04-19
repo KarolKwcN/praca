@@ -19,7 +19,9 @@
                     <tr v-for="brand in brands" :key="brand.id" class="text-center">
                         <td>{{brand.id}}</td>
                         <td>
-                            {{brand.name}}
+                            <a :href="`/admin/naprawy/`+categoryName.slug+`/`+brand.slugi">
+                                {{ brand.name }}
+                            </a>
                         </td>
                         <td>{{brand.description}}</td>
                         <td>
@@ -87,6 +89,7 @@ export default {
         return {
             editmode: false,
             brands: {},
+            categoryName: {},
             form: new Form({
                 id: "",
                 name: "",
@@ -108,7 +111,7 @@ export default {
             this.form.fill(brand);
         },
         addBrand() {
-            this.form.post("/api/admin/addBrand/"+this.category).then(() => {
+            this.form.post("/api/admin/addBrand/" + this.category).then(() => {
                 Fire.$emit("AfterDelete");
                 this.$modal.hide("modal-step");
             });
@@ -148,10 +151,17 @@ export default {
             axios
                 .get("/api/admin/showBrands/" + this.category)
                 .then(response => (this.brands = response.data));
+        },
+        loadcategoryName() {
+            axios
+                .get("/api/admin/categoryName/" + this.category)
+                .then(response => (this.categoryName = response.data));
         }
     },
     created() {
+
         this.loadBrands();
+        this.loadcategoryName();
         Fire.$on("AfterDelete", () => {
             this.loadBrands();
         });

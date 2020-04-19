@@ -20,6 +20,12 @@ Vue.component(
     "adminmarka-component",
     require("./components/AdminMarka.vue").default
 );
+
+Vue.component(
+    "admindevice-component",
+    require("./components/AdminDevice.vue").default
+);
+
 Vue.component("pagination", require("laravel-vue-pagination"));
 
 import Swal from "sweetalert2";

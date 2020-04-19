@@ -51,3 +51,5 @@ Route::delete('/admin/deleteBrand/{id}','Admin\AdminController@deleteBrand');
 Route::put('/admin/updateBrand/{id}','Admin\AdminController@updateBrand');
 
 Route::post('/admin/addBrand/{id}','Admin\AdminController@addBrand');
+
+Route::get('/admin/categoryName/{id}','Admin\AdminController@categoryName');
