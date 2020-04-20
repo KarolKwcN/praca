@@ -174,3 +174,32 @@ Route::get('/admin/naprawy/{slug}/{slugi}', [
     'middleware' => 'roles',
     'roles' => ['Admin']
 ]);
+
+Route::get('/api/admin/showDevices/{id}', [
+    'uses' => 'Admin\AdminController@showDevices',
+    'as' => 'admin.repairs.device',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+
+Route::delete('api/admin/deleteDevice/{id}', [
+    'uses' => 'Admin\AdminController@deleteDevice',
+    'as' => 'admin.repairs.device',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::put('api/admin/updateDevice/{id}', [
+    'uses' => 'Admin\AdminController@updateDevice',
+    'as' => 'admin.repairs.device',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::post('api/admin/addDevice/{id}', [
+    'uses' => 'Admin\AdminController@addDevice',
+    'as' => 'admin.repairs.device',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);

@@ -53,3 +53,11 @@ Route::put('/admin/updateBrand/{id}','Admin\AdminController@updateBrand');
 Route::post('/admin/addBrand/{id}','Admin\AdminController@addBrand');
 
 Route::get('/admin/categoryName/{id}','Admin\AdminController@categoryName');
+
+Route::get('/admin/showDevices/{id}','Admin\AdminController@showDevices');
+
+Route::delete('/admin/deleteDevice/{id}','Admin\AdminController@deleteDevice');
+
+Route::put('/admin/updateDevice/{id}','Admin\AdminController@updateDevice');
+
+Route::post('/admin/addDevice/{id}','Admin\AdminController@addDevice');

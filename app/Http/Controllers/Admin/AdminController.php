@@ -210,4 +210,47 @@ class AdminController extends Controller
    
     return view('admin.device', compact('brand','category'));
     }
+
+    public function showDevices($id)
+    {
+       
+        $devices = Device::where('brand_id', $id)->get();
+        return $devices;
+        
+    }
+
+    public function deleteDevice($id)
+    {
+        $device = Device::findOrFail($id);
+
+        $device->delete();
+
+        //usuwanie roli usunietego uzytkownika
+    
+    
+        return ['message' => 'device Deleted'];
+    }
+
+    public function updateDevice(Request $request, $id)
+    {
+
+            $device = Device::findOrFail($id);
+            
+            $device->name = $request->name;
+            $device->description = $request->description;
+            $device->slugii = str_slug($request->name);
+            $device->update();
+    }
+
+    public function addDevice(Request $request, $id)
+    {
+        $device = New Device;
+        $device->name = $request->name;
+        $device->description = $request->description;
+        $device->slugii = str_slug($request->name);
+        $device->brand_id = $id;
+        $device->save();
+
+    return ['message' => 'Model dodany'];
+    }
 }
