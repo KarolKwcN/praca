@@ -203,3 +203,32 @@ Route::post('api/admin/addDevice/{id}', [
     'middleware' => 'roles',
     'roles' => ['Admin']
 ]);
+
+Route::get('serwisant', [
+    'uses' => 'Serwisant\SerwisantController@index',
+    'as' => 'serwisant.serwisant',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
+
+
+Route::get('serwisant/{slug}', [
+    'uses' => 'Serwisant\SerwisantController@getSerwisantNaprawyMarkaPage',
+    'as' => 'serwisant_naprawy_marka',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
+
+Route::get('serwisant/{slug}/{slugi}', [
+    'uses' => 'Serwisant\SerwisantController@getSerwisantNaprawyModelPage',
+    'as' => 'serwisant_naprawy_model',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
+
+Route::get('serwisant/{slug}/{slugi}/{slugii}', [
+    'uses' => 'Serwisant\SerwisantController@getSerwisantUrzadzenie',
+    'as' => 'serwisant_urzadzenie',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
