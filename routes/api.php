@@ -61,3 +61,5 @@ Route::delete('/admin/deleteDevice/{id}','Admin\AdminController@deleteDevice');
 Route::put('/admin/updateDevice/{id}','Admin\AdminController@updateDevice');
 
 Route::post('/admin/addDevice/{id}','Admin\AdminController@addDevice');
+
+Route::post('/serwisant/addRepair/{id}','Serwisant\SerwisantController@addRepair');

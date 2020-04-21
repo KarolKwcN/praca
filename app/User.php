@@ -70,4 +70,9 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class);
+    }
 }

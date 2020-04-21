@@ -232,3 +232,12 @@ Route::get('serwisant/{slug}/{slugi}/{slugii}', [
     'middleware' => 'roles',
     'roles' => ['Serwisant']
 ]);
+
+//////////////////////////////////////////SERWISANT
+
+Route::post('api/serwisant/addRepair/{id}', [
+    'uses' => 'Serwisant\SerwisantController@addRepair',
+    'as' => 'serwisant.repairs',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);

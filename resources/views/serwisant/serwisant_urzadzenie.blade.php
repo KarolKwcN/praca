@@ -26,7 +26,7 @@
             <div class="col-lg-12">
               <div class="float-right">
 
-                <a type="button" class="btn btn-success" href="">Dodaj naprawę</a>
+                <serwisantcreaterepair-component :device="{{ $device->id }}"></serwisantcreaterepair-component>
                 
               </div>
               

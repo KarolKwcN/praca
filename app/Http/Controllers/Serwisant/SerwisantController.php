@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Serwisant;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\User;
 use App\Role;
 use App\Category;
 use App\Brand;
 use App\Device;
+use App\Repair;
 use DB;
 
 class SerwisantController extends Controller
@@ -45,5 +47,23 @@ class SerwisantController extends Controller
 
     
         return view('serwisant.serwisant_urzadzenie', compact('device','brand','category'));
+    }
+
+    public function addRepair(Request $request, $id)
+    {
+     
+        $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        $repair = New Repair;
+        $repair->name = $request->name;
+        $repair->description = $request->description;
+        $repair->slugi_repair = str_slug($request->name);
+        $repair->device_id = $id;
+        $repair->user_id = Auth::user()->id;
+        $repair->status = 0;
+        $repair->accept = 0;
+        $repair->image =  $imageName;
+        $repair->save();
+
+    return ['message' => 'Model dodany'];
     }
 }

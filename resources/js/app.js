@@ -26,6 +26,8 @@ Vue.component(
     require("./components/AdminDevice.vue").default
 );
 
+Vue.component("serwisantcreaterepair-component", require("./components/SerwisantCreateRepair.vue").default);
+
 Vue.component("pagination", require("laravel-vue-pagination"));
 
 import Swal from "sweetalert2";
