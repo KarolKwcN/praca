@@ -22,17 +22,11 @@
                 
             </div><br>
           <hr class="bg-info">
-          <div class="row">   
-            <div class="col-lg-12">
-              <div class="float-right">
+         
 
                 <serwisantcreaterepair-component :device="{{ $device->id }}"></serwisantcreaterepair-component>
                 
-              </div>
-              
-            </div>     
-                 
-              </div>
+             
         </div>
       </div>  
 </div>

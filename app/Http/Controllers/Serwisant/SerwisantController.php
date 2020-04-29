@@ -51,8 +51,18 @@ class SerwisantController extends Controller
 
     public function addRepair(Request $request, $id)
     {
-     
-        $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        
+        $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+
+        ]);
+        
+        
+
+        $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('images/'.$id.'/'.$request->name), $imageName);
         $repair = New Repair;
         $repair->name = $request->name;
         $repair->description = $request->description;
@@ -61,9 +71,19 @@ class SerwisantController extends Controller
         $repair->user_id = Auth::user()->id;
         $repair->status = 0;
         $repair->accept = 0;
-        $repair->image =  $imageName;
+        $repair->image = "/images/$id/$request->name/$imageName";
         $repair->save();
 
     return ['message' => 'Model dodany'];
+    }
+
+    public function showRepairs($id)
+    {
+       
+      
+        $repairs = Repair::with('users')->where('device_id', $id)->get();
+     
+        return $repairs;
+      
     }
 }

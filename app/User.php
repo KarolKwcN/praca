@@ -1,10 +1,11 @@
 <?php
 
 namespace App;
-
+use App\Repair;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable
 {
@@ -73,6 +74,6 @@ class User extends Authenticatable
 
     public function repairs()
     {
-        return $this->hasMany(Repair::class);
+        return $this->hasMany('\App\Repair','user_id');
     }
 }

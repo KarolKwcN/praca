@@ -15,7 +15,7 @@ class CreateRepairsTable extends Migration
     {
         Schema::create('repairs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->mediumText('description');
             $table->string('slugi_repair');
             $table->mediumText('image')->nullable();

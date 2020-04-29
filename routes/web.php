@@ -204,6 +204,8 @@ Route::post('api/admin/addDevice/{id}', [
     'roles' => ['Admin']
 ]);
 
+//////////////////////////////////////////SERWISANT
+
 Route::get('serwisant', [
     'uses' => 'Serwisant\SerwisantController@index',
     'as' => 'serwisant.serwisant',
@@ -233,11 +235,18 @@ Route::get('serwisant/{slug}/{slugi}/{slugii}', [
     'roles' => ['Serwisant']
 ]);
 
-//////////////////////////////////////////SERWISANT
+
 
 Route::post('api/serwisant/addRepair/{id}', [
     'uses' => 'Serwisant\SerwisantController@addRepair',
     'as' => 'serwisant.repairs',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
+
+Route::get('/api/serwisant/showRepairs/{id}', [
+    'uses' => 'Serwisant\SerwisantController@showRepairs',
+    'as' => 'serwisant.showrepairs',
     'middleware' => 'roles',
     'roles' => ['Serwisant']
 ]);

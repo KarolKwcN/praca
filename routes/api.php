@@ -63,3 +63,6 @@ Route::put('/admin/updateDevice/{id}','Admin\AdminController@updateDevice');
 Route::post('/admin/addDevice/{id}','Admin\AdminController@addDevice');
 
 Route::post('/serwisant/addRepair/{id}','Serwisant\SerwisantController@addRepair');
+
+Route::get('/serwisant/showRepairs/{id}','Serwisant\SerwisantController@showRepairs');
+

@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\User;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,7 @@ class Repair extends Model
 
     public function users()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo('\App\User','user_id');
     }
 
     public function devices()

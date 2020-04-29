@@ -29,6 +29,8 @@ Vue.component(
 Vue.component("serwisantcreaterepair-component", require("./components/SerwisantCreateRepair.vue").default);
 
 Vue.component("pagination", require("laravel-vue-pagination"));
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
 
 import Swal from "sweetalert2";
 window.Swal = Swal;
