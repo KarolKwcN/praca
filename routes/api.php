@@ -66,3 +66,4 @@ Route::post('/serwisant/addRepair/{id}','Serwisant\SerwisantController@addRepair
 
 Route::get('/serwisant/showRepairs/{id}','Serwisant\SerwisantController@showRepairs');
 
+Route::post('/serwisant/naprawa/step/{id}','Serwisant\SerwisantController@addStepRepair');

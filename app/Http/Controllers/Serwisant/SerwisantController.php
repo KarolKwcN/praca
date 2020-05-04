@@ -12,6 +12,7 @@ use App\Category;
 use App\Brand;
 use App\Device;
 use App\Repair;
+use App\Step;
 use DB;
 
 class SerwisantController extends Controller
@@ -53,7 +54,7 @@ class SerwisantController extends Controller
     {
         
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:repairs',
             'description' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
 
@@ -80,10 +81,47 @@ class SerwisantController extends Controller
     public function showRepairs($id)
     {
        
-      
-        $repairs = Repair::with('users')->where('device_id', $id)->get();
+        $user_id = Auth::user()->id;
+        $repairs = Repair::with('users')->where('device_id', $id)->where('user_id' , $user_id)->get();
      
         return $repairs;
       
+    }
+
+    public function getSerwisantNaprawa($device, $slugi_repair)
+    {
+
+        $device = Device::where('id', $device)->first();
+        $repair = Repair::where('slugi_repair' ,$slugi_repair)->first();
+        return view('serwisant.serwisant_naprawa', compact('device','repair'));
+    }
+
+    public function addStepRepair(Request $request,$repair)
+    {
+        $naprawa = Repair::find($repair);
+        $device_id=$naprawa->device_id;
+        $name_repair=$naprawa->name;
+
+        $namee = $request->name;
+        $description = $request->description;
+        $uploadedFiles=$request->pics;
+
+    foreach ($uploadedFiles as $file){
+        
+       
+        $name = rand() . time() . '.' .  $file->getClientOriginalExtension();
+        $file->move(public_path('images/'.$device_id.'/'.$name_repair), $name);
+        $arr[] = $name;
+        
+    }
+    $images=implode(", ", $arr);
+    Step::insert( [
+        'name' =>$namee,
+        'description' => $description,
+        'images' => $images,
+        'repair_id' => $repair
+    
+     ]);
+
     }
 }

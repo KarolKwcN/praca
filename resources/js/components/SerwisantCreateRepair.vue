@@ -14,20 +14,29 @@
                         <th>Użytkownik</th>
                         <th>Status realizacji</th>
                         <th>Zaakceptowane</th>
+                        <th>Usuń</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="repair in repairs" :key="repair.id" class="text-center">
                         <td>{{repair.id}}</td>
                         <td>
-                            {{repair.name}}
+                            <a :href="`/serwisant/naprawa/`+device+`/`+repair.slugi_repair">
+                                {{repair.name}}
+                            </a>
                         </td>
-                        <td>{{repair.users.name}}</td>
+                        <td>
+                            {{repair.users.name}}
                         <td>
                             {{repair.status}}
                         </td>
                         <td>
                             {{repair.accept}}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
                         </td>
                     </tr>
                 </tbody>

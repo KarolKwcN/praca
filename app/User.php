@@ -74,6 +74,6 @@ class User extends Authenticatable
 
     public function repairs()
     {
-        return $this->hasMany('\App\Repair','user_id');
+        return $this->hasMany('App\Repair','user_id');
     }
 }

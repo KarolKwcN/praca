@@ -13,12 +13,12 @@ class Repair extends Model
 
     public function steps()
     {
-        return $this->hasMany(Step::class);
+        return $this->hasMany('App\Step','repair_id');
     }
 
     public function users()
     {
-        return $this->belongsTo('\App\User','user_id');
+        return $this->belongsTo('App\User','user_id');
     }
 
     public function devices()
