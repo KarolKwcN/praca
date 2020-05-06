@@ -1,6 +1,45 @@
 <template>
 <div class="container">
+
     <button type="button" @click.prevent="show" class="btn btn-success">Dodaj krok</button>
+
+    <div class="py-5 text-center">
+        <div class="container">
+            <div class="row">
+                 <div class="col-lg-6 col-8 order-2 order-lg-1">
+           <hooper  style="height: 400px"  :centerMode="true">
+  <slide>
+     <div class="images">
+    
+   <a href="/images/1/Wymiana baterii/17509935071588705882.jpg"> <img   class="img-fluid d-block" src="/images/1/Wymiana baterii/17509935071588705882.jpg"></a>
+     </div>
+  </slide>
+  <slide>
+   <img  class="img-fluid d-block" src="/images/1/Wymiana baterii/4969974321588705882.jpg">
+  </slide>
+  <slide>
+   <img   class="img-fluid d-block" src="/images/1/hjhgjhgjhgj/2860053041588705542.jpg">
+  </slide>
+  <slide>
+    <h2>4</h2>
+  </slide>
+  <slide>
+    <h2>5</h2>
+  </slide>
+  <slide>
+    <h2>6</h2>
+  </slide>
+  <hooper-navigation slot="hooper-addons"></hooper-navigation>
+</hooper>
+                 </div>
+                <div class="px-md-5 p-3 d-flex flex-column justify-content-center col-lg-6 order-1 order-lg-3">
+                    <h1>O my friend</h1>
+                    <p class="lead">I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects and flies</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <modal name="modal-step" height="auto" classes="demo-modal-class">
         <div id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -33,7 +72,7 @@
                             </div>
 
                         </div>
-                        <vue-editor  v-model="description"></vue-editor>
+                        <vue-editor v-model="description"></vue-editor>
                     </div>
                     <button class="btn btn-primary" @click="uploadFile">Submit</button>
                 </div>
@@ -44,17 +83,22 @@
 </template>
 
 <script>
+import { Hooper, Slide,  Navigation as HooperNavigation } from 'hooper';
+import 'hooper/dist/hooper.css';
 import axios from "axios";
 import {
     VueEditor
 } from "vue2-editor";
 export default {
 
-     props: ['repair'],
+    props: ['repair'],
     name: "MultipleUpload",
 
     components: {
-        VueEditor
+        VueEditor,
+        Hooper,
+    Slide,
+    HooperNavigation
     },
 
     data() {
@@ -97,13 +141,18 @@ export default {
                 }
             };
             document.getElementById('upload-file').value = [];
-            axios.post('/api/serwisant/naprawa/step/'+ this.repair, this.form, config).then(response => {
+            axios.post('/api/serwisant/naprawa/step/' + this.repair, this.form, config).then(response => {
                     //success
                     console.log(response);
+                    this.$modal.hide("modal-step");
                 })
                 .catch(response => {
                     //error
                 });
+
+            this.name = "";
+            this.description = "";
+            this.attachments = "";
         },
 
         show() {
@@ -118,4 +167,12 @@ export default {
 </script>
 
 <style>
+.images {
+    max-width:100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+}
 </style>

@@ -167,6 +167,7 @@ export default {
             axios.post("/api/serwisant/addRepair/" + this.device, formData, config)
                 .then(function (response) {
                     currentObj.success = response.data.success;
+                    Fire.$emit("AfterChange");
                     self.hide("modal-step");
                 }).catch(error => this.errors.record(error.response.data));
 
