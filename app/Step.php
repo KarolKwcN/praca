@@ -14,4 +14,10 @@ class Step extends Model
     {
         return $this->belongsTo('App\Repair','repair_id');
     }
+
+    public function imagesteps()
+    {
+        return $this->hasMany('App\ImageStep','step_id');
+    }
 }
+

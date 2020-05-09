@@ -272,3 +272,12 @@ Route::post('api/serwisant/naprawa/step/{id}', [
     'roles' => ['Serwisant']
 ]);
 
+Route::post('api/serwisant/showSteps/{id}', [
+    'uses' => 'Serwisant\SerwisantController@showSteps',
+    'as' => 'serwisant.addstep',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
+
+
+

@@ -5,36 +5,23 @@
 
     <div class="py-5 text-center">
         <div class="container">
-            <div class="row">
-                 <div class="col-lg-6 col-8 order-2 order-lg-1">
-           <hooper  style="height: 400px"  :centerMode="true">
-  <slide>
-     <div class="images">
-    
-   <a href="/images/1/Wymiana baterii/17509935071588705882.jpg"> <img   class="img-fluid d-block" src="/images/1/Wymiana baterii/17509935071588705882.jpg"></a>
-     </div>
-  </slide>
-  <slide>
-   <img  class="img-fluid d-block" src="/images/1/Wymiana baterii/4969974321588705882.jpg">
-  </slide>
-  <slide>
-   <img   class="img-fluid d-block" src="/images/1/hjhgjhgjhgj/2860053041588705542.jpg">
-  </slide>
-  <slide>
-    <h2>4</h2>
-  </slide>
-  <slide>
-    <h2>5</h2>
-  </slide>
-  <slide>
-    <h2>6</h2>
-  </slide>
-  <hooper-navigation slot="hooper-addons"></hooper-navigation>
-</hooper>
-                 </div>
+            <div class="row" v-for="(step, indx) in steps" :key="indx" :index="indx">
+                <div class="col-lg-6 col-8 order-2 order-lg-1">
+
+                    <hooper style="height: 400px" :centerMode="true">
+                        <slide v-for="(stepimage, indx) in step.imagesteps" :key="indx" :index="indx">
+                            <div class="images">
+                                <a :href='stepimage.image'> <img class="img-fluid d-block" :src='stepimage.image'></a>
+                            </div>
+
+                        </slide>
+                        <hooper-navigation slot="hooper-addons"></hooper-navigation>
+                    </hooper>
+
+                </div>
                 <div class="px-md-5 p-3 d-flex flex-column justify-content-center col-lg-6 order-1 order-lg-3">
-                    <h1>O my friend</h1>
-                    <p class="lead">I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects and flies</p>
+                    <h1>{{step.name}}</h1>
+                    <p class="lead"><span v-html="step.description"></span></p>
                 </div>
             </div>
         </div>
@@ -72,7 +59,7 @@
                             </div>
 
                         </div>
-                        <vue-editor v-model="description"></vue-editor>
+                        <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
                     </div>
                     <button class="btn btn-primary" @click="uploadFile">Submit</button>
                 </div>
@@ -83,7 +70,11 @@
 </template>
 
 <script>
-import { Hooper, Slide,  Navigation as HooperNavigation } from 'hooper';
+import {
+    Hooper,
+    Slide,
+    Navigation as HooperNavigation
+} from 'hooper';
 import 'hooper/dist/hooper.css';
 import axios from "axios";
 import {
@@ -97,8 +88,8 @@ export default {
     components: {
         VueEditor,
         Hooper,
-    Slide,
-    HooperNavigation
+        Slide,
+        HooperNavigation
     },
 
     data() {
@@ -107,6 +98,31 @@ export default {
             description: '',
             uploadFiles: [],
             attachments: [],
+            steps: {},
+            customToolbar: [
+                ["bold", "italic", "underline"],
+                [{
+                    list: "ordered"
+                }, {
+                    list: "bullet"
+                }],
+                [{
+                        align: ""
+                    },
+                    {
+                        align: "center"
+                    },
+                    {
+                        align: "right"
+                    },
+                    {
+                        align: "justify"
+                    }
+                ],
+                [{
+                    color: []
+                }]
+            ],
             form: new FormData
 
         }
@@ -144,6 +160,7 @@ export default {
             axios.post('/api/serwisant/naprawa/step/' + this.repair, this.form, config).then(response => {
                     //success
                     console.log(response);
+                    Fire.$emit("AfterChange");
                     this.$modal.hide("modal-step");
                 })
                 .catch(response => {
@@ -152,7 +169,7 @@ export default {
 
             this.name = "";
             this.description = "";
-            this.attachments = "";
+            this.attachments = [];
         },
 
         show() {
@@ -160,7 +177,17 @@ export default {
         },
         hide() {
             this.$modal.hide('modal-step');
+        },
+        loadSteps() {
+            axios.get("/api/serwisant/showSteps/" + this.repair)
+                .then(response => (this.steps = response.data));
         }
+    },
+    created() {
+        this.loadSteps();
+        Fire.$on("AfterChange", () => {
+            this.loadSteps();
+        });
     }
 
 }
@@ -168,11 +195,11 @@ export default {
 
 <style>
 .images {
-    max-width:100%;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;
+    max-width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
 }
 </style>

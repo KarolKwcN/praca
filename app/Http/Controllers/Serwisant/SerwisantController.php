@@ -13,6 +13,7 @@ use App\Brand;
 use App\Device;
 use App\Repair;
 use App\Step;
+use App\ImageStep;
 use DB;
 
 class SerwisantController extends Controller
@@ -102,26 +103,43 @@ class SerwisantController extends Controller
         $device_id=$naprawa->device_id;
         $name_repair=$naprawa->name;
 
-        $namee = $request->name;
-        $description = $request->description;
+        
+        
         $uploadedFiles=$request->pics;
+
+        
+         $step = New Step;
+         $step->name = $request->name;
+         $step->description = $request->description;
+         $step->repair_id = $repair;
+         $step->save();
+
+         $laststepid = $step->id;
+
+
 
     foreach ($uploadedFiles as $file){
         
        
-        $name = rand() . time() . '.' .  $file->getClientOriginalExtension();
-        $file->move(public_path('images/'.$device_id.'/'.$name_repair), $name);
-        $arr[] = $name;
+        $imageName = rand() . time() . '.' .  $file->getClientOriginalExtension();
+        $file->move(public_path('images/'.$device_id.'/'.$name_repair), $imageName);
+        
+        $imagestep = New ImageStep;
+        $imagestep->image = "/images/$device_id/$name_repair/$imageName";
+        $imagestep->step_id =  $laststepid;
+        $imagestep->save();
         
     }
-    $images=implode(", ", $arr);
-    Step::insert( [
-        'name' =>$namee,
-        'description' => $description,
-        'images' => $images,
-        'repair_id' => $repair
+ 
     
-     ]);
 
+    }
+
+    public function showSteps($repair)
+    {
+       
+        $steps = Step::with('imagesteps')->where('repair_id', $repair)->get();
+     
+        return $steps;
     }
 }

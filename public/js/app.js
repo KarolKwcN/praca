@@ -3060,19 +3060,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3092,6 +3079,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       description: '',
       uploadFiles: [],
       attachments: [],
+      steps: {},
+      customToolbar: [["bold", "italic", "underline"], [{
+        list: "ordered"
+      }, {
+        list: "bullet"
+      }], [{
+        align: ""
+      }, {
+        align: "center"
+      }, {
+        align: "right"
+      }, {
+        align: "justify"
+      }], [{
+        color: []
+      }]],
       form: new FormData()
     };
   },
@@ -3131,20 +3134,36 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/serwisant/naprawa/step/' + this.repair, this.form, config).then(function (response) {
         //success
         console.log(response);
+        Fire.$emit("AfterChange");
 
         _this.$modal.hide("modal-step");
       })["catch"](function (response) {//error
       });
       this.name = "";
       this.description = "";
-      this.attachments = "";
+      this.attachments = [];
     },
     show: function show() {
       this.$modal.show('modal-step');
     },
     hide: function hide() {
       this.$modal.hide('modal-step');
+    },
+    loadSteps: function loadSteps() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/api/serwisant/showSteps/" + this.repair).then(function (response) {
+        return _this2.steps = response.data;
+      });
     }
+  },
+  created: function created() {
+    var _this3 = this;
+
+    this.loadSteps();
+    Fire.$on("AfterChange", function () {
+      _this3.loadSteps();
+    });
   }
 });
 
@@ -9697,7 +9716,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.images {\r\n    max-width:100%;\r\n  height: auto;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  border-radius: 20px;\n}\r\n", ""]);
+exports.push([module.i, "\n.images {\r\n    max-width: 100%;\r\n    height: auto;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    border-radius: 20px;\n}\r\n", ""]);
 
 // exports
 
@@ -60609,81 +60628,74 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "py-5 text-center" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c(
+        _c(
+          "div",
+          { staticClass: "container" },
+          _vm._l(_vm.steps, function(step, indx) {
+            return _c(
               "div",
-              { staticClass: "col-lg-6 col-8 order-2 order-lg-1" },
+              { key: indx, staticClass: "row", attrs: { index: indx } },
               [
                 _c(
-                  "hooper",
-                  {
-                    staticStyle: { height: "400px" },
-                    attrs: { centerMode: true }
-                  },
+                  "div",
+                  { staticClass: "col-lg-6 col-8 order-2 order-lg-1" },
                   [
-                    _c("slide", [
-                      _c("div", { staticClass: "images" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href:
-                                "/images/1/Wymiana baterii/17509935071588705882.jpg"
-                            }
-                          },
-                          [
-                            _c("img", {
-                              staticClass: "img-fluid d-block",
-                              attrs: {
-                                src:
-                                  "/images/1/Wymiana baterii/17509935071588705882.jpg"
-                              }
-                            })
-                          ]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("slide", [
-                      _c("img", {
-                        staticClass: "img-fluid d-block",
-                        attrs: {
-                          src:
-                            "/images/1/Wymiana baterii/4969974321588705882.jpg"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("slide", [
-                      _c("img", {
-                        staticClass: "img-fluid d-block",
-                        attrs: {
-                          src: "/images/1/hjhgjhgjhgj/2860053041588705542.jpg"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("slide", [_c("h2", [_vm._v("4")])]),
-                    _vm._v(" "),
-                    _c("slide", [_c("h2", [_vm._v("5")])]),
-                    _vm._v(" "),
-                    _c("slide", [_c("h2", [_vm._v("6")])]),
-                    _vm._v(" "),
-                    _c("hooper-navigation", {
-                      attrs: { slot: "hooper-addons" },
-                      slot: "hooper-addons"
-                    })
+                    _c(
+                      "hooper",
+                      {
+                        staticStyle: { height: "400px" },
+                        attrs: { centerMode: true }
+                      },
+                      [
+                        _vm._l(step.imagesteps, function(stepimage, indx) {
+                          return _c(
+                            "slide",
+                            { key: indx, attrs: { index: indx } },
+                            [
+                              _c("div", { staticClass: "images" }, [
+                                _c("a", { attrs: { href: stepimage.image } }, [
+                                  _c("img", {
+                                    staticClass: "img-fluid d-block",
+                                    attrs: { src: stepimage.image }
+                                  })
+                                ])
+                              ])
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _c("hooper-navigation", {
+                          attrs: { slot: "hooper-addons" },
+                          slot: "hooper-addons"
+                        })
+                      ],
+                      2
+                    )
                   ],
                   1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "px-md-5 p-3 d-flex flex-column justify-content-center col-lg-6 order-1 order-lg-3"
+                  },
+                  [
+                    _c("h1", [_vm._v(_vm._s(step.name))]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "lead" }, [
+                      _c("span", {
+                        domProps: { innerHTML: _vm._s(step.description) }
+                      })
+                    ])
+                  ]
                 )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _vm._m(0)
-          ])
-        ])
+              ]
+            )
+          }),
+          0
+        )
       ]),
       _vm._v(" "),
       _c(
@@ -60828,6 +60840,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("vue-editor", {
+                          attrs: { editorToolbar: _vm.customToolbar },
                           model: {
                             value: _vm.description,
                             callback: function($$v) {
@@ -60859,29 +60872,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "px-md-5 p-3 d-flex flex-column justify-content-center col-lg-6 order-1 order-lg-3"
-      },
-      [
-        _c("h1", [_vm._v("O my friend")]),
-        _vm._v(" "),
-        _c("p", { staticClass: "lead" }, [
-          _vm._v(
-            "I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects and flies"
-          )
-        ])
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
