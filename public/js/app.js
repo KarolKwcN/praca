@@ -2860,6 +2860,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 //
 //
 //
+//
+//
 var Errors = /*#__PURE__*/function () {
   function Errors() {
     _classCallCheck(this, Errors);
@@ -3060,6 +3062,74 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3075,6 +3145,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   data: function data() {
     return {
+      update_step: [],
       name: '',
       description: '',
       uploadFiles: [],
@@ -3143,6 +3214,64 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.description = "";
       this.attachments = [];
     },
+    editStep: function editStep() {
+      var _this2 = this;
+
+      for (var i = 0; i < this.attachments.length; i++) {
+        this.form.append('pics[]', this.attachments[i]);
+      }
+
+      for (var _i = 0; _i < this.update_step.imagesteps.length; _i++) {
+        this.form.append('picss[]', this.update_step.imagesteps[_i].image);
+      }
+
+      this.form.append('id', this.update_step.id);
+      this.form.append('name', this.update_step.name);
+      this.form.append('description', this.update_step.description);
+      var config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      document.getElementById('upload-file').value = [];
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/serwisant/updatestep/' + this.update_step.id, this.form, config).then(function (response) {
+        //success
+        console.log(response);
+        Fire.$emit("AfterChange");
+
+        _this2.$modal.hide("modal-update");
+      })["catch"](function (response) {//error
+      });
+      this.name = "";
+      this.description = "";
+      this.attachments = [];
+      this.update_step.imagesteps = [];
+      this.update_step = [];
+    },
+    deleteModal: function deleteModal(id) {
+      Swal.fire({
+        title: "Napewno chcesz usunąć krok ?",
+        text: "Nie będzie można tego cofnąć.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Tak, usuń!"
+      }).then(function (result) {
+        if (result.value) {
+          axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]("/api/serwisant/deleteStep/" + id).then(function () {
+            Swal.fire("Model został usunięty");
+            Fire.$emit("AfterChange");
+          })["catch"](function () {
+            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+          });
+        }
+      });
+    },
+    editModal: function editModal(indx) {
+      this.$modal.show('modal-update');
+      this.update_step = this.steps[indx];
+    },
     show: function show() {
       this.$modal.show('modal-step');
     },
@@ -3150,19 +3279,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.$modal.hide('modal-step');
     },
     loadSteps: function loadSteps() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/api/serwisant/showSteps/" + this.repair).then(function (response) {
-        return _this2.steps = response.data;
+        return _this3.steps = response.data;
       });
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.loadSteps();
     Fire.$on("AfterChange", function () {
-      _this3.loadSteps();
+      _this4.loadSteps();
+
+      _this4.form["delete"]('picss[]');
+
+      _this4.form["delete"]('pics[]');
     });
   }
 });
@@ -9716,7 +9849,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.images {\r\n    max-width: 100%;\r\n    height: auto;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    border-radius: 20px;\n}\r\n", ""]);
+exports.push([module.i, "\n.images {\r\n    max-width: 100%;\r\n    height: auto;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    border-radius: 20px;\n}\n.new1 {\r\n    padding-left: 30px;\n}\n.new2 {\r\n    border-radius: 1%;\n}\r\n", ""]);
 
 // exports
 
@@ -60268,11 +60401,9 @@ var render = function() {
                   )
                 ]),
                 _c("td", [
-                  _vm._v(
-                    "\r\n                            " +
-                      _vm._s(repair.status) +
-                      "\r\n                        "
-                  )
+                  repair.status === 0
+                    ? _c("span", [_vm._v("W realizacji")])
+                    : _c("span", [_vm._v("Zakończone")])
                 ]),
                 _vm._v(" "),
                 _c("td", [
@@ -60612,95 +60743,140 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-success",
-          attrs: { type: "button" },
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.show($event)
+      _c("div", { staticClass: "new1" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success",
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.show($event)
+              }
             }
-          }
-        },
-        [_vm._v("Dodaj krok")]
-      ),
+          },
+          [_vm._v("Dodaj krok")]
+        )
+      ]),
       _vm._v(" "),
-      _c("div", { staticClass: "py-5 text-center" }, [
+      _c("div", { staticClass: "py-5" }, [
         _c(
           "div",
           { staticClass: "container" },
-          _vm._l(_vm.steps, function(step, indx) {
-            return _c(
-              "div",
-              { key: indx, staticClass: "row", attrs: { index: indx } },
-              [
-                _c(
-                  "div",
-                  { staticClass: "col-lg-6 col-8 order-2 order-lg-1" },
-                  [
-                    _c(
-                      "hooper",
-                      {
-                        staticStyle: { height: "400px" },
-                        attrs: { centerMode: true }
-                      },
-                      [
-                        _vm._l(step.imagesteps, function(stepimage, indx) {
-                          return _c(
-                            "slide",
-                            { key: indx, attrs: { index: indx } },
-                            [
-                              _c("div", { staticClass: "images" }, [
-                                _c("a", { attrs: { href: stepimage.image } }, [
-                                  _c("img", {
-                                    staticClass: "img-fluid d-block",
-                                    attrs: { src: stepimage.image }
-                                  })
+          [
+            _vm._l(_vm.steps, function(step, indx) {
+              return _c(
+                "div",
+                { key: indx, staticClass: "row", attrs: { index: indx } },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: " pl-md-4 col-lg-6 col-8 order-2 order-lg-1"
+                    },
+                    [
+                      _c("h2", [_vm._v("Krok " + _vm._s(indx + 1))]),
+                      _vm._v(" "),
+                      _c(
+                        "hooper",
+                        {
+                          staticStyle: { height: "400px" },
+                          attrs: { centerMode: true }
+                        },
+                        [
+                          _vm._l(step.imagesteps, function(stepimage, indx) {
+                            return _c(
+                              "slide",
+                              { key: indx, attrs: { index: indx } },
+                              [
+                                _c("div", { staticClass: "images" }, [
+                                  _c(
+                                    "a",
+                                    { attrs: { href: stepimage.image } },
+                                    [
+                                      _c("img", {
+                                        staticClass: "img-fluid d-block new2",
+                                        attrs: { src: stepimage.image }
+                                      })
+                                    ]
+                                  )
                                 ])
-                              ])
-                            ]
-                          )
-                        }),
-                        _vm._v(" "),
-                        _c("hooper-navigation", {
-                          attrs: { slot: "hooper-addons" },
-                          slot: "hooper-addons"
-                        })
-                      ],
-                      2
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "px-md-5 p-3 d-flex flex-column justify-content-center col-lg-6 order-1 order-lg-3"
-                  },
-                  [
-                    _c("h1", [_vm._v(_vm._s(step.name))]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "lead" }, [
+                              ]
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c("hooper-navigation", {
+                            attrs: { slot: "hooper-addons" },
+                            slot: "hooper-addons"
+                          })
+                        ],
+                        2
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "pr-md-5 p-3  flex-column justify-content-center col-lg-6 order-1 order-lg-3"
+                    },
+                    [
+                      _c("div", { staticClass: "text-center" }, [
+                        _c("h3", [_vm._v(_vm._s(step.name))])
+                      ]),
+                      _vm._v(" "),
                       _c("span", {
                         domProps: { innerHTML: _vm._s(step.description) }
-                      })
-                    ])
-                  ]
-                )
-              ]
-            )
-          }),
-          0
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-info",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.editModal(indx)
+                            }
+                          }
+                        },
+                        [_vm._v("Edytuj")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteModal(step.id)
+                            }
+                          }
+                        },
+                        [_vm._v("Usuń")]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm._m(0, true)
+                ]
+              )
+            }),
+            _vm._v(" "),
+            _vm._m(1)
+          ],
+          2
         )
       ]),
       _vm._v(" "),
       _c(
         "modal",
         {
+          staticStyle: { "overflow-y": "auto" },
           attrs: {
             name: "modal-step",
             height: "auto",
@@ -60867,12 +61043,257 @@ var render = function() {
             ]
           )
         ]
+      ),
+      _vm._v(" "),
+      _c(
+        "modal",
+        {
+          staticStyle: { "overflow-y": "auto" },
+          attrs: {
+            name: "modal-update",
+            height: "auto",
+            classes: "demo-modal-class"
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              attrs: {
+                id: "exampleModal",
+                tabindex: "-1",
+                role: "dialog",
+                "aria-labelledby": "exampleModalLabel",
+                "aria-hidden": "true"
+              }
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "modal-dialog", attrs: { role: "document" } },
+                [
+                  _c("div", { staticClass: "modal-content" }, [
+                    _c(
+                      "div",
+                      { staticClass: "modal-body" },
+                      [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.update_step.name,
+                                expression: "update_step.name"
+                              }
+                            ],
+                            attrs: { type: "text", name: "name", id: "name" },
+                            domProps: { value: _vm.update_step.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.update_step,
+                                  "name",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Upload Files")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              staticClass: "form-control",
+                              staticStyle: { display: "none" },
+                              attrs: {
+                                id: "upload-file",
+                                type: "file",
+                                accept: "image/*",
+                                multiple: ""
+                              },
+                              on: { change: _vm.fieldChange }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              attrs: {
+                                type: "button",
+                                value: "Browse...",
+                                onclick:
+                                  "document.getElementById('upload-file').click();"
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "field" },
+                            [
+                              _vm._l(_vm.update_step.imagesteps, function(
+                                file,
+                                index
+                              ) {
+                                return _c(
+                                  "div",
+                                  {
+                                    key: index,
+                                    class:
+                                      "level " +
+                                      (file.invalidMessage && "text-danger")
+                                  },
+                                  [
+                                    _c("div", { staticClass: "level-left" }, [
+                                      _c("div", { staticClass: "level-item" }, [
+                                        _c("img", {
+                                          staticClass: "img-fluid d-block new2",
+                                          attrs: {
+                                            width: "150px",
+                                            src: file.image
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        file.invalidMessage
+                                          ? _c("span", [
+                                              _vm._v(
+                                                " - " +
+                                                  _vm._s(file.invalidMessage)
+                                              )
+                                            ])
+                                          : _vm._e()
+                                      ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "level-right" }, [
+                                      _c("div", { staticClass: "level-item" }, [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "delete",
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                _vm.update_step.imagesteps.splice(
+                                                  index,
+                                                  1
+                                                )
+                                                _vm.uploadFiles.splice(index, 1)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("x")]
+                                        )
+                                      ])
+                                    ])
+                                  ]
+                                )
+                              }),
+                              _vm._v(" "),
+                              _vm._l(_vm.attachments, function(file, indx) {
+                                return _c(
+                                  "div",
+                                  {
+                                    key: indx,
+                                    class:
+                                      "level " +
+                                      (file.invalidMessage && "text-danger")
+                                  },
+                                  [
+                                    _c("div", { staticClass: "level-left" }, [
+                                      _c("div", { staticClass: "level-item" }, [
+                                        _vm._v(
+                                          "\r\n                                            " +
+                                            _vm._s(file.name) +
+                                            "\r\n                                            "
+                                        ),
+                                        file.invalidMessage
+                                          ? _c("span", [
+                                              _vm._v(
+                                                " - " +
+                                                  _vm._s(file.invalidMessage)
+                                              )
+                                            ])
+                                          : _vm._e()
+                                      ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "level-right" }, [
+                                      _c("div", { staticClass: "level-item" }, [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "delete",
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                _vm.attachments.splice(indx, 1)
+                                                _vm.uploadFiles.splice(indx, 1)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("x")]
+                                        )
+                                      ])
+                                    ])
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("vue-editor", {
+                          attrs: { editorToolbar: _vm.customToolbar },
+                          model: {
+                            value: _vm.update_step.description,
+                            callback: function($$v) {
+                              _vm.$set(_vm.update_step, "description", $$v)
+                            },
+                            expression: "update_step.description"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.editStep }
+                      },
+                      [_vm._v("Submit")]
+                    )
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
       )
     ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group col-12" }, [_c("hr")])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group col-14" }, [_c("hr")])
+  }
+]
 render._withStripped = true
 
 

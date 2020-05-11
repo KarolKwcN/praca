@@ -28,7 +28,9 @@
                         <td>
                             {{repair.users.name}}
                         <td>
-                            {{repair.status}}
+                            <span v-if="repair.status === 0">W realizacji</span>
+                            <span v-else>Zakończone</span>
+                            
                         </td>
                         <td>
                             {{repair.accept}}

@@ -142,4 +142,63 @@ class SerwisantController extends Controller
      
         return $steps;
     }
+
+    public function updatestep(Request $request, $id )
+    {
+        $step = Step::findOrFail($id);
+        $step->name = $request->name;
+        $step->description = $request->description;
+        $step->update();
+
+        $repair_id = $step->repair_id;
+
+        $repair = Repair::findOrFail($repair_id);
+
+        $repair_name = $repair->name;
+        $device_id = $repair->device_id;
+
+
+
+       ImageStep::where('step_id', $id )->get()->each->delete();
+        
+
+        $uploadedFiles=$request->pics;
+        $uploadedFiless=$request->picss;
+       
+        if(isset($uploadedFiless))
+        {
+        foreach ($uploadedFiless as $file){
+
+            $imagestep = New ImageStep;
+            $imagestep->image = $file;
+            $imagestep->step_id =  $id;
+            $imagestep->save();
+            
+        }
+    }
+
+
+        if(isset($uploadedFiles)){
+        foreach ($uploadedFiles as $file){
+        
+       
+            $imageName = rand() . time() . '.' .  $file->getClientOriginalExtension();
+            $file->move(public_path('images/'.$device_id.'/'.$repair_name), $imageName);
+            
+            $imagestep = New ImageStep;
+            $imagestep->image = "/images/$device_id/$repair_name/$imageName";
+            $imagestep->step_id =  $id;
+            $imagestep->save();
+            
+        }
+    }
+    }
+
+    public function deleteStep($id)
+    {
+        $step = Step::findOrFail($id);
+
+        ImageStep::where("step_id", $step->id)->delete();
+        $step->delete();
+    }
 }

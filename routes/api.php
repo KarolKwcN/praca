@@ -70,4 +70,6 @@ Route::post('/serwisant/naprawa/step/{id}','Serwisant\SerwisantController@addSte
 
 Route::get('/serwisant/showSteps/{id}','Serwisant\SerwisantController@showSteps');
 
+Route::post('/serwisant/updatestep/{id}','Serwisant\SerwisantController@updatestep');
 
+Route::delete('/serwisant/deleteStep/{id}','Serwisant\SerwisantController@deleteStep');

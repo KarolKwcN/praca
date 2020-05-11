@@ -1,17 +1,18 @@
 <template>
 <div class="container">
-
-    <button type="button" @click.prevent="show" class="btn btn-success">Dodaj krok</button>
-
-    <div class="py-5 text-center">
+    <div class="new1">
+        <button type="button" @click.prevent="show" class="btn btn-success">Dodaj krok</button>
+    </div>
+    <div class="py-5">
         <div class="container">
-            <div class="row" v-for="(step, indx) in steps" :key="indx" :index="indx">
-                <div class="col-lg-6 col-8 order-2 order-lg-1">
+            <div class="row" v-for="(step, indx ) in steps" :key="indx" :index="indx">
 
+                <div class=" pl-md-4 col-lg-6 col-8 order-2 order-lg-1">
+                    <h2>Krok {{indx+1}}</h2>
                     <hooper style="height: 400px" :centerMode="true">
                         <slide v-for="(stepimage, indx) in step.imagesteps" :key="indx" :index="indx">
                             <div class="images">
-                                <a :href='stepimage.image'> <img class="img-fluid d-block" :src='stepimage.image'></a>
+                                <a :href='stepimage.image'> <img class="img-fluid d-block new2" :src='stepimage.image'></a>
                             </div>
 
                         </slide>
@@ -19,15 +20,28 @@
                     </hooper>
 
                 </div>
-                <div class="px-md-5 p-3 d-flex flex-column justify-content-center col-lg-6 order-1 order-lg-3">
-                    <h1>{{step.name}}</h1>
-                    <p class="lead"><span v-html="step.description"></span></p>
+                <div class="pr-md-5 p-3  flex-column justify-content-center col-lg-6 order-1 order-lg-3">
+                    <div class="text-center">
+                        <h3>{{step.name}}</h3>
+                    </div>
+                    <span v-html="step.description"></span>
+
+                    <button @click="editModal(indx)" type="button" class="btn btn-info">Edytuj</button>
+                    <button @click="deleteModal(step.id)" type="button" class="btn btn-danger">Usuń</button>
+
                 </div>
+
+                <div class="form-group col-12">
+                    <hr>
+                </div>
+            </div>
+            <div class="form-group col-14">
+                <hr>
             </div>
         </div>
     </div>
 
-    <modal name="modal-step" height="auto" classes="demo-modal-class">
+    <modal style="overflow-y: auto;" name="modal-step" height="auto" classes="demo-modal-class">
         <div id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -66,6 +80,60 @@
             </div>
         </div>
     </modal>
+
+    <modal style="overflow-y: auto;" name="modal-update" height="auto" classes="demo-modal-class">
+        <div id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" v-model="update_step.name" name="name" id="name">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Upload Files</label>
+                                <input id="upload-file" type="file" accept="image/*" multiple class="form-control" style="display: none;" @change="fieldChange">
+                                <input type="button" value="Browse..." onclick="document.getElementById('upload-file').click();" />
+                            </div>
+                            <div class="field">
+                                <div v-for="(file, index) in update_step.imagesteps" :key="index" :class="`level ${file.invalidMessage && 'text-danger'}`">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <img width="150px" class="img-fluid d-block new2" :src='file.image'>
+                                            <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="level-right">
+                                        <div class="level-item">
+                                            <a @click.prevent="update_step.imagesteps.splice(index, 1);uploadFiles.splice(index, 1)" class="delete">x</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-for="(file, indx) in attachments" :key="indx" :class="`level ${file.invalidMessage && 'text-danger'}`">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            {{file.name}}
+                                            <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="level-right">
+                                        <div class="level-item">
+                                            <a @click.prevent="attachments.splice(indx, 1);uploadFiles.splice(indx, 1)" class="delete">x</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <vue-editor v-model="update_step.description" :editorToolbar="customToolbar"></vue-editor>
+                    </div>
+                    <button class="btn btn-primary" @click="editStep">Submit</button>
+                </div>
+            </div>
+        </div>
+    </modal>
+
 </div>
 </template>
 
@@ -94,6 +162,7 @@ export default {
 
     data() {
         return {
+            update_step: [],
             name: '',
             description: '',
             uploadFiles: [],
@@ -171,7 +240,69 @@ export default {
             this.description = "";
             this.attachments = [];
         },
+        editStep() {
+            for (let i = 0; i < this.attachments.length; i++) {
+                this.form.append('pics[]', this.attachments[i]);
+            }
 
+            for (let i = 0; i < this.update_step.imagesteps.length; i++) {
+                this.form.append('picss[]', this.update_step.imagesteps[i].image);
+            }
+
+            this.form.append('id', this.update_step.id);
+            this.form.append('name', this.update_step.name);
+            this.form.append('description', this.update_step.description);
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            };
+
+            document.getElementById('upload-file').value = [];
+            axios.post('/api/serwisant/updatestep/' + this.update_step.id, this.form, config).then(response => {
+                    //success
+                    console.log(response);
+                    Fire.$emit("AfterChange");
+                    this.$modal.hide("modal-update");
+                })
+                .catch(response => {
+                    //error
+                });
+
+            this.name = "";
+            this.description = "";
+            this.attachments = [];
+            this.update_step.imagesteps = [];
+            this.update_step = [];
+
+        },
+        deleteModal(id) {
+            Swal.fire({
+                title: "Napewno chcesz usunąć krok ?",
+                text: "Nie będzie można tego cofnąć.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Tak, usuń!"
+            }).then(result => {
+                if (result.value) {
+                    axios
+                        .delete("/api/serwisant/deleteStep/" + id)
+                        .then(() => {
+                            Swal.fire("Model został usunięty");
+                            Fire.$emit("AfterChange");
+                        })
+                        .catch(() => {
+                            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+                        });
+                }
+            });
+        },
+        editModal(indx) {
+            this.$modal.show('modal-update');
+            this.update_step = this.steps[indx];
+        },
         show() {
             this.$modal.show('modal-step');
         },
@@ -187,6 +318,8 @@ export default {
         this.loadSteps();
         Fire.$on("AfterChange", () => {
             this.loadSteps();
+            this.form.delete('picss[]');
+            this.form.delete('pics[]');
         });
     }
 
@@ -201,5 +334,13 @@ export default {
     align-items: center;
     justify-content: center;
     border-radius: 20px;
+}
+
+.new1 {
+    padding-left: 30px;
+}
+
+.new2 {
+    border-radius: 1%;
 }
 </style>

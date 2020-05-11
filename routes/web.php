@@ -280,4 +280,18 @@ Route::post('api/serwisant/showSteps/{id}', [
 ]);
 
 
+Route::post('api/serwisant/updatestep/{id}', [
+    'uses' => 'Serwisant\SerwisantController@updatestep',
+    'as' => 'serwisant.updatestep',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
+
+Route::delete('api/serwisant/deleteStep/{id}', [
+    'uses' => 'Serwisant\SerwisantController@deleteStep',
+    'as' => 'serwisant.deleteStep',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
+
 
