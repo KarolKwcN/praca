@@ -12,7 +12,7 @@
                         <th>Id.</th>
                         <th>Nazwa</th>
                         <th>Użytkownik</th>
-                        <th>Status realizacji</th>
+                        <th>Status</th>
                         <th>Zaakceptowane</th>
                         <th>Usuń</th>
                     </tr>
@@ -21,7 +21,7 @@
                     <tr v-for="repair in repairs" :key="repair.id" class="text-center">
                         <td>{{repair.id}}</td>
                         <td>
-                            <a :href="`/serwisant/naprawa/`+device+`/`+repair.slugi_repair">
+                            <a :href="`/serwisant/naprawa/`+device+`/`+repair.id+`/`+repair.slugi_repair">
                                 {{repair.name}}
                             </a>
                         </td>

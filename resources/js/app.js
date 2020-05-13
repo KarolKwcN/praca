@@ -27,6 +27,7 @@ Vue.component(
 );
 
 Vue.component("serwisantcreaterepair-component", require("./components/SerwisantCreateRepair.vue").default);
+Vue.component("serwisantedytuj-component", require("./components/SerwisantEdytuj.vue").default);
 
 Vue.component(
     "serwisantcreatestep-component",

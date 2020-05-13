@@ -257,7 +257,7 @@ Route::get('/api/serwisant/showRepairs/{id}', [
     'roles' => ['Serwisant']
 ]);
 
-Route::get('serwisant/naprawa/{device}/{slugi_repair}', [
+Route::get('serwisant/naprawa/{device}/{id}/{slugi_repair}', [
     'uses' => 'Serwisant\SerwisantController@getSerwisantNaprawa',
     'as' => 'serwisant.naprawa',
     'middleware' => 'roles',
@@ -294,4 +294,17 @@ Route::delete('api/serwisant/deleteStep/{id}', [
     'roles' => ['Serwisant']
 ]);
 
+Route::get('/api/serwisant/showRepair/{id}', [
+    'uses' => 'Serwisant\SerwisantController@showRepair',
+    'as' => 'serwisant.showRepair',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
+
+Route::post('api/serwisant/editRepair/{id}', [
+    'uses' => 'Serwisant\SerwisantController@editRepair',
+    'as' => 'serwisant.editRepair',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
 

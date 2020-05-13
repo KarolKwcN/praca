@@ -55,7 +55,7 @@ class SerwisantController extends Controller
     {
         
         $this->validate($request, [
-            'name' => 'required|unique:repairs',
+            'name' => 'required',
             'description' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
 
@@ -64,7 +64,7 @@ class SerwisantController extends Controller
         
 
         $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
-        $request->image->move(public_path('images/'.$id.'/'.$request->name), $imageName);
+        $request->image->move(public_path('images/'.$id), $imageName);
         $repair = New Repair;
         $repair->name = $request->name;
         $repair->description = $request->description;
@@ -73,7 +73,7 @@ class SerwisantController extends Controller
         $repair->user_id = Auth::user()->id;
         $repair->status = 0;
         $repair->accept = 0;
-        $repair->image = "/images/$id/$request->name/$imageName";
+        $repair->image = "/images/$id/$imageName";
         $repair->save();
 
     return ['message' => 'Model dodany'];
@@ -82,19 +82,24 @@ class SerwisantController extends Controller
     public function showRepairs($id)
     {
        
-        $user_id = Auth::user()->id;
-        $repairs = Repair::with('users')->where('device_id', $id)->where('user_id' , $user_id)->get();
+        //$user_id = Auth::user()->id;
+        $repairs = Repair::with('users')->where('device_id', $id)->get();
      
         return $repairs;
       
     }
 
-    public function getSerwisantNaprawa($device, $slugi_repair)
+    public function getSerwisantNaprawa($device, $id)
     {
-
+        $user_id = Auth::user()->id;
         $device = Device::where('id', $device)->first();
-        $repair = Repair::where('slugi_repair' ,$slugi_repair)->first();
-        return view('serwisant.serwisant_naprawa', compact('device','repair'));
+        $repair = Repair::where('id' ,$id)->first();
+
+        if ($user_id === $repair->user_id) {
+            return view('serwisant.serwisant_naprawa', compact('device','repair'));
+        }
+        
+        return view('brak_uprawnien');
     }
 
     public function addStepRepair(Request $request,$repair)
@@ -102,6 +107,8 @@ class SerwisantController extends Controller
         $naprawa = Repair::find($repair);
         $device_id=$naprawa->device_id;
         $name_repair=$naprawa->name;
+
+        $id_naprawy=$naprawa->id;
 
         
         
@@ -122,17 +129,15 @@ class SerwisantController extends Controller
         
        
         $imageName = rand() . time() . '.' .  $file->getClientOriginalExtension();
-        $file->move(public_path('images/'.$device_id.'/'.$name_repair), $imageName);
+        $file->move(public_path('images/'.$device_id.'/'.$id_naprawy), $imageName);
         
         $imagestep = New ImageStep;
-        $imagestep->image = "/images/$device_id/$name_repair/$imageName";
+        $imagestep->image = "/images/$device_id/$id_naprawy/$imageName";
         $imagestep->step_id =  $laststepid;
         $imagestep->save();
         
     }
  
-    
-
     }
 
     public function showSteps($repair)
@@ -183,10 +188,10 @@ class SerwisantController extends Controller
         
        
             $imageName = rand() . time() . '.' .  $file->getClientOriginalExtension();
-            $file->move(public_path('images/'.$device_id.'/'.$repair_name), $imageName);
+            $file->move(public_path('images/'.$device_id.'/'.$repair_id), $imageName);
             
             $imagestep = New ImageStep;
-            $imagestep->image = "/images/$device_id/$repair_name/$imageName";
+            $imagestep->image = "/images/$device_id/$repair_id/$imageName";
             $imagestep->step_id =  $id;
             $imagestep->save();
             
@@ -200,5 +205,36 @@ class SerwisantController extends Controller
 
         ImageStep::where("step_id", $step->id)->delete();
         $step->delete();
+    }
+
+    public function showRepair($id)
+    {
+        $repair = Repair::where('id', $id)->get();
+        return $repair;
+
+    }
+
+    public function editRepair(Request $request, $id)
+    {
+        $repair = Repair::findOrFail($id);
+        $repair->name = $request->name;
+        $repair->description = $request->description;
+        $repair->slugi_repair = str_slug($request->name);
+
+
+        $image = $request->image;
+       
+
+        if(isset($image)){
+            $imageName = rand().time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('images/'.$id), $imageName);
+            $repair->image = "/images/$id/$imageName";
+        }
+
+
+        $repair->update();
+        $image = $request->image;
+
+        return $image;
     }
 }

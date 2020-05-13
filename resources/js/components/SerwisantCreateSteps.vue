@@ -57,16 +57,13 @@
                                 <input type="button" value="Browse..." onclick="document.getElementById('upload-file').click();" />
                             </div>
                             <div class="field">
-                                <div v-for="(file, index) in attachments" :key="index" :class="`level ${file.invalidMessage && 'text-danger'}`">
-                                    <div class="level-left">
-                                        <div class="level-item">
-                                            {{file.name}}
-                                            <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="level-right">
-                                        <div class="level-item">
-                                            <a @click.prevent="attachments.splice(index, 1);uploadFiles.splice(index, 1)" class="delete">x</a>
+                                <div v-for="(file, indx) in attachments" :key="indx" :class="`level ${file.invalidMessage && 'text-danger'}`">
+                                    <div class="input-group  pb-2">
+                                        {{file.name}}
+                                        <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
+
+                                        <div class="form-group-append ">
+                                            <button @click.prevent="attachments.splice(indx, 1);uploadFiles.splice(indx, 1)" class="btn btn-danger mx-2" type="button">Usuń</button>
                                         </div>
                                     </div>
                                 </div>
@@ -98,28 +95,23 @@
                             </div>
                             <div class="field">
                                 <div v-for="(file, index) in update_step.imagesteps" :key="index" :class="`level ${file.invalidMessage && 'text-danger'}`">
-                                    <div class="level-left">
-                                        <div class="level-item">
-                                            <img width="150px" class="img-fluid d-block new2" :src='file.image'>
-                                            <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="level-right">
-                                        <div class="level-item">
-                                            <a @click.prevent="update_step.imagesteps.splice(index, 1);uploadFiles.splice(index, 1)" class="delete">x</a>
+
+                                    <div class="input-group  pb-3">
+                                        <img width="150px" class="img-fluid d-block new2 mx-2" :src='file.image'>
+                                        <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
+
+                                        <div class="form-group-append ">
+                                            <button @click.prevent="update_step.imagesteps.splice(index, 1);uploadFiles.splice(index, 1)" class="btn btn-danger mx-2" type="button">Usuń</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div v-for="(file, indx) in attachments" :key="indx" :class="`level ${file.invalidMessage && 'text-danger'}`">
-                                    <div class="level-left">
-                                        <div class="level-item">
-                                            {{file.name}}
-                                            <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="level-right">
-                                        <div class="level-item">
-                                            <a @click.prevent="attachments.splice(indx, 1);uploadFiles.splice(indx, 1)" class="delete">x</a>
+                                    <div class="input-group  pb-2">
+                                        {{file.name}}
+                                        <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
+
+                                        <div class="form-group-append ">
+                                            <button @click.prevent="attachments.splice(indx, 1);uploadFiles.splice(indx, 1)" class="btn btn-danger mx-2" type="button">Usuń</button>
                                         </div>
                                     </div>
                                 </div>
@@ -290,7 +282,7 @@ export default {
                     axios
                         .delete("/api/serwisant/deleteStep/" + id)
                         .then(() => {
-                            Swal.fire("Model został usunięty");
+                            Swal.fire("Krok został usunięty");
                             Fire.$emit("AfterChange");
                         })
                         .catch(() => {

@@ -8,6 +8,7 @@
             <div class="px-lg-5 d-flex flex-column justify-content-center col-lg-5">
                 <h1>{{ $repair->name }}</h1>
                 <p class="mb-3 lead">{{ $repair->description }}</p>
+                <serwisantedytuj-component :repairEdit="{{ $repair->id }}"></serwisantedytuj-component>
             </div>
             <div class="col-lg-6"> <img width="350" style="border-radius: 1%"  class="img-fluid d-block" src="{{ $repair->image }}"> </div>
         </div>
