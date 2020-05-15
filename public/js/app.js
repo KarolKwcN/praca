@@ -2862,6 +2862,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 //
 //
 //
+//
+//
 var Errors = /*#__PURE__*/function () {
   function Errors() {
     _classCallCheck(this, Errors);
@@ -3142,7 +3144,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       description: '',
       uploadFiles: [],
       attachments: [],
-      steps: {},
+      steps: [{
+        repairs: []
+      }],
       customToolbar: [["bold", "italic", "underline"], [{
         list: "ordered"
       }, {
@@ -3367,6 +3371,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3375,7 +3380,9 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       isHidden: false,
-      repair: [],
+      repair: [{
+        status: []
+      }],
       name: "",
       description: "",
       image: "",
@@ -3425,19 +3432,43 @@ __webpack_require__.r(__webpack_exports__);
 
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/api/serwisant/showRepair/" + this.repairedit).then(function (response) {
         return _this2.repair = response.data;
+      })["catch"](function (err) {
+        console.log(err.toJSON()); // Return error object
       });
     },
     removeimage: function removeimage() {
       this.repair[0].image = "";
       this.isHidden = true;
+    },
+    endRepair: function endRepair() {
+      var _this3 = this;
+
+      Swal.fire({
+        title: "Napewno chcesz zakończyć naprawę i przekazać do akceptacji ?",
+        text: "Nie będzie można tego cofnąć.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Tak!"
+      }).then(function (result) {
+        if (result.value) {
+          axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/serwisant/endRepair/" + _this3.repairedit).then(function () {
+            Swal.fire("Naprawa przekazana do akceptacji.");
+            window.location.reload();
+          })["catch"](function () {
+            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+          });
+        }
+      });
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.loadRepair();
     Fire.$on("AfterLoadRepair", function () {
-      _this3.loadRepair();
+      _this4.loadRepair();
     });
   }
 });
@@ -59110,13 +59141,27 @@ var render = function() {
             "tbody",
             _vm._l(_vm.devices, function(device) {
               return _c("tr", { key: device.id, staticClass: "text-center" }, [
-                _c("td", [_vm._v(_vm._s(device.id))]),
-                _vm._v(" "),
                 _c("td", [
-                  _vm._v(
-                    "\r\n                            " +
-                      _vm._s(device.name) +
-                      "\r\n                        "
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href:
+                          "/admin/naprawy/" +
+                          device.brand.category.slug +
+                          "/" +
+                          device.brand.slugi +
+                          "/" +
+                          device.slugii
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\r\n                                " +
+                          _vm._s(device.name) +
+                          "\r\n                            "
+                      )
+                    ]
                   )
                 ]),
                 _vm._v(" "),
@@ -59417,8 +59462,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", { staticClass: "text-center bg-info text-light" }, [
-        _c("th", [_vm._v("Id.")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Model")]),
         _vm._v(" "),
         _c("th", [_vm._v("Opis")]),
@@ -60551,11 +60594,9 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", [
-                  _vm._v(
-                    "\r\n                            " +
-                      _vm._s(repair.accept) +
-                      "\r\n                        "
-                  )
+                  repair.accept === 0
+                    ? _c("span", [_vm._v("Nie")])
+                    : _c("span", [_vm._v("Tak")])
                 ]),
                 _vm._v(" "),
                 _vm._m(1, true)
@@ -60887,22 +60928,24 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
-      _c("div", { staticClass: "new1" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-success",
-            attrs: { type: "button" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.show($event)
-              }
-            }
-          },
-          [_vm._v("Dodaj krok")]
-        )
-      ]),
+      _vm.steps[0].repairs.status === 0
+        ? _c("div", { staticClass: "new1" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.show($event)
+                  }
+                }
+              },
+              [_vm._v("Dodaj krok")]
+            )
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "py-5" }, [
         _c(
@@ -60976,33 +61019,37 @@ var render = function() {
                         domProps: { innerHTML: _vm._s(step.description) }
                       }),
                       _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-info",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.editModal(indx)
-                            }
-                          }
-                        },
-                        [_vm._v("Edytuj")]
-                      ),
+                      _vm.steps[0].repairs.status === 0
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editModal(indx)
+                                }
+                              }
+                            },
+                            [_vm._v("Edytuj")]
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.deleteModal(step.id)
-                            }
-                          }
-                        },
-                        [_vm._v("Usuń")]
-                      )
+                      _vm.steps[0].repairs.status === 0
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteModal(step.id)
+                                }
+                              }
+                            },
+                            [_vm._v("Usuń")]
+                          )
+                        : _vm._e()
                     ]
                   ),
                   _vm._v(" "),
@@ -61497,20 +61544,34 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-success",
-          attrs: { type: "button" },
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.show($event)
-            }
-          }
-        },
-        [_vm._v("Edytuj")]
-      ),
+      _vm.repair[0].status === 0
+        ? _c("span", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.show($event)
+                  }
+                }
+              },
+              [_vm._v("Edytuj")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                attrs: { type: "button" },
+                on: { click: _vm.endRepair }
+              },
+              [_vm._v("Przekaż do zaakceptowania")]
+            )
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "modal",
@@ -79792,6 +79853,7 @@ Vue.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_2___default.a);
 var app = new Vue({
   el: "#app"
 });
+Vue.config.devtools = true;
 
 /***/ }),
 

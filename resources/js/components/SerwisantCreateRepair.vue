@@ -33,7 +33,9 @@
                             
                         </td>
                         <td>
-                            {{repair.accept}}
+                            <span v-if="repair.accept === 0">Nie</span>
+                            <span v-else>Tak</span>
+                            
                         </td>
                         <td>
                             <button type="button" class="btn btn-danger">

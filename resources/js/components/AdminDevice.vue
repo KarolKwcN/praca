@@ -8,7 +8,6 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr class="text-center bg-info text-light">
-                        <th>Id.</th>
                         <th>Model</th>
                         <th>Opis</th>
                         <th>Edytuj</th>
@@ -17,9 +16,10 @@
                 </thead>
                 <tbody>
                     <tr v-for="device in devices" :key="device.id" class="text-center">
-                        <td>{{device.id}}</td>
                         <td>
-                            {{device.name}}
+                             <a :href="`/admin/naprawy/`+device.brand.category.slug+`/`+device.brand.slugi+`/`+device.slugii">
+                                {{device.name}}
+                            </a>
                         </td>
                         <td>{{device.description}}</td>
                         <td>

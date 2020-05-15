@@ -143,7 +143,7 @@ class SerwisantController extends Controller
     public function showSteps($repair)
     {
        
-        $steps = Step::with('imagesteps')->where('repair_id', $repair)->get();
+        $steps = Step::with('imagesteps', 'repairs')->where('repair_id', $repair)->get();
      
         return $steps;
     }
@@ -236,5 +236,13 @@ class SerwisantController extends Controller
         $image = $request->image;
 
         return $image;
+    }
+
+    public function endRepair($id){
+        $repair = Repair::findOrFail($id);
+
+        $repair->status = 1;
+
+        $repair->update();
     }
 }

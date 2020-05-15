@@ -214,8 +214,10 @@ class AdminController extends Controller
     public function showDevices($id)
     {
        
-        $devices = Device::where('brand_id', $id)->get();
+        $devices = Device::with('brand', 'brand.category')->where('brand_id', $id)->get();
         return $devices;
+     
+        return $steps;
         
     }
 

@@ -308,3 +308,10 @@ Route::post('api/serwisant/editRepair/{id}', [
     'roles' => ['Serwisant']
 ]);
 
+Route::post('api/serwisant/endRepair/{id}', [
+    'uses' => 'Serwisant\SerwisantController@endRepair',
+    'as' => 'serwisant.endRepair',
+    'middleware' => 'roles',
+    'roles' => ['Serwisant']
+]);
+

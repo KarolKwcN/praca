@@ -1,7 +1,7 @@
 <template>
 <div class="container">
-    <div class="new1">
-        <button type="button" @click.prevent="show" class="btn btn-success">Dodaj krok</button>
+    <div v-if="steps[0].repairs.status === 0" class="new1">
+        <button  type="button" @click.prevent="show" class="btn btn-primary">Dodaj krok</button>
     </div>
     <div class="py-5">
         <div class="container">
@@ -26,8 +26,8 @@
                     </div>
                     <span v-html="step.description"></span>
 
-                    <button @click="editModal(indx)" type="button" class="btn btn-info">Edytuj</button>
-                    <button @click="deleteModal(step.id)" type="button" class="btn btn-danger">Usuń</button>
+                    <button v-if="steps[0].repairs.status === 0" @click="editModal(indx)" type="button" class="btn btn-info">Edytuj</button>
+                    <button v-if="steps[0].repairs.status === 0" @click="deleteModal(step.id)" type="button" class="btn btn-danger">Usuń</button>
 
                 </div>
 
@@ -159,7 +159,7 @@ export default {
             description: '',
             uploadFiles: [],
             attachments: [],
-            steps: {},
+            steps: [{ repairs: []}],
             customToolbar: [
                 ["bold", "italic", "underline"],
                 [{

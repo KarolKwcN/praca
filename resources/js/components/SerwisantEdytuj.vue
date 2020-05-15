@@ -1,8 +1,9 @@
 <template>
 <div class="container">
-
-    <button type="button" @click.prevent="show" class="btn btn-success">Edytuj</button>
-
+    <span v-if=" repair[0].status === 0">
+    <button  type="button" @click.prevent="show" class="btn btn-primary">Edytuj</button>
+    <button  type="button" @click="endRepair" class="btn btn-success">Przekaż do zaakceptowania</button>
+    </span>
     <modal name="modal-edytuj-naprawe" height="auto" classes="demo-modal-class">
         <div id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -62,14 +63,15 @@ import Vue from "vue";
 import axios from "axios";
 export default {
     props: ['repairedit'],
-
+    
     data() {
         return {
             isHidden: false,
-            repair: [],
+            repair: [{ status: []}],
             name: "",
             description: "",
             image: "",
+           
             form: new FormData
 
         }
@@ -102,7 +104,7 @@ export default {
             axios.post("/api/serwisant/editRepair/" + this.repairedit, formData, config)
                 .then(function (response) {
                     currentObj.success = response.data.success;
-                   Fire.$emit("AfterLoadRepair");
+                    Fire.$emit("AfterLoadRepair");
                     self.hide("modal-edytuj-naprawe");
                     window.location.reload();
                 }).catch(error => this.errors.record(error.response.data));
@@ -117,11 +119,37 @@ export default {
         },
         loadRepair() {
             axios.get("/api/serwisant/showRepair/" + this.repairedit)
-                .then(response => (this.repair = response.data));
+                .then(response => (this.repair = response.data))
+                .catch((err) => {
+                    console.log(err.toJSON()); // Return error object
+                });
         },
         removeimage: function () {
             this.repair[0].image = "";
             this.isHidden = true;
+        },
+        endRepair: function () {
+            Swal.fire({
+                title: "Napewno chcesz zakończyć naprawę i przekazać do akceptacji ?",
+                text: "Nie będzie można tego cofnąć.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Tak!"
+            }).then(result => {
+                if (result.value) {
+                    axios
+                        .post("/api/serwisant/endRepair/" + this.repairedit)
+                        .then(() => {
+                            Swal.fire("Naprawa przekazana do akceptacji.");
+                            window.location.reload();
+                        })
+                        .catch(() => {
+                            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+                        });
+                }
+            });
         }
     },
     created() {

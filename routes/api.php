@@ -77,3 +77,5 @@ Route::delete('/serwisant/deleteStep/{id}','Serwisant\SerwisantController@delete
 Route::get('/serwisant/showRepair/{id}','Serwisant\SerwisantController@showRepair');
 
 Route::post('/serwisant/editRepair/{id}','Serwisant\SerwisantController@editRepair');
+
+Route::post('/serwisant/endRepair/{id}','Serwisant\SerwisantController@endRepair');
