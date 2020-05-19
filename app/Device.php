@@ -15,4 +15,9 @@ class Device extends Model
         return $this->belongsTo(Brand::class);
         
     }
+
+    public function repairs()
+    {
+        return $this->hasMany('App\Repair','device_id');
+    }
 }

@@ -2453,6 +2453,220 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdminRepairsDevice.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AdminRepairsDevice.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.common.js");
+/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vform__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['device'],
+  data: function data() {
+    return {
+      repairs: {}
+    };
+  },
+  methods: {
+    loadRepairs: function loadRepairs() {
+      var _this = this;
+
+      axios.get("/api/admin/showDeviceRepairs/" + this.device).then(function (response) {
+        return _this.repairs = response.data;
+      });
+    },
+    akceptuj: function akceptuj(id) {
+      Swal.fire({
+        title: "Napewno chcesz zaakceptować naprawę?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Tak!"
+      }).then(function (result) {
+        if (result.value) {
+          axios.put("/api/admin/akceptujnaprawe/" + id).then(function () {
+            Fire.$emit("AfterChange");
+          })["catch"](function () {
+            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+          });
+        }
+      });
+    },
+    odrzuc: function odrzuc(id) {
+      Swal.fire({
+        title: "Napewno chcesz odrzucić naprawę?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Tak!"
+      }).then(function (result) {
+        if (result.value) {
+          axios.put("/api/admin/odrzucnaprawe/" + id).then(function () {
+            Fire.$emit("AfterChange");
+          })["catch"](function () {
+            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+          });
+        }
+      });
+    },
+    przekazdorealziacji: function przekazdorealziacji(id) {
+      Swal.fire({
+        title: "Napewno chcesz przekazać naprawę do realziacji ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Tak!"
+      }).then(function (result) {
+        if (result.value) {
+          axios.put("/api/admin/przekazdorealziacji/" + id).then(function () {
+            Fire.$emit("AfterChange");
+          })["catch"](function () {
+            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+          });
+        }
+      });
+    },
+    przekazdorealziacjii: function przekazdorealziacjii(id) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Nie można zmienić statusu na "W realizacji", kiedy naprawa jest zaakceptowana.'
+      });
+    },
+    akceptujj: function akceptujj(id) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Nie można zaakceptować naprawy , kiedy naprawa jest w realizacji.'
+      });
+    },
+    deleterepair: function deleterepair(id) {
+      Swal.fire({
+        title: "Napewno chcesz usunąc naprawę ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Tak!"
+      }).then(function (result) {
+        if (result.value) {
+          axios["delete"]("/api/deleteRepair/" + id).then(function () {
+            Fire.$emit("AfterChange");
+          })["catch"](function () {
+            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+          });
+        }
+      });
+    }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    this.loadRepairs();
+    Fire.$on("AfterChange", function () {
+      _this2.loadRepairs();
+    });
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdminUser.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AdminUser.vue?vue&type=script&lang=js& ***!
@@ -2657,11 +2871,13 @@ __webpack_require__.r(__webpack_exports__);
         cancelButtonColor: "#d33",
         confirmButtonText: "Tak!"
       }).then(function (result) {
-        axios["delete"]("api/AddBan/" + id).then(function () {
-          Fire.$emit("AfterDelete");
-        })["catch"](function () {
-          Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
-        });
+        if (result.value) {
+          axios["delete"]("api/AddBan/" + id).then(function () {
+            Fire.$emit("AfterDelete");
+          })["catch"](function () {
+            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+          });
+        }
       });
     },
     deleteBan: function deleteBan(id) {
@@ -2864,6 +3080,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 //
 //
 //
+//
+//
 var Errors = /*#__PURE__*/function () {
   function Errors() {
     _classCallCheck(this, Errors);
@@ -2952,6 +3170,24 @@ var Errors = /*#__PURE__*/function () {
       axios.get("/api/serwisant/showRepairs/" + this.device).then(function (response) {
         return _this2.repairs = response.data;
       });
+    },
+    deleterepair: function deleterepair(id) {
+      Swal.fire({
+        title: "Napewno chcesz usunąc naprawę ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Tak!"
+      }).then(function (result) {
+        if (result.value) {
+          axios["delete"]("/api/deleteRepair/" + id).then(function () {
+            Fire.$emit("AfterChange");
+          })["catch"](function () {
+            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+          });
+        }
+      });
     }
   },
   created: function created() {
@@ -2993,6 +3229,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
 //
 //
 //
@@ -3277,6 +3514,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     loadSteps: function loadSteps() {
       var _this3 = this;
 
+      this.steps = [];
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/api/serwisant/showSteps/" + this.repair).then(function (response) {
         return _this3.steps = response.data;
       });
@@ -60206,6 +60444,269 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdminRepairsDevice.vue?vue&type=template&id=67f61098&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AdminRepairsDevice.vue?vue&type=template&id=67f61098& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-12" }, [
+        _c("table", { staticClass: "table table-bordered table-striped" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.repairs, function(rep) {
+              return _c("tr", { key: rep.id, staticClass: "text-center" }, [
+                _c("td", [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href:
+                          "/naprawa/" +
+                          rep.devices.brand.category.slug +
+                          "/" +
+                          rep.devices.brand.slugi +
+                          "/" +
+                          rep.devices.slugii +
+                          "/" +
+                          rep.id +
+                          "/" +
+                          rep.slugi_repair
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\r\n                                " +
+                          _vm._s(rep.name) +
+                          "\r\n                            "
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\r\n                            " +
+                      _vm._s(rep.users.email) +
+                      "\r\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  rep.status === 0
+                    ? _c("span", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-info",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("W realizacji")]
+                        )
+                      ])
+                    : _c("span", [
+                        rep.accept === 0
+                          ? _c("span", [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.przekazdorealziacji(rep.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-success",
+                                      attrs: { type: "button" }
+                                    },
+                                    [_vm._v("Zakończone")]
+                                  )
+                                ]
+                              )
+                            ])
+                          : _c("span", [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.przekazdorealziacjii(rep.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-success",
+                                      attrs: { type: "button" }
+                                    },
+                                    [_vm._v("Zakończone")]
+                                  )
+                                ]
+                              )
+                            ])
+                      ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  rep.accept === 0
+                    ? _c("span", [
+                        rep.status === 0
+                          ? _c("span", [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.akceptujj(rep.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-info",
+                                      attrs: { type: "button" }
+                                    },
+                                    [_vm._v("Nie")]
+                                  )
+                                ]
+                              )
+                            ])
+                          : _c("span", [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.akceptuj(rep.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-info",
+                                      attrs: { type: "button" }
+                                    },
+                                    [_vm._v("Nie")]
+                                  )
+                                ]
+                              )
+                            ])
+                      ])
+                    : _c("span", [
+                        _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                return _vm.odrzuc(rep.id)
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success",
+                                attrs: { type: "button" }
+                              },
+                              [_vm._v("Tak")]
+                            )
+                          ]
+                        )
+                      ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          return _vm.deleterepair(rep.id)
+                        }
+                      }
+                    },
+                    [_vm._m(1, true)]
+                  )
+                ])
+              ])
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-footer" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-12 d-flex justify-content-center" })
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticClass: "text-center bg-info text-light" }, [
+        _c("th", [_vm._v("Nazwa")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Serwisant")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Zaakceptowane")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Usuń")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-danger", attrs: { type: "button" } },
+      [_c("i", { staticClass: "far fa-trash-alt" })]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdminUser.vue?vue&type=template&id=60b73e42&":
 /*!************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AdminUser.vue?vue&type=template&id=60b73e42& ***!
@@ -60599,7 +61100,20 @@ var render = function() {
                     : _c("span", [_vm._v("Tak")])
                 ]),
                 _vm._v(" "),
-                _vm._m(1, true)
+                _c("td", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          return _vm.deleterepair(repair.id)
+                        }
+                      }
+                    },
+                    [_vm._m(1, true)]
+                  )
+                ])
               ])
             }),
             0
@@ -60894,13 +61408,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        { staticClass: "btn btn-danger", attrs: { type: "button" } },
-        [_c("i", { staticClass: "far fa-trash-alt" })]
-      )
-    ])
+    return _c(
+      "button",
+      { staticClass: "btn btn-danger", attrs: { type: "button" } },
+      [_c("i", { staticClass: "far fa-trash-alt" })]
+    )
   }
 ]
 render._withStripped = true
@@ -60928,7 +61440,7 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
-      _vm.steps[0].repairs.status === 0
+      !_vm.steps.length || _vm.steps[0].repairs.status === 0
         ? _c("div", { staticClass: "new1" }, [
             _c(
               "button",
@@ -79837,6 +80349,7 @@ Vue.component("adminuser-component", __webpack_require__(/*! ./components/AdminU
 Vue.component("adminrepairs-component", __webpack_require__(/*! ./components/AdminRepairs.vue */ "./resources/js/components/AdminRepairs.vue")["default"]);
 Vue.component("adminmarka-component", __webpack_require__(/*! ./components/AdminMarka.vue */ "./resources/js/components/AdminMarka.vue")["default"]);
 Vue.component("admindevice-component", __webpack_require__(/*! ./components/AdminDevice.vue */ "./resources/js/components/AdminDevice.vue")["default"]);
+Vue.component("adminrepairsdevice-component", __webpack_require__(/*! ./components/AdminRepairsDevice.vue */ "./resources/js/components/AdminRepairsDevice.vue")["default"]);
 Vue.component("serwisantcreaterepair-component", __webpack_require__(/*! ./components/SerwisantCreateRepair.vue */ "./resources/js/components/SerwisantCreateRepair.vue")["default"]);
 Vue.component("serwisantedytuj-component", __webpack_require__(/*! ./components/SerwisantEdytuj.vue */ "./resources/js/components/SerwisantEdytuj.vue")["default"]);
 Vue.component("serwisantcreatestep-component", __webpack_require__(/*! ./components/SerwisantCreateSteps.vue */ "./resources/js/components/SerwisantCreateSteps.vue")["default"]);
@@ -80104,6 +80617,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminRepairs_vue_vue_type_template_id_123860a2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminRepairs_vue_vue_type_template_id_123860a2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/AdminRepairsDevice.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/AdminRepairsDevice.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AdminRepairsDevice_vue_vue_type_template_id_67f61098___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AdminRepairsDevice.vue?vue&type=template&id=67f61098& */ "./resources/js/components/AdminRepairsDevice.vue?vue&type=template&id=67f61098&");
+/* harmony import */ var _AdminRepairsDevice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AdminRepairsDevice.vue?vue&type=script&lang=js& */ "./resources/js/components/AdminRepairsDevice.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AdminRepairsDevice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AdminRepairsDevice_vue_vue_type_template_id_67f61098___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AdminRepairsDevice_vue_vue_type_template_id_67f61098___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/AdminRepairsDevice.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/AdminRepairsDevice.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/AdminRepairsDevice.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminRepairsDevice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./AdminRepairsDevice.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdminRepairsDevice.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminRepairsDevice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/AdminRepairsDevice.vue?vue&type=template&id=67f61098&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/AdminRepairsDevice.vue?vue&type=template&id=67f61098& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminRepairsDevice_vue_vue_type_template_id_67f61098___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./AdminRepairsDevice.vue?vue&type=template&id=67f61098& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AdminRepairsDevice.vue?vue&type=template&id=67f61098&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminRepairsDevice_vue_vue_type_template_id_67f61098___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminRepairsDevice_vue_vue_type_template_id_67f61098___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

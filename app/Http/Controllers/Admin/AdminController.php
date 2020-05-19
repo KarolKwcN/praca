@@ -9,6 +9,7 @@ use App\Role;
 use App\Category;
 use App\Brand;
 use App\Device;
+use App\Repair;
 use DB;
 
 class AdminController extends Controller
@@ -217,7 +218,7 @@ class AdminController extends Controller
         $devices = Device::with('brand', 'brand.category')->where('brand_id', $id)->get();
         return $devices;
      
-        return $steps;
+        
         
     }
 
@@ -254,5 +255,48 @@ class AdminController extends Controller
         $device->save();
 
     return ['message' => 'Model dodany'];
+    }
+
+    public function getAdminRepiarsDevice($slug,$slugi,$slugii){
+
+        $device = Device::where('slugii', $slugii)->firstOrFail();
+        $brand = Brand::where('slugi', $slugi)->firstOrFail();
+        $category = Category::where('slug',$slug)->firstOrFail();
+   
+    return view('admin.adminDeviceRepair', compact('brand','category','device'));
+    }
+
+    public function showDeviceRepairs($id)
+    {
+        $repairs = Repair::with('users', 'devices', 'devices.brand', 'devices.brand.category')->where('device_id', $id)->get();
+        return $repairs;
+    }
+
+    public function akceptujnaprawe(Request $request, $id)
+    {
+        $repair = Repair::findOrFail($id);
+            $repair->accept = 1;
+            $repair->update();
+    }
+    
+    public function odrzucnaprawe($id)
+    {
+        $repair = Repair::findOrFail($id);
+        $repair->accept = 0;
+        $repair->update();
+    }
+
+    public function przekazdorealziacji($id)
+    {
+        $repair = Repair::findOrFail($id);
+        $repair->status = 0;
+        $repair->update();
+    }
+
+    public function deleteRepair($id)
+    {
+        $repair = Repair::findOrFail($id);
+        $repair->steps()->delete();
+        $repair->delete();
     }
 }

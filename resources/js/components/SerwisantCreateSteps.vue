@@ -1,8 +1,9 @@
 <template>
 <div class="container">
-    <div v-if="steps[0].repairs.status === 0" class="new1">
+    <div v-if="!steps.length || steps[0].repairs.status === 0" class="new1">
         <button  type="button" @click.prevent="show" class="btn btn-primary">Dodaj krok</button>
     </div>
+     
     <div class="py-5">
         <div class="container">
             <div class="row" v-for="(step, indx ) in steps" :key="indx" :index="indx">
@@ -302,11 +303,14 @@ export default {
             this.$modal.hide('modal-step');
         },
         loadSteps() {
+            this.steps = [];
             axios.get("/api/serwisant/showSteps/" + this.repair)
                 .then(response => (this.steps = response.data));
+                
         }
     },
     created() {
+        
         this.loadSteps();
         Fire.$on("AfterChange", () => {
             this.loadSteps();

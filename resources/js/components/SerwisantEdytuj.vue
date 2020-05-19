@@ -153,7 +153,7 @@ export default {
         }
     },
     created() {
-
+       
         this.loadRepair();
         Fire.$on("AfterLoadRepair", () => {
             this.loadRepair();

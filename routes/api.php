@@ -62,6 +62,16 @@ Route::put('/admin/updateDevice/{id}','Admin\AdminController@updateDevice');
 
 Route::post('/admin/addDevice/{id}','Admin\AdminController@addDevice');
 
+Route::get('/admin/showDeviceRepairs/{id}','Admin\AdminController@showDeviceRepairs');
+
+Route::put('/admin/akceptujnaprawe/{id}','Admin\AdminController@akceptujnaprawe');
+
+Route::put('/admin/odrzucnaprawe/{id}','Admin\AdminController@odrzucnaprawe');
+
+Route::put('/admin/przekazdorealziacji/{id}','Admin\AdminController@przekazdorealziacji');
+
+Route::delete('/deleteRepair/{id}','Admin\AdminController@deleteRepair');
+
 Route::post('/serwisant/addRepair/{id}','Serwisant\SerwisantController@addRepair');
 
 Route::get('/serwisant/showRepairs/{id}','Serwisant\SerwisantController@showRepairs');
@@ -79,3 +89,5 @@ Route::get('/serwisant/showRepair/{id}','Serwisant\SerwisantController@showRepai
 Route::post('/serwisant/editRepair/{id}','Serwisant\SerwisantController@editRepair');
 
 Route::post('/serwisant/endRepair/{id}','Serwisant\SerwisantController@endRepair');
+
+

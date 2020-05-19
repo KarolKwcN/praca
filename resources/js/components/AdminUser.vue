@@ -211,6 +211,7 @@ export default {
         cancelButtonColor: "#d33",
         confirmButtonText: "Tak!"
       }).then(result => {
+        if (result.value) {
         axios
           .delete("api/AddBan/" + id)
           .then(() => {
@@ -219,6 +220,7 @@ export default {
           .catch(() => {
             Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
           });
+        }
       });
     },
 

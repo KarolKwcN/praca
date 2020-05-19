@@ -168,6 +168,13 @@ Route::get('/api/admin/categoryName/{id}', [
     'roles' => ['Admin']
 ]);
 
+Route::get('/admin/naprawy/{slug}/{slugi}/{slugii}', [
+    'uses' => 'Admin\AdminController@getAdminRepiarsDevice',
+    'as' => 'admin.repairs.devicerepairs',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
 Route::get('/admin/naprawy/{slug}/{slugi}', [
     'uses' => 'Admin\AdminController@getAdminNaprawyDevicePage',
     'as' => 'admin.repairs.device',
@@ -203,6 +210,43 @@ Route::post('api/admin/addDevice/{id}', [
     'middleware' => 'roles',
     'roles' => ['Admin']
 ]);
+Route::get('api/admin/showDeviceRepairs/{id}', [
+    'uses' => 'Admin\AdminController@showDeviceRepairs',
+    'as' => 'admin.repairs.device',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::put('api/admin/akceptujnaprawe/{id}', [
+    'uses' => 'Admin\AdminController@akceptujnaprawe',
+    'as' => 'admin.accept.repair',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::put('api/admin/odrzucnaprawe/{id}', [
+    'uses' => 'Admin\AdminController@odrzucnaprawe',
+    'as' => 'admin.unaccept.repair',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::put('api/admin/przekazdorealziacji/{id}', [
+    'uses' => 'Admin\AdminController@przekazdorealziacji',
+    'as' => 'admin.status.realizacja',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+
+Route::delete('api/deleteRepair/{id}', [
+    'uses' => 'Admin\AdminController@deleteRepair',
+    'as' => 'admin.delete.repair',
+    'middleware' => 'roles',
+    'roles' => ['Admin', 'Serwisant']
+]);
+
+
 
 //////////////////////////////////////////SERWISANT
 
@@ -313,5 +357,10 @@ Route::post('api/serwisant/endRepair/{id}', [
     'as' => 'serwisant.endRepair',
     'middleware' => 'roles',
     'roles' => ['Serwisant']
+]);
+
+Route::get('naprawa/{slug}/{slugi}/{slugii}/{id}/{slugi_name}', [
+    'uses' => 'NaprawaController@getNaprawa',
+    'as' => 'naprawa',
 ]);
 

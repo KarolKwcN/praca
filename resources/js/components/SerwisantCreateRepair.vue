@@ -38,9 +38,11 @@
                             
                         </td>
                         <td>
+                          <a href="#" @click="deleterepair(repair.id)">
                             <button type="button" class="btn btn-danger">
                                 <i class="far fa-trash-alt"></i>
                             </button>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -192,9 +194,31 @@ export default {
         loadRepairs() {
             axios.get("/api/serwisant/showRepairs/" + this.device)
                 .then(response => (this.repairs = response.data));
+        },
+         deleterepair(id){
+            Swal.fire({
+                title: "Napewno chcesz usunąc naprawę ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Tak!"
+            }).then(result => {
+                if (result.value) {
+                    axios
+                        .delete("/api/deleteRepair/" + id)
+                        .then(() => {
+                            Fire.$emit("AfterChange");
+                        })
+                        .catch(() => {
+                            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+                        });
+                }
+            });
         }
     },
     created() {
+        
         this.loadRepairs();
         Fire.$on("AfterChange", () => {
             this.loadRepairs();

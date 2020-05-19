@@ -23,6 +23,6 @@ class Repair extends Model
 
     public function devices()
     {
-        return $this->hasOne(Device::class);
+        return $this->belongsTo('App\Device', 'device_id');
     }
 }

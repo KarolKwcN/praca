@@ -26,6 +26,9 @@ Vue.component(
     require("./components/AdminDevice.vue").default
 );
 
+Vue.component("adminrepairsdevice-component", require("./components/AdminRepairsDevice.vue").default);
+
+
 Vue.component("serwisantcreaterepair-component", require("./components/SerwisantCreateRepair.vue").default);
 Vue.component("serwisantedytuj-component", require("./components/SerwisantEdytuj.vue").default);
 
