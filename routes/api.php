@@ -70,6 +70,8 @@ Route::put('/admin/odrzucnaprawe/{id}','Admin\AdminController@odrzucnaprawe');
 
 Route::put('/admin/przekazdorealziacji/{id}','Admin\AdminController@przekazdorealziacji');
 
+Route::get('/admin/loadOneCategory/{id}','Admin\AdminController@loadOneCategory');
+
 Route::delete('/deleteRepair/{id}','Admin\AdminController@deleteRepair');
 
 Route::post('/serwisant/addRepair/{id}','Serwisant\SerwisantController@addRepair');

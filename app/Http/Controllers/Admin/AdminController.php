@@ -110,12 +110,15 @@ class AdminController extends Controller
 
     public function addCategory(Request $request)
     {
+      
+        $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('images/kategorie/'), $imageName);
         $category = New Category;
         $category->name = $request->name;
         $category->slug = str_slug($request->name);
+        $category->image = "/images/kategorie/$imageName";
         $category->save();
 
-    return ['message' => 'Kategoria dodana'];
     }
 
     public function showCategory()
@@ -123,6 +126,13 @@ class AdminController extends Controller
 
         $categories = Category::paginate(5);
         return $categories;
+    }
+
+    public function loadOneCategory($id)
+    {
+        $category = Category::findOrFail($id);
+
+        return $category;
     }
 
     public function deleteCategory($id)

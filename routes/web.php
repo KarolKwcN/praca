@@ -98,7 +98,7 @@ Route::get('/admin/naprawy', [
 
 Route::post('api/admin/addCategory', [
     'uses' => 'Admin\AdminController@addCategory',
-    'as' => 'admin.repairs',
+    'as' => 'admin.addcategory',
     'middleware' => 'roles',
     'roles' => ['Admin']
 ]);
@@ -246,7 +246,12 @@ Route::delete('api/deleteRepair/{id}', [
     'roles' => ['Admin', 'Serwisant']
 ]);
 
-
+Route::get('api/admin/loadOneCategory/{id}', [
+    'uses' => 'Admin\AdminController@loadOneCategory',
+    'as' => 'admin.loadOneCategory',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
 
 //////////////////////////////////////////SERWISANT
 
@@ -364,3 +369,14 @@ Route::get('naprawa/{slug}/{slugi}/{slugii}/{id}/{slugi_name}', [
     'as' => 'naprawa',
 ]);
 
+////////////////////////////////////////////////////////
+
+Route::get('/naprawy', function(){
+    $categories = DB::table('categories')
+        ->join('brands', 'categories.id', '=', 'brands.category_id')
+        ->join('devices', 'brands.id', '=', 'devices.brand_id')
+        ->join('repairs', 'devices.id', '=' , 'repairs.device_id')
+        ->where('repairs.accept', '=',1)
+        ->select('categories.*')->get();
+    return view('naprawa.naprawy_kategorie', ['categories' => $categories]);
+});
