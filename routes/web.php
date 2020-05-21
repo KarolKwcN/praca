@@ -117,7 +117,7 @@ Route::delete('api/admin/deleteCategory/{id}', [
     'roles' => ['Admin']
 ]);
 
-Route::put('api/admin/updateCategory/{id}', [
+Route::post('api/admin/updateCategory/{id}', [
     'uses' => 'Admin\AdminController@updateCategory',
     'as' => 'admin.repairs',
     'middleware' => 'roles',
@@ -246,12 +246,7 @@ Route::delete('api/deleteRepair/{id}', [
     'roles' => ['Admin', 'Serwisant']
 ]);
 
-Route::get('api/admin/loadOneCategory/{id}', [
-    'uses' => 'Admin\AdminController@loadOneCategory',
-    'as' => 'admin.loadOneCategory',
-    'middleware' => 'roles',
-    'roles' => ['Admin']
-]);
+
 
 //////////////////////////////////////////SERWISANT
 

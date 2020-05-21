@@ -42,7 +42,7 @@ Route::get('/admin/showCategory','Admin\AdminController@showCategory');
 
 Route::delete('/admin/deleteCategory/{id}','Admin\AdminController@deleteCategory');
 
-Route::put('/admin/updateCategory/{id}','Admin\AdminController@updateCategory');
+Route::post('/admin/updateCategory/{id}','Admin\AdminController@updateCategory');
 
 Route::get('/admin/showBrands/{id}','Admin\AdminController@showBrands');
 
@@ -69,8 +69,6 @@ Route::put('/admin/akceptujnaprawe/{id}','Admin\AdminController@akceptujnaprawe'
 Route::put('/admin/odrzucnaprawe/{id}','Admin\AdminController@odrzucnaprawe');
 
 Route::put('/admin/przekazdorealziacji/{id}','Admin\AdminController@przekazdorealziacji');
-
-Route::get('/admin/loadOneCategory/{id}','Admin\AdminController@loadOneCategory');
 
 Route::delete('/deleteRepair/{id}','Admin\AdminController@deleteRepair');
 

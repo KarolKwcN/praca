@@ -123,17 +123,11 @@ class AdminController extends Controller
 
     public function showCategory()
     {
-
+        
         $categories = Category::paginate(5);
         return $categories;
     }
 
-    public function loadOneCategory($id)
-    {
-        $category = Category::findOrFail($id);
-
-        return $category;
-    }
 
     public function deleteCategory($id)
     {
@@ -149,12 +143,27 @@ class AdminController extends Controller
 
     public function updateCategory(Request $request, $id)
     {
+        
+        $category = Category::findOrFail($id);
 
-            $category = Category::findOrFail($id);
-            
-            $category->name = $request->name;
-            $category->slug = str_slug($request->name);
-            $category->update();
+        $category->name = $request->name;
+        $category->slug = str_slug($request->name);
+
+        $image = $request->file('image');
+
+          if(isset($image)){
+            $imageName = rand().time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('images/kategorie/'), $imageName);
+            $category->image = "/images/kategorie/$imageName";
+        }
+
+        $category->update();
+        
+
+        
+
+       
+
     }
 
     public function getAdminNaprawyMarkaPage($slug)

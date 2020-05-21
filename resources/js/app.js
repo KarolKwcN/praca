@@ -47,10 +47,6 @@ Vue.component(
     require("./components/AdminCreateCategory.vue").default
 );
 
-Vue.component(
-    "admineditcategory-component",
-    require("./components/AdminEditCategory.vue").default
-);
 
 Vue.component("pagination", require("laravel-vue-pagination"));
 import Vuelidate from 'vuelidate'
