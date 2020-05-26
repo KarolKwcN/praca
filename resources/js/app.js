@@ -43,8 +43,8 @@ Vue.component(
 );
 
 Vue.component(
-    "admincreatecategory-component",
-    require("./components/AdminCreateCategory.vue").default
+    "admincategory-component",
+    require("./components/AdminCategory.vue").default
 );
 
 

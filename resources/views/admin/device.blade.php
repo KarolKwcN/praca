@@ -23,10 +23,12 @@
             <div class="float-left">
                 <a class="text-reset" href="{{ route('admin.repairs') }}">Kategorie </a>>
                 <a class="text-reset"
-                    href="{{ route('admin.repairs.marka',$category->slug) }}">{{ $category->name }} </a>>
+                    href="{{ route('admin.repairs.marka',$category->slug) }}">{{ $category->name }}
+                </a>>
                 <a class="text-reset"
                     href="{{ route('admin.repairs.device',[$category->slug, $brand->slugi]) }}">{{ $brand->name }}</a>
             </div>
+
             <br />
             <hr class="bg-info" />
             <admindevice-component :brand="{{ $brand->id }}"></admindevice-component>

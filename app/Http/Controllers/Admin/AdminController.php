@@ -176,7 +176,7 @@ class AdminController extends Controller
     public function showBrands($id)
     {
        
-        $brands = Brand::where('category_id', $id)->get();
+        $brands = Brand::where('category_id', $id)->paginate(5);
         return $brands;
         
     }
@@ -196,24 +196,35 @@ class AdminController extends Controller
     public function updateBrand(Request $request, $id)
     {
 
-            $brand = Brand::findOrFail($id);
-            
-            $brand->name = $request->name;
-            $brand->description = $request->description;
-            $brand->slugi = str_slug($request->name);
-            $brand->update();
+           $brand = Brand::findOrFail($id);
+
+        $brand->name = $request->name;
+        $brand->slugi = str_slug($request->name);
+        $brand->description = $request->description;
+
+        $image = $request->file('image');
+
+          if(isset($image)){
+            $imageName = rand().time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('images/marka/'), $imageName);
+            $brand->image = "/images/marka/$imageName";
+        }
+
+        $brand->update();
     }
 
     public function addBrand(Request $request, $id)
     {
+        $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('images/marka/'), $imageName);
         $brand = New Brand;
         $brand->name = $request->name;
         $brand->description = $request->description;
         $brand->slugi = str_slug($request->name);
+        $brand->image = "/images/marka/$imageName";
         $brand->category_id = $id;
         $brand->save();
 
-    return ['message' => 'Marka dodana'];
     }
 
     public function categoryName($id)
@@ -234,7 +245,7 @@ class AdminController extends Controller
     public function showDevices($id)
     {
        
-        $devices = Device::with('brand', 'brand.category')->where('brand_id', $id)->get();
+        $devices = Device::with('brand', 'brand.category')->where('brand_id', $id)->paginate(5);
         return $devices;
      
         
@@ -257,23 +268,33 @@ class AdminController extends Controller
     {
 
             $device = Device::findOrFail($id);
-            
-            $device->name = $request->name;
-            $device->description = $request->description;
-            $device->slugii = str_slug($request->name);
-            $device->update();
+
+        $device->name = $request->name;
+        $device->slugii = str_slug($request->name);
+        $device->description = $request->description;
+
+        $image = $request->file('image');
+
+          if(isset($image)){
+            $imageName = rand().time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('images/urzadzenie/'), $imageName);
+            $device->image = "/images/urzadzenie/$imageName";
+        }
+
+        $device->update();
     }
 
     public function addDevice(Request $request, $id)
     {
+        $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('images/urzadzenie/'), $imageName);
         $device = New Device;
         $device->name = $request->name;
         $device->description = $request->description;
         $device->slugii = str_slug($request->name);
+        $device->image = "/images/urzadzenie/$imageName";
         $device->brand_id = $id;
         $device->save();
-
-    return ['message' => 'Model dodany'];
     }
 
     public function getAdminRepiarsDevice($slug,$slugi,$slugii){

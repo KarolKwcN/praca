@@ -48,7 +48,7 @@ Route::get('/admin/showBrands/{id}','Admin\AdminController@showBrands');
 
 Route::delete('/admin/deleteBrand/{id}','Admin\AdminController@deleteBrand');
 
-Route::put('/admin/updateBrand/{id}','Admin\AdminController@updateBrand');
+Route::post('/admin/updateBrand/{id}','Admin\AdminController@updateBrand');
 
 Route::post('/admin/addBrand/{id}','Admin\AdminController@addBrand');
 
@@ -58,7 +58,7 @@ Route::get('/admin/showDevices/{id}','Admin\AdminController@showDevices');
 
 Route::delete('/admin/deleteDevice/{id}','Admin\AdminController@deleteDevice');
 
-Route::put('/admin/updateDevice/{id}','Admin\AdminController@updateDevice');
+Route::post('/admin/updateDevice/{id}','Admin\AdminController@updateDevice');
 
 Route::post('/admin/addDevice/{id}','Admin\AdminController@addDevice');
 

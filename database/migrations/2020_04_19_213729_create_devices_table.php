@@ -17,6 +17,7 @@ class CreateDevicesTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->mediumText('description');
+            $table->mediumText('image');
             $table->string('slugii');
             $table->integer('brand_id');
             $table->timestamps();

@@ -25,7 +25,7 @@
             </div>
             <br />
             <hr class="bg-info" />
-            <admincreatecategory-component></admincreatecategory-component>
+            <admincategory-component></admincategory-component>
         </div>
     </div>
 

@@ -147,7 +147,7 @@ Route::delete('api/admin/deleteBrand/{id}', [
     'roles' => ['Admin']
 ]);
 
-Route::put('api/admin/updateBrand/{id}', [
+Route::post('api/admin/updateBrand/{id}', [
     'uses' => 'Admin\AdminController@updateBrand',
     'as' => 'admin.repairs.marka',
     'middleware' => 'roles',
@@ -197,7 +197,7 @@ Route::delete('api/admin/deleteDevice/{id}', [
     'roles' => ['Admin']
 ]);
 
-Route::put('api/admin/updateDevice/{id}', [
+Route::post('api/admin/updateDevice/{id}', [
     'uses' => 'Admin\AdminController@updateDevice',
     'as' => 'admin.repairs.device',
     'middleware' => 'roles',
