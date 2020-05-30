@@ -4100,12 +4100,76 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['repair'],
+  props: ["repair"],
   name: "MultipleUpload",
   components: {
     VueEditor: vue2_editor__WEBPACK_IMPORTED_MODULE_3__["VueEditor"],
@@ -4116,8 +4180,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   data: function data() {
     return {
       update_step: [],
-      name: '',
-      description: '',
+      name: "",
+      description: "",
       uploadFiles: [],
       attachments: [],
       steps: [{
@@ -4163,18 +4227,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
-        this.form.append('pics[]', this.attachments[i]);
+        this.form.append("pics[]", this.attachments[i]);
       }
 
-      this.form.append('name', this.name);
-      this.form.append('description', this.description);
+      this.form.append("name", this.name);
+      this.form.append("description", this.description);
       var config = {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          "Content-Type": "multipart/form-data"
         }
       };
-      document.getElementById('upload-file').value = [];
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/serwisant/naprawa/step/' + this.repair, this.form, config).then(function (response) {
+      document.getElementById("upload-file").value = [];
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/serwisant/naprawa/step/" + this.repair, this.form, config).then(function (response) {
         //success
         console.log(response);
         Fire.$emit("AfterChange");
@@ -4190,23 +4254,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this2 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
-        this.form.append('pics[]', this.attachments[i]);
+        this.form.append("pics[]", this.attachments[i]);
       }
 
       for (var _i = 0; _i < this.update_step.imagesteps.length; _i++) {
-        this.form.append('picss[]', this.update_step.imagesteps[_i].image);
+        this.form.append("picss[]", this.update_step.imagesteps[_i].image);
       }
 
-      this.form.append('id', this.update_step.id);
-      this.form.append('name', this.update_step.name);
-      this.form.append('description', this.update_step.description);
+      this.form.append("id", this.update_step.id);
+      this.form.append("name", this.update_step.name);
+      this.form.append("description", this.update_step.description);
       var config = {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          "Content-Type": "multipart/form-data"
         }
       };
-      document.getElementById('upload-file').value = [];
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/serwisant/updatestep/' + this.update_step.id, this.form, config).then(function (response) {
+      document.getElementById("upload-file").value = [];
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/serwisant/updatestep/" + this.update_step.id, this.form, config).then(function (response) {
         //success
         console.log(response);
         Fire.$emit("AfterChange");
@@ -4241,14 +4305,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
     },
     editModal: function editModal(indx) {
-      this.$modal.show('modal-update');
+      this.$modal.show("modal-update");
       this.update_step = this.steps[indx];
     },
     show: function show() {
-      this.$modal.show('modal-step');
+      this.$modal.show("modal-step");
     },
     hide: function hide() {
-      this.$modal.hide('modal-step');
+      this.$modal.hide("modal-step");
     },
     loadSteps: function loadSteps() {
       var _this3 = this;
@@ -4266,9 +4330,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     Fire.$on("AfterChange", function () {
       _this4.loadSteps();
 
-      _this4.form["delete"]('picss[]');
+      _this4.form["delete"]("picss[]");
 
-      _this4.form["delete"]('pics[]');
+      _this4.form["delete"]("pics[]");
     });
   }
 });
@@ -11018,7 +11082,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.images {\r\n    max-width: 100%;\r\n    height: auto;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    border-radius: 20px;\n}\n.new1 {\r\n    padding-left: 30px;\n}\n.new2 {\r\n    border-radius: 1%;\n}\r\n", ""]);
+exports.push([module.i, "\n.images {\r\n  max-width: 100%;\r\n  height: auto;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  border-radius: 20px;\n}\n.new1 {\r\n  padding-left: 30px;\n}\n.new2 {\r\n  border-radius: 1%;\n}\r\n", ""]);
 
 // exports
 
@@ -63320,7 +63384,7 @@ var render = function() {
                   _c(
                     "div",
                     {
-                      staticClass: " pl-md-4 col-lg-6 col-8 order-2 order-lg-1"
+                      staticClass: "pl-md-4 col-lg-6 col-8 order-2 order-lg-1"
                     },
                     [
                       _c("h2", [_vm._v("Krok " + _vm._s(indx + 1))]),
@@ -63368,7 +63432,7 @@ var render = function() {
                     "div",
                     {
                       staticClass:
-                        "pr-md-5 p-3  flex-column justify-content-center col-lg-6 order-1 order-lg-3"
+                        "pr-md-5 p-3 flex-column justify-content-center col-lg-6 order-1 order-lg-3"
                     },
                     [
                       _c("div", { staticClass: "text-center" }, [
@@ -63525,12 +63589,12 @@ var render = function() {
                                 [
                                   _c(
                                     "div",
-                                    { staticClass: "input-group  pb-2" },
+                                    { staticClass: "input-group pb-2" },
                                     [
                                       _vm._v(
-                                        "\r\n                                        " +
+                                        "\n                    " +
                                           _vm._s(file.name) +
-                                          "\r\n                                        "
+                                          "\n                    "
                                       ),
                                       file.invalidMessage
                                         ? _c("span", [
@@ -63543,7 +63607,7 @@ var render = function() {
                                       _vm._v(" "),
                                       _c(
                                         "div",
-                                        { staticClass: "form-group-append " },
+                                        { staticClass: "form-group-append" },
                                         [
                                           _c(
                                             "button",
@@ -63712,7 +63776,7 @@ var render = function() {
                                   [
                                     _c(
                                       "div",
-                                      { staticClass: "input-group  pb-3" },
+                                      { staticClass: "input-group pb-3" },
                                       [
                                         _c("img", {
                                           staticClass:
@@ -63734,7 +63798,7 @@ var render = function() {
                                         _vm._v(" "),
                                         _c(
                                           "div",
-                                          { staticClass: "form-group-append " },
+                                          { staticClass: "form-group-append" },
                                           [
                                             _c(
                                               "button",
@@ -63778,12 +63842,12 @@ var render = function() {
                                   [
                                     _c(
                                       "div",
-                                      { staticClass: "input-group  pb-2" },
+                                      { staticClass: "input-group pb-2" },
                                       [
                                         _vm._v(
-                                          "\r\n                                        " +
+                                          "\n                    " +
                                             _vm._s(file.name) +
-                                            "\r\n                                        "
+                                            "\n                    "
                                         ),
                                         file.invalidMessage
                                           ? _c("span", [
@@ -63796,7 +63860,7 @@ var render = function() {
                                         _vm._v(" "),
                                         _c(
                                           "div",
-                                          { staticClass: "form-group-append " },
+                                          { staticClass: "form-group-append" },
                                           [
                                             _c(
                                               "button",

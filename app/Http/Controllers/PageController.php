@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\User;
+use App\Role;
+use App\Category;
+use App\Brand;
+use App\Device;
+use App\Repair;
+use DB;
+
+class PageController extends Controller
+{
+    public function getMarka($slug){
+        $category = Category::where('slug', $slug)->first();
+    $brand = DB::table('brands')
+        ->join('devices', 'brands.id', '=', 'devices.brand_id')
+        ->join('repairs', 'devices.id', '=' , 'repairs.device_id')
+        ->where('repairs.accept', '=',1)
+        ->select('brands.*')
+        ->where('category_id', $category->id)
+        ->get();
+    
+        $brands = $brand->unique();
+
+    return view('naprawa.naprawa_marka', compact('brands','category'));
+    }
+
+    public function getDevice($slug, $slugi){
+        $category = Category::where('slug', $slug)->first();
+        $brand = Brand::where('slugi', $slugi)->first();
+
+        $device = DB::table('devices')
+        ->join('repairs', 'devices.id', '=', 'repairs.device_id')
+        ->where('repairs.accept', '=', 1)
+        ->select('devices.*')
+        ->where('brand_id', $brand->id)
+        ->get();
+
+        $devices= $device->unique();
+        return view('naprawa.naprawa_urzadzenie', compact('category','brand', 'devices'));
+    }
+
+    public function getRepairs($slug, $slugi,$slugii){
+        $category = Category::where('slug', $slug)->first();
+        $brand = Brand::where('slugi', $slugi)->first();
+        $device = Device::where('slugii', $slugii)->first();
+
+        $repairs = Repair::where('device_id', $device->id)->where('accept', 1)->get();
+
+        return view('naprawa.naprawy', compact('category','brand','device', 'repairs'));
+
+    }
+}

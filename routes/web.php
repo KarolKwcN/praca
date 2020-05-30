@@ -367,11 +367,29 @@ Route::get('naprawa/{slug}/{slugi}/{slugii}/{id}/{slugi_name}', [
 ////////////////////////////////////////////////////////
 
 Route::get('/naprawy', function(){
-    $categories = DB::table('categories')
+    $categorie = DB::table('categories')
         ->join('brands', 'categories.id', '=', 'brands.category_id')
         ->join('devices', 'brands.id', '=', 'devices.brand_id')
         ->join('repairs', 'devices.id', '=' , 'repairs.device_id')
         ->where('repairs.accept', '=',1)
         ->select('categories.*')->get();
+
+        $categories = $categorie->unique();
+
     return view('naprawa.naprawy_kategorie', ['categories' => $categories]);
 });
+
+Route::get('/naprawy/{slug}',[
+    'uses' => 'PageController@getMarka',
+    'as' => 'naprawa.marka',
+]);
+
+Route::get('/naprawy/{slug}/{slugi}',[
+    'uses' => 'PageController@getDevice',
+    'as' => 'naprawa.device',
+]);
+
+Route::get('/naprawy/{slug}/{slugi}/{slugii}',[
+    'uses' => 'PageController@getRepairs',
+    'as' => 'naprawa.repairs',
+]);
