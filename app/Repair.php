@@ -25,4 +25,9 @@ class Repair extends Model
     {
         return $this->belongsTo('App\Device', 'device_id');
     }
+
+      public function comment()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

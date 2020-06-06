@@ -90,4 +90,14 @@ Route::post('/serwisant/editRepair/{id}','Serwisant\SerwisantController@editRepa
 
 Route::post('/serwisant/endRepair/{id}','Serwisant\SerwisantController@endRepair');
 
+Route::get('/showComments/{id}','PageController@showComments');
+
+Route::post('/addComment/{id}','PageController@addComment');
+
+Route::delete('/deleteComment/{id}','PageController@deleteComment');
+
+Route::post('/updateComment/{id}','PageController@updateComment');
+
+
+
 

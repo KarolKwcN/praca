@@ -393,3 +393,13 @@ Route::get('/naprawy/{slug}/{slugi}/{slugii}',[
     'uses' => 'PageController@getRepairs',
     'as' => 'naprawa.repairs',
 ]);
+
+Route::post('api/addComment/{id}',[
+    'uses' => 'PageController@addComment',
+    'as' => 'addComment',
+]);
+
+
+
+
+
