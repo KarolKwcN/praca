@@ -98,6 +98,10 @@ Route::delete('/deleteComment/{id}','PageController@deleteComment');
 
 Route::post('/updateComment/{id}','PageController@updateComment');
 
+Route::get('/getMessages/{id}','MessageController@getMessagesID');
+
+
+
 
 
 

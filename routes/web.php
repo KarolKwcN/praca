@@ -399,6 +399,22 @@ Route::post('api/addComment/{id}',[
     'as' => 'addComment',
 ]);
 
+Route::get('/wiadomosci', function(){
+    return view('wiadomosci');
+})->middleware('verified');
+
+Route::get('/getMessages',[
+    'uses' => 'MessageController@getMessages',
+    'as' => 'messages.getmessages',
+])->middleware('verified');
+
+Route::get('api/getMessages/{id}',[
+    'uses' => 'MessageController@getMessagesID',
+    'as' => 'messages.getmessagesid',
+])->middleware('verified');
+
+Route::post('/sendMessage', 'MessageController@sendMessage')->middleware('verified');
+
 
 
 

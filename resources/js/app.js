@@ -52,6 +52,12 @@ Vue.component(
     require("./components/Comments.vue").default
 );
 
+Vue.component(
+    "messages-component",
+    require("./components/Messages.vue").default
+);
+
+
 
 Vue.component("pagination", require("laravel-vue-pagination"));
 import Vuelidate from 'vuelidate'
