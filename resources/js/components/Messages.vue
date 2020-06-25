@@ -7,20 +7,31 @@
           <div class="inbox_people">
             <div class="headind_srch">
               <div class="recent_heading">
-                <h4>Ostatnie</h4>
+                <h4 v-if="newMessage == false">Ostatnie</h4>
+                <h4 v-else>Wszystkie</h4>
               </div>
               <div class="srch_bar">
-                <div class="stylish-input-group">
-                  <input type="text" class="search-bar" placeholder="Szukaj" />
-                  <span class="input-group-addon">
-                    <button type="button">
-                      <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-                  </span>
+                <div v-if="newMessage == false" class="stylish-input-group">
+                  <a
+                    @click.prevent="newmesseages"
+                    class="btn btn new-message"
+                    style="background:#05728f; color:#fff"
+                  >
+                    <i class="fa fa-envelope"></i> Nowa wiadomość
+                  </a>
+                </div>
+                <div v-else class="stylish-input-group">
+                  <a
+                    @click.prevent="ostatnie"
+                    class="btn btn new-message"
+                    style="background:#05728f; color:#fff"
+                  >
+                    <i class="fa fa-envelope"></i> Ostatnie
+                  </a>
                 </div>
               </div>
             </div>
-            <div class="inbox_chat">
+            <div v-if="newMessage == false" class="inbox_chat">
               <div
                 v-for="privateMsg in privateMsgs"
                 :key="privateMsg.id"
@@ -43,10 +54,33 @@
                 </div>
               </div>
             </div>
+            <div v-if="newMessage == true" class="inbox_chat">
+              <div
+                v-for="user in users"
+                :key="user.id"
+                @click="messagess(user.id)"
+                style="cursor: pointer;"
+                class="chat_list"
+                :class="{ active_chat:user.id == selected}"
+              >
+                <div class="chat_people">
+                  <div class="chat_img">
+                    <i class="fas fa-user-alt fa-3x"></i>
+                  </div>
+                  <div class="chat_ib">
+                    <h5>
+                      {{user.name}}
+                      <span class="chat_date">Dec 25</span>
+                    </h5>
+                    <p v-for="role in user.roles" :key="role.id">{{role.name}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="mesgs">
             <div class="msg_history">
-              <div v-for="singleMsg in singleMsgs" :key="singleMsg.id">
+              <div v-for="(singleMsg, i) in singleMsgs" :key="i">
                 <div v-if="singleMsg.user_from === user_id">
                   <div class="outgoing_msg">
                     <div class="sent_msg">
@@ -71,14 +105,34 @@
               </div>
             </div>
             <div class="bg-light">
-              <div class="input-group">
+              <div v-if="newMessage == false" class="input-group">
                 <input
                   type="text"
                   v-model="msgFrom"
-                  placeholder="Type a message"
+                  placeholder="Napisz wiadomość"
                   aria-describedby="button-addon2"
                   class="form-control rounded-0 border-0 py-4 bg-light"
                   @keydown="inputHandler"
+                />
+                <div class="input-group-append">
+                  <button
+                    @click.prevent="sendMsg"
+                    id="button-addon2"
+                    type="submit"
+                    class="btn btn-link"
+                  >
+                    <i class="fa fa-paper-plane"></i>
+                  </button>
+                </div>
+              </div>
+              <div v-if="newMessage == true" class="input-group">
+                <input
+                  type="text"
+                  v-model="msgFrom"
+                  placeholder="Napisz wiadomość"
+                  aria-describedby="button-addon2"
+                  class="form-control rounded-0 border-0 py-4 bg-light"
+                  @keydown="inputHandlerr"
                 />
                 <div class="input-group-append">
                   <button id="button-addon2" type="submit" class="btn btn-link">
@@ -104,7 +158,9 @@ export default {
       privateMsgs: [],
       singleMsgs: [],
       selected: undefined,
-      msgFrom: ""
+      msgFrom: "",
+      newMessage: false,
+      users: []
     };
   },
   methods: {
@@ -112,6 +168,9 @@ export default {
       axios
         .get("/getMessages")
         .then(response => (this.privateMsgs = response.data));
+    },
+    loadUsers() {
+      axios.get("/getUsers").then(response => (this.users = response.data));
     },
     messagess(id) {
       this.selected = id;
@@ -126,6 +185,12 @@ export default {
       if (e.keyCode === 13 && !e.shiftKey) {
         e.preventDefault();
         this.sendMsg();
+      }
+    },
+    inputHandlerr(e) {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        e.preventDefault();
+        this.sendNewMsg();
       }
     },
     sendMsg() {
@@ -146,10 +211,47 @@ export default {
             console.log(error); // run if we have error
           });
       }
+      this.msgFrom = "";
+    },
+    sendNewMsg() {
+      if (this.msgFrom) {
+        axios
+          .post("/sendNewMessage", {
+            user_id: this.selected,
+            msg: this.msgFrom
+          })
+          .then(response => {
+            console.log(response.data); // show if success
+
+            if (response.status === 200) {
+              this.singleMsgs = response.data;
+            }
+          })
+          .catch(function(error) {
+            console.log(error); // run if we have error
+          });
+      }
+      this.msgFrom = "";
+    },
+    scrollToEnd() {
+      var container = document.querySelector(".msg_history");
+      var scrollHeight = container.scrollHeight;
+      container.scrollTop = scrollHeight;
+    },
+    newmesseages() {
+      this.newMessage = true;
+      this.singleMsgs = [];
+    },
+    ostatnie() {
+      this.newMessage = false;
     }
   },
-  created() {
+  mounted() {
     this.loadMessages();
+    this.loadUsers();
+  },
+  updated() {
+    this.scrollToEnd();
   }
 };
 </script>

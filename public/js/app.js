@@ -3924,6 +3924,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user_id"],
@@ -3933,7 +3987,9 @@ __webpack_require__.r(__webpack_exports__);
       privateMsgs: [],
       singleMsgs: [],
       selected: undefined,
-      msgFrom: ""
+      msgFrom: "",
+      newMessage: false,
+      users: []
     };
   },
   methods: {
@@ -3944,15 +4000,22 @@ __webpack_require__.r(__webpack_exports__);
         return _this.privateMsgs = response.data;
       });
     },
-    messagess: function messagess(id) {
+    loadUsers: function loadUsers() {
       var _this2 = this;
+
+      axios.get("/getUsers").then(function (response) {
+        return _this2.users = response.data;
+      });
+    },
+    messagess: function messagess(id) {
+      var _this3 = this;
 
       this.selected = id;
       axios.get("/api/getMessages/" + id).then(function (response) {
         console.log(response.data); // show if success
 
-        _this2.singleMsgs = response.data;
-        _this2.isHidden = true; // app.conID = response.data[0].conversation_id; //we are putting data into our posts array
+        _this3.singleMsgs = response.data;
+        _this3.isHidden = true; // app.conID = response.data[0].conversation_id; //we are putting data into our posts array
       });
     },
     inputHandler: function inputHandler(e) {
@@ -3961,8 +4024,14 @@ __webpack_require__.r(__webpack_exports__);
         this.sendMsg();
       }
     },
+    inputHandlerr: function inputHandlerr(e) {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        e.preventDefault();
+        this.sendNewMsg();
+      }
+    },
     sendMsg: function sendMsg() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.msgFrom) {
         axios.post("/sendMessage", {
@@ -3972,16 +4041,54 @@ __webpack_require__.r(__webpack_exports__);
           console.log(response.data); // show if success
 
           if (response.status === 200) {
-            _this3.singleMsgs = response.data;
+            _this4.singleMsgs = response.data;
           }
         })["catch"](function (error) {
           console.log(error); // run if we have error
         });
       }
+
+      this.msgFrom = "";
+    },
+    sendNewMsg: function sendNewMsg() {
+      var _this5 = this;
+
+      if (this.msgFrom) {
+        axios.post("/sendNewMessage", {
+          user_id: this.selected,
+          msg: this.msgFrom
+        }).then(function (response) {
+          console.log(response.data); // show if success
+
+          if (response.status === 200) {
+            _this5.singleMsgs = response.data;
+          }
+        })["catch"](function (error) {
+          console.log(error); // run if we have error
+        });
+      }
+
+      this.msgFrom = "";
+    },
+    scrollToEnd: function scrollToEnd() {
+      var container = document.querySelector(".msg_history");
+      var scrollHeight = container.scrollHeight;
+      container.scrollTop = scrollHeight;
+    },
+    newmesseages: function newmesseages() {
+      this.newMessage = true;
+      this.singleMsgs = [];
+    },
+    ostatnie: function ostatnie() {
+      this.newMessage = false;
     }
   },
-  created: function created() {
+  mounted: function mounted() {
     this.loadMessages();
+    this.loadUsers();
+  },
+  updated: function updated() {
+    this.scrollToEnd();
   }
 });
 
@@ -63686,66 +63793,169 @@ var render = function() {
       _c("div", { staticClass: "messaging" }, [
         _c("div", { staticClass: "inbox_msg" }, [
           _c("div", { staticClass: "inbox_people" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "inbox_chat" },
-              _vm._l(_vm.privateMsgs, function(privateMsg) {
-                return _c(
-                  "div",
-                  {
-                    key: privateMsg.id,
-                    staticClass: "chat_list",
-                    class: { active_chat: privateMsg.id == _vm.selected },
-                    staticStyle: { cursor: "pointer" },
-                    on: {
-                      click: function($event) {
-                        return _vm.messagess(privateMsg.id)
-                      }
-                    }
-                  },
-                  [
-                    _c("div", { staticClass: "chat_people" }, [
-                      _vm._m(1, true),
-                      _vm._v(" "),
+            _c("div", { staticClass: "headind_srch" }, [
+              _c("div", { staticClass: "recent_heading" }, [
+                _vm.newMessage == false
+                  ? _c("h4", [_vm._v("Ostatnie")])
+                  : _c("h4", [_vm._v("Wszystkie")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "srch_bar" }, [
+                _vm.newMessage == false
+                  ? _c("div", { staticClass: "stylish-input-group" }, [
                       _c(
-                        "div",
-                        { staticClass: "chat_ib" },
+                        "a",
+                        {
+                          staticClass: "btn btn new-message",
+                          staticStyle: { background: "#05728f", color: "#fff" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.newmesseages($event)
+                            }
+                          }
+                        },
                         [
-                          _c("h5", [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(privateMsg.name) +
-                                "\n                    "
-                            ),
-                            _c("span", { staticClass: "chat_date" }, [
-                              _vm._v("Dec 25")
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(privateMsg.roles, function(role) {
-                            return _c("p", { key: role.id }, [
-                              _vm._v(_vm._s(role.name))
-                            ])
-                          })
-                        ],
-                        2
+                          _c("i", { staticClass: "fa fa-envelope" }),
+                          _vm._v(" Nowa wiadomość\n                ")
+                        ]
                       )
                     ])
-                  ]
+                  : _c("div", { staticClass: "stylish-input-group" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn new-message",
+                          staticStyle: { background: "#05728f", color: "#fff" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.ostatnie($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "fa fa-envelope" }),
+                          _vm._v(" Ostatnie\n                ")
+                        ]
+                      )
+                    ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm.newMessage == false
+              ? _c(
+                  "div",
+                  { staticClass: "inbox_chat" },
+                  _vm._l(_vm.privateMsgs, function(privateMsg) {
+                    return _c(
+                      "div",
+                      {
+                        key: privateMsg.id,
+                        staticClass: "chat_list",
+                        class: { active_chat: privateMsg.id == _vm.selected },
+                        staticStyle: { cursor: "pointer" },
+                        on: {
+                          click: function($event) {
+                            return _vm.messagess(privateMsg.id)
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "chat_people" }, [
+                          _vm._m(0, true),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "chat_ib" },
+                            [
+                              _c("h5", [
+                                _vm._v(
+                                  "\n                    " +
+                                    _vm._s(privateMsg.name) +
+                                    "\n                    "
+                                ),
+                                _c("span", { staticClass: "chat_date" }, [
+                                  _vm._v("Dec 25")
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(privateMsg.roles, function(role) {
+                                return _c("p", { key: role.id }, [
+                                  _vm._v(_vm._s(role.name))
+                                ])
+                              })
+                            ],
+                            2
+                          )
+                        ])
+                      ]
+                    )
+                  }),
+                  0
                 )
-              }),
-              0
-            )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.newMessage == true
+              ? _c(
+                  "div",
+                  { staticClass: "inbox_chat" },
+                  _vm._l(_vm.users, function(user) {
+                    return _c(
+                      "div",
+                      {
+                        key: user.id,
+                        staticClass: "chat_list",
+                        class: { active_chat: user.id == _vm.selected },
+                        staticStyle: { cursor: "pointer" },
+                        on: {
+                          click: function($event) {
+                            return _vm.messagess(user.id)
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "chat_people" }, [
+                          _vm._m(1, true),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "chat_ib" },
+                            [
+                              _c("h5", [
+                                _vm._v(
+                                  "\n                    " +
+                                    _vm._s(user.name) +
+                                    "\n                    "
+                                ),
+                                _c("span", { staticClass: "chat_date" }, [
+                                  _vm._v("Dec 25")
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(user.roles, function(role) {
+                                return _c("p", { key: role.id }, [
+                                  _vm._v(_vm._s(role.name))
+                                ])
+                              })
+                            ],
+                            2
+                          )
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e()
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "mesgs" }, [
             _c(
               "div",
               { staticClass: "msg_history" },
-              _vm._l(_vm.singleMsgs, function(singleMsg) {
-                return _c("div", { key: singleMsg.id }, [
+              _vm._l(_vm.singleMsgs, function(singleMsg, i) {
+                return _c("div", { key: i }, [
                   singleMsg.user_from === _vm.user_id
                     ? _c("div", [
                         _c("div", { staticClass: "outgoing_msg" }, [
@@ -63779,36 +63989,88 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "bg-light" }, [
-              _c("div", { staticClass: "input-group" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.msgFrom,
-                      expression: "msgFrom"
-                    }
-                  ],
-                  staticClass: "form-control rounded-0 border-0 py-4 bg-light",
-                  attrs: {
-                    type: "text",
-                    placeholder: "Type a message",
-                    "aria-describedby": "button-addon2"
-                  },
-                  domProps: { value: _vm.msgFrom },
-                  on: {
-                    keydown: _vm.inputHandler,
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+              _vm.newMessage == false
+                ? _c("div", { staticClass: "input-group" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.msgFrom,
+                          expression: "msgFrom"
+                        }
+                      ],
+                      staticClass:
+                        "form-control rounded-0 border-0 py-4 bg-light",
+                      attrs: {
+                        type: "text",
+                        placeholder: "Napisz wiadomość",
+                        "aria-describedby": "button-addon2"
+                      },
+                      domProps: { value: _vm.msgFrom },
+                      on: {
+                        keydown: _vm.inputHandler,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.msgFrom = $event.target.value
+                        }
                       }
-                      _vm.msgFrom = $event.target.value
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _vm._m(3)
-              ])
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group-append" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-link",
+                          attrs: { id: "button-addon2", type: "submit" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.sendMsg($event)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-paper-plane" })]
+                      )
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.newMessage == true
+                ? _c("div", { staticClass: "input-group" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.msgFrom,
+                          expression: "msgFrom"
+                        }
+                      ],
+                      staticClass:
+                        "form-control rounded-0 border-0 py-4 bg-light",
+                      attrs: {
+                        type: "text",
+                        placeholder: "Napisz wiadomość",
+                        "aria-describedby": "button-addon2"
+                      },
+                      domProps: { value: _vm.msgFrom },
+                      on: {
+                        keydown: _vm.inputHandlerr,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.msgFrom = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(3)
+                  ])
+                : _vm._e()
             ])
           ])
         ])
@@ -63821,28 +64083,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "headind_srch" }, [
-      _c("div", { staticClass: "recent_heading" }, [
-        _c("h4", [_vm._v("Ostatnie")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "srch_bar" }, [
-        _c("div", { staticClass: "stylish-input-group" }, [
-          _c("input", {
-            staticClass: "search-bar",
-            attrs: { type: "text", placeholder: "Szukaj" }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "input-group-addon" }, [
-            _c("button", { attrs: { type: "button" } }, [
-              _c("i", {
-                staticClass: "fa fa-search",
-                attrs: { "aria-hidden": "true" }
-              })
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "chat_img" }, [
+      _c("i", { staticClass: "fas fa-user-alt fa-3x" })
     ])
   },
   function() {

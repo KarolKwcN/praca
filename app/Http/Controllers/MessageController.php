@@ -46,8 +46,6 @@ class MessageController extends Controller
           )
         ->get();
         return $userMsg;
-    }else{
-        echo "no messages";
     }
     }
 
@@ -83,5 +81,73 @@ class MessageController extends Controller
             ->where('messages.conversation_id', $conID)->get();
             return $userMsg;
           }
+    }
+    public function getUsers()
+    {
+         $uid = Auth::user()->id;
+  
+        $allUsers = User::with('roles')
+        ->select('users.*')
+        ->where('id', '!=', Auth::user()->id)
+        ->get();
+
+        return $allUsers;
+
+    }
+
+    public function sendNewMessage(Request $request){
+        $msg = $request->msg;
+        $user_id = $request->user_id;
+        $myID = Auth::user()->id;
+
+        //check if conversation already started or not
+        $checkCon1 = DB::table('conversation')->where('user_one',$myID)
+        ->where('user_two',$user_id)->get(); // if loggedin user started conversation
+
+        $checkCon2 = DB::table('conversation')->where('user_two',$myID)
+        ->where('user_one',$user_id)->get(); // if loggedin recviced message first
+
+        $allCons = array_merge($checkCon1->toArray(),$checkCon2->toArray());
+
+        if(count($allCons)!=0){
+          // old conversation
+          $conID_old = $allCons[0]->id;
+          //insert data into messages table
+          $MsgSent = DB::table('messages')->insert([
+            'user_from' => $myID,
+            'user_to' => $user_id,
+            'msg' => $msg,
+            'conversation_id' =>  $conID_old,
+            'status' => 1
+          ]);
+          if($MsgSent){
+            $userMsg = DB::table('messages')
+            ->join('users', 'users.id','messages.user_from')
+            ->where('messages.conversation_id', $conID_old)->get();
+            return $userMsg;
+          }
+        }else {
+          // new conversation
+          $conID_new = DB::table('conversation')->insertGetId([
+            'user_one' => $myID,
+            'user_two' => $user_id
+          ]);
+          
+
+          $MsgSent = DB::table('messages')->insert([
+            'user_from' => $myID,
+            'user_to' => $user_id,
+            'msg' => $msg,
+            'conversation_id' =>  $conID_new,
+            'status' => 1
+          ]);
+              if($MsgSent){
+            $userMsg = DB::table('messages')
+            ->join('users', 'users.id','messages.user_from')
+            ->where('messages.conversation_id', $conID_new)->get();
+            return $userMsg;
+          }
+        }
+         
     }
 }

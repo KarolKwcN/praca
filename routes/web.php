@@ -415,6 +415,9 @@ Route::get('api/getMessages/{id}',[
 
 Route::post('/sendMessage', 'MessageController@sendMessage')->middleware('verified');
 
+Route::get('/getUsers', 'MessageController@getUsers')->middleware('verified');
+
+Route::post('/sendNewMessage', 'MessageController@sendNewMessage')->middleware('verified');
 
 
 
