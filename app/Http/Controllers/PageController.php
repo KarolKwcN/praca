@@ -93,4 +93,36 @@ class PageController extends Controller
         $comment->update();
 
     }
+
+     public function szukaj(Request $request)
+    {
+         $this->validate($request, [
+            's' => 'required'
+
+        ]);
+
+
+        $s = $request->input('s');
+
+         $repairs = Repair::with(['devices','devices.brand','devices.brand.category'])->where('name', 'like', '%' .$s. '%')
+        ->orWhere('description', 'like', '%' .$s. '%')->get();
+
+        $devices = Device::with(['brand','brand.category'])->where('name', 'like', '%' .$s. '%')
+        ->get();
+
+        $brands = Brand::with(['category'])->where('name', 'like', '%' .$s. '%')
+        ->get();
+
+        $categories = Category::where('name', 'like', '%' .$s. '%')
+        ->get();
+
+            $warunek = array_merge($repairs->toArray(),$devices->toArray(),$brands->toArray(),$categories->toArray());
+
+        
+
+         return view('szukaj', compact('repairs','devices','brands','categories', 'warunek'));
+
+    }
+
+   
 }

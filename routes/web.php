@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Repair;
+use App\ImageStep;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,7 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+     $repair = Repair::with('steps')->where('accept', '1')->orderBY('id','desc')->first();
+
+     $step_id = $repair->steps[0]->id;
+
+    $images = ImageStep::where('step_id', $step_id)->orderBY('id', 'asc')->get();
+
+    
+
+        return view('home', compact('repair', 'images'));
+    
 });
 
 Auth::routes(['verify' => true]);
@@ -22,6 +32,7 @@ Auth::routes(['verify' => true]);
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser');
+
 
 
 Route::get('/admin', [
@@ -422,3 +433,7 @@ Route::post('/sendNewMessage', 'MessageController@sendNewMessage')->middleware('
 
 
 
+Route::get('/Wyszukane', [
+    'uses' => 'PageController@szukaj',
+    'as' => 'wyszukaj.naprawe',
+]);

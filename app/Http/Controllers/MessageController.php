@@ -6,18 +6,19 @@ use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use Carbon\Carbon;
 
 class MessageController extends Controller
 {
     public function getMessages(){
     $allUsers1 = User::with('roles')
-    ->select('users.*')
+    ->select('users.*','conversation.updated_at')
     ->Join('conversation','users.id','conversation.user_one')
     ->where('conversation.user_two',Auth::user()->id)->get();
     //return $allUsers1;
 
     $allUsers2 = User::with('roles')
-    ->select('users.*')
+    ->select('users.*','conversation.updated_at')
     ->Join('conversation','users.id','conversation.user_two')
     ->where('conversation.user_one',Auth::user()->id)->get();
     return array_merge($allUsers1->toArray(), $allUsers2->toArray());
@@ -34,19 +35,18 @@ class MessageController extends Controller
 
         $allCons = array_merge($checkCon1->toArray(),$checkCon2->toArray());
 
-    if(count($allCons)!=0){
-        
+        if(count($allCons)!=0)
+        {
         $userMsg = DB::table('messages')
         ->join('users','users.id','messages.user_from')
         ->where('messages.conversation_id', $allCons[0]->id)
         ->select(
                   'messages.*',
-                  'users.name',
-                  
+                  'users.name',            
           )
         ->get();
         return $userMsg;
-    }
+         }
     }
 
 
@@ -73,12 +73,19 @@ class MessageController extends Controller
             'user_from' => Auth::user()->id,
             'msg' => $msg,
             'status' => 1,
-            'conversation_id' => $conID
+            'conversation_id' => $conID,
+            'created_at' =>  Carbon::now()->toDateTimeString()
+
           ]);
           if($sendM){
             $userMsg = DB::table('messages')
             ->join('users', 'users.id','messages.user_from')
             ->where('messages.conversation_id', $conID)->get();
+
+            DB::table('conversation')
+            ->where('id', $conID)
+            ->update(['updated_at' =>  Carbon::now()->toDateTimeString()]);
+
             return $userMsg;
           }
     }
@@ -118,19 +125,27 @@ class MessageController extends Controller
             'user_to' => $user_id,
             'msg' => $msg,
             'conversation_id' =>  $conID_old,
-            'status' => 1
+            'status' => 1,
+            'created_at' =>  Carbon::now()->toDateTimeString()
           ]);
           if($MsgSent){
             $userMsg = DB::table('messages')
             ->join('users', 'users.id','messages.user_from')
             ->where('messages.conversation_id', $conID_old)->get();
+
+              DB::table('conversation')
+            ->where('id', $conID_old)
+            ->update(['updated_at' =>  Carbon::now()->toDateTimeString()]);
+
             return $userMsg;
           }
         }else {
           // new conversation
           $conID_new = DB::table('conversation')->insertGetId([
             'user_one' => $myID,
-            'user_two' => $user_id
+            'user_two' => $user_id,
+            'created_at' =>  Carbon::now()->toDateTimeString(),
+            'updated_at' =>  Carbon::now()->toDateTimeString()
           ]);
           
 
@@ -139,12 +154,18 @@ class MessageController extends Controller
             'user_to' => $user_id,
             'msg' => $msg,
             'conversation_id' =>  $conID_new,
-            'status' => 1
+            'status' => 1,
+            'created_at' =>  Carbon::now()->toDateTimeString()
           ]);
               if($MsgSent){
             $userMsg = DB::table('messages')
             ->join('users', 'users.id','messages.user_from')
             ->where('messages.conversation_id', $conID_new)->get();
+
+                DB::table('conversation')
+            ->where('id', $conID_new)
+            ->update(['updated_at' =>  Carbon::now()->toDateTimeString()]);
+
             return $userMsg;
           }
         }

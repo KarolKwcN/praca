@@ -63,6 +63,10 @@ Vue.component("pagination", require("laravel-vue-pagination"));
 import Vuelidate from 'vuelidate'
 Vue.use(Vuelidate)
 
+import VueFilterDateFormat from 'vue-filter-date-format';
+
+Vue.use(VueFilterDateFormat);
+
 import Swal from "sweetalert2";
 window.Swal = Swal;
 window.Fire = new Vue();
