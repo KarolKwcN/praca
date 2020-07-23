@@ -4009,25 +4009,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4143,8 +4124,9 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this6 = this;
 
-    Echo["private"]("domowyserwis").listen("MessageSent", function (e) {
-      _this6.singleMsgs.push(e.message);
+    Echo["private"]("message").listen("MessageEvent", function (e) {
+      //this.singleMsgs.push(e.msgFrom);
+      _this6.messagess(_this6.selected);
     });
   },
   created: function created() {
@@ -11640,7 +11622,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.container {\r\n    max-width: 1170px;\r\n    margin: auto;\n}\nimg {\r\n    max-width: 100%;\n}\n.inbox_people {\r\n    background: #f8f8f8 none repeat scroll 0 0;\r\n    float: left;\r\n    overflow: hidden;\r\n    width: 40%;\r\n    border-right: 1px solid #c4c4c4;\n}\n.inbox_msg {\r\n    border: 1px solid #c4c4c4;\r\n    clear: both;\r\n    overflow: hidden;\n}\n.top_spac {\r\n    margin: 20px 0 0;\n}\n.recent_heading {\r\n    float: left;\r\n    width: 40%;\n}\n.srch_bar {\r\n    display: inline-block;\r\n    text-align: right;\r\n    width: 60%;\n}\n.headind_srch {\r\n    padding: 10px 29px 10px 20px;\r\n    overflow: hidden;\r\n    border-bottom: 1px solid #c4c4c4;\n}\n.recent_heading h4 {\r\n    color: #05728f;\r\n    font-size: 21px;\r\n    margin: auto;\n}\n.srch_bar input {\r\n    border: 1px solid #cdcdcd;\r\n    border-width: 0 0 1px 0;\r\n    width: 80%;\r\n    padding: 2px 0 4px 6px;\r\n    background: none;\n}\n.srch_bar .input-group-addon button {\r\n    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;\r\n    border: medium none;\r\n    padding: 0;\r\n    color: #707070;\r\n    font-size: 18px;\n}\n.srch_bar .input-group-addon {\r\n    margin: 0 0 0 -27px;\n}\n.chat_ib h5 {\r\n    font-size: 15px;\r\n    color: #464646;\r\n    margin: 0 0 8px 0;\n}\n.chat_ib h5 span {\r\n    font-size: 13px;\r\n    float: right;\n}\n.chat_ib p {\r\n    font-size: 14px;\r\n    color: #989898;\r\n    margin: auto;\n}\n.chat_img {\r\n    float: left;\r\n    width: 11%;\n}\n.chat_ib {\r\n    float: left;\r\n    padding: 0 0 0 15px;\r\n    width: 88%;\n}\n.chat_people {\r\n    overflow: hidden;\r\n    clear: both;\n}\n.chat_list {\r\n    border-bottom: 1px solid #c4c4c4;\r\n    margin: 0;\r\n    padding: 18px 16px 10px;\n}\n.inbox_chat {\r\n    height: 550px;\r\n    overflow-y: scroll;\n}\n.active_chat {\r\n    background: #ebebeb;\n}\n.incoming_msg_img {\r\n    display: inline-block;\r\n    width: 6%;\n}\n.received_msg {\r\n    display: inline-block;\r\n    padding: 0 0 0 10px;\r\n    vertical-align: top;\r\n    width: 92%;\n}\n.received_withd_msg p {\r\n    background: #ebebeb none repeat scroll 0 0;\r\n    border-radius: 3px;\r\n    color: #646464;\r\n    font-size: 14px;\r\n    margin: 0;\r\n    padding: 5px 10px 5px 12px;\r\n    width: 100%;\n}\n.time_date {\r\n    color: #747474;\r\n    display: block;\r\n    font-size: 12px;\r\n    margin: 8px 0 0;\n}\n.received_withd_msg {\r\n    width: 57%;\n}\n.mesgs {\r\n    float: left;\r\n    padding: 30px 15px 0 25px;\r\n    width: 60%;\n}\n.sent_msg p {\r\n    background: #05728f none repeat scroll 0 0;\r\n    border-radius: 3px;\r\n    font-size: 14px;\r\n    margin: 0;\r\n    color: #fff;\r\n    padding: 5px 10px 5px 12px;\r\n    width: 100%;\n}\n.outgoing_msg {\r\n    overflow: hidden;\r\n    margin: 26px 0 26px;\n}\n.sent_msg {\r\n    float: right;\r\n    width: 46%;\n}\n.input_msg_write input {\r\n    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;\r\n    border: medium none;\r\n    color: #4c4c4c;\r\n    font-size: 15px;\r\n    min-height: 48px;\r\n    width: 100%;\n}\n.type_msg {\r\n    border-top: 1px solid #c4c4c4;\r\n    position: relative;\n}\n.msg_send_btn {\r\n    background: #05728f none repeat scroll 0 0;\r\n    border: medium none;\r\n    border-radius: 50%;\r\n    color: #fff;\r\n    cursor: pointer;\r\n    font-size: 17px;\r\n    height: 33px;\r\n    position: absolute;\r\n    right: 0;\r\n    top: 11px;\r\n    width: 33px;\n}\n.messaging {\r\n    padding: 0 0 50px 0;\n}\n.msg_history {\r\n    height: 516px;\r\n    overflow-y: auto;\n}\r\n", ""]);
+exports.push([module.i, "\n.container {\r\n  max-width: 1170px;\r\n  margin: auto;\n}\nimg {\r\n  max-width: 100%;\n}\n.inbox_people {\r\n  background: #f8f8f8 none repeat scroll 0 0;\r\n  float: left;\r\n  overflow: hidden;\r\n  width: 40%;\r\n  border-right: 1px solid #c4c4c4;\n}\n.inbox_msg {\r\n  border: 1px solid #c4c4c4;\r\n  clear: both;\r\n  overflow: hidden;\n}\n.top_spac {\r\n  margin: 20px 0 0;\n}\n.recent_heading {\r\n  float: left;\r\n  width: 40%;\n}\n.srch_bar {\r\n  display: inline-block;\r\n  text-align: right;\r\n  width: 60%;\n}\n.headind_srch {\r\n  padding: 10px 29px 10px 20px;\r\n  overflow: hidden;\r\n  border-bottom: 1px solid #c4c4c4;\n}\n.recent_heading h4 {\r\n  color: #05728f;\r\n  font-size: 21px;\r\n  margin: auto;\n}\n.srch_bar input {\r\n  border: 1px solid #cdcdcd;\r\n  border-width: 0 0 1px 0;\r\n  width: 80%;\r\n  padding: 2px 0 4px 6px;\r\n  background: none;\n}\n.srch_bar .input-group-addon button {\r\n  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;\r\n  border: medium none;\r\n  padding: 0;\r\n  color: #707070;\r\n  font-size: 18px;\n}\n.srch_bar .input-group-addon {\r\n  margin: 0 0 0 -27px;\n}\n.chat_ib h5 {\r\n  font-size: 15px;\r\n  color: #464646;\r\n  margin: 0 0 8px 0;\n}\n.chat_ib h5 span {\r\n  font-size: 13px;\r\n  float: right;\n}\n.chat_ib p {\r\n  font-size: 14px;\r\n  color: #989898;\r\n  margin: auto;\n}\n.chat_img {\r\n  float: left;\r\n  width: 11%;\n}\n.chat_ib {\r\n  float: left;\r\n  padding: 0 0 0 15px;\r\n  width: 88%;\n}\n.chat_people {\r\n  overflow: hidden;\r\n  clear: both;\n}\n.chat_list {\r\n  border-bottom: 1px solid #c4c4c4;\r\n  margin: 0;\r\n  padding: 18px 16px 10px;\n}\n.inbox_chat {\r\n  height: 550px;\r\n  overflow-y: scroll;\n}\n.active_chat {\r\n  background: #ebebeb;\n}\n.incoming_msg_img {\r\n  display: inline-block;\r\n  width: 6%;\n}\n.received_msg {\r\n  display: inline-block;\r\n  padding: 0 0 0 10px;\r\n  vertical-align: top;\r\n  width: 92%;\n}\n.received_withd_msg p {\r\n  background: #ebebeb none repeat scroll 0 0;\r\n  border-radius: 3px;\r\n  color: #646464;\r\n  font-size: 14px;\r\n  margin: 0;\r\n  padding: 5px 10px 5px 12px;\r\n  width: 100%;\n}\n.time_date {\r\n  color: #747474;\r\n  display: block;\r\n  font-size: 12px;\r\n  margin: 8px 0 0;\n}\n.received_withd_msg {\r\n  width: 57%;\n}\n.mesgs {\r\n  float: left;\r\n  padding: 30px 15px 0 25px;\r\n  width: 60%;\n}\n.sent_msg p {\r\n  background: #05728f none repeat scroll 0 0;\r\n  border-radius: 3px;\r\n  font-size: 14px;\r\n  margin: 0;\r\n  color: #fff;\r\n  padding: 5px 10px 5px 12px;\r\n  width: 100%;\n}\n.outgoing_msg {\r\n  overflow: hidden;\r\n  margin: 26px 0 26px;\n}\n.sent_msg {\r\n  float: right;\r\n  width: 46%;\n}\n.input_msg_write input {\r\n  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;\r\n  border: medium none;\r\n  color: #4c4c4c;\r\n  font-size: 15px;\r\n  min-height: 48px;\r\n  width: 100%;\n}\n.type_msg {\r\n  border-top: 1px solid #c4c4c4;\r\n  position: relative;\n}\n.msg_send_btn {\r\n  background: #05728f none repeat scroll 0 0;\r\n  border: medium none;\r\n  border-radius: 50%;\r\n  color: #fff;\r\n  cursor: pointer;\r\n  font-size: 17px;\r\n  height: 33px;\r\n  position: absolute;\r\n  right: 0;\r\n  top: 11px;\r\n  width: 33px;\n}\n.messaging {\r\n  padding: 0 0 50px 0;\n}\n.msg_history {\r\n  height: 516px;\r\n  overflow-y: auto;\n}\r\n", ""]);
 
 // exports
 
@@ -70040,7 +70022,7 @@ var render = function() {
                         [
                           _c("i", { staticClass: "fa fa-envelope" }),
                           _vm._v(
-                            " Nowa\n                                    wiadomość\n                                "
+                            " Nowa\n                  wiadomość\n                "
                           )
                         ]
                       )
@@ -70060,7 +70042,7 @@ var render = function() {
                         },
                         [
                           _c("i", { staticClass: "fa fa-envelope" }),
-                          _vm._v(" Ostatnie\n                                ")
+                          _vm._v(" Ostatnie\n                ")
                         ]
                       )
                     ])
@@ -70097,13 +70079,13 @@ var render = function() {
                             [
                               _c("h5", [
                                 _vm._v(
-                                  "\n                                        " +
+                                  "\n                    " +
                                     _vm._s(privateMsg.name) +
-                                    "\n                                        "
+                                    "\n                    "
                                 ),
                                 _c("span", { staticClass: "chat_date" }, [
                                   _vm._v(
-                                    "\n                                            " +
+                                    "\n                      " +
                                       _vm._s(
                                         _vm._f("dateFormat")(
                                           new Date(privateMsg.updated_at),
@@ -70111,18 +70093,14 @@ var render = function() {
                                           _vm.dateFormatConfig
                                         )
                                       ) +
-                                      "\n                                        "
+                                      "\n                    "
                                   )
                                 ])
                               ]),
                               _vm._v(" "),
                               _vm._l(privateMsg.roles, function(role) {
                                 return _c("p", { key: role.id }, [
-                                  _vm._v(
-                                    "\n                                        " +
-                                      _vm._s(role.name) +
-                                      "\n                                    "
-                                  )
+                                  _vm._v(_vm._s(role.name))
                                 ])
                               })
                             ],
@@ -70166,11 +70144,7 @@ var render = function() {
                               _vm._v(" "),
                               _vm._l(user.roles, function(role) {
                                 return _c("p", { key: role.id }, [
-                                  _vm._v(
-                                    "\n                                        " +
-                                      _vm._s(role.name) +
-                                      "\n                                    "
-                                  )
+                                  _vm._v(_vm._s(role.name))
                                 ])
                               })
                             ],
@@ -70199,7 +70173,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("span", { staticClass: "time_date" }, [
                               _vm._v(
-                                "\n                                            " +
+                                "\n                      " +
                                   _vm._s(
                                     _vm._f("dateFormat")(
                                       new Date(singleMsg.created_at),
@@ -70207,7 +70181,7 @@ var render = function() {
                                       _vm.dateFormatConfig
                                     )
                                   ) +
-                                  "\n                                        "
+                                  "\n                    "
                               )
                             ])
                           ])
@@ -70223,7 +70197,7 @@ var render = function() {
                               _vm._v(" "),
                               _c("span", { staticClass: "time_date" }, [
                                 _vm._v(
-                                  "\n                                                " +
+                                  "\n                        " +
                                     _vm._s(
                                       _vm._f("dateFormat")(
                                         new Date(singleMsg.created_at),
@@ -70231,7 +70205,7 @@ var render = function() {
                                         _vm.dateFormatConfig
                                       )
                                     ) +
-                                    "\n                                            "
+                                    "\n                      "
                                 )
                               ])
                             ])
@@ -89869,7 +89843,7 @@ Vue.config.devtools = true;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
+/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -89900,10 +89874,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
-window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__["default"]({
+window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "",
-  cluster: "mt1",
+  key: "52702de7b3d88dea1fea",
+  cluster: "eu",
   encrypted: true
 });
 

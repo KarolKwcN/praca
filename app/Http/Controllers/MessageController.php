@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Carbon\Carbon;
+use App\Events\MessageEvent;
 
 class MessageController extends Controller
 {
@@ -86,6 +87,9 @@ class MessageController extends Controller
             ->where('id', $conID)
             ->update(['updated_at' =>  Carbon::now()->toDateTimeString()]);
 
+            $user = User::find(Auth::id());
+            event(new MessageEvent($msg,$user));
+
             return $userMsg;
           }
     }
@@ -137,6 +141,9 @@ class MessageController extends Controller
             ->where('id', $conID_old)
             ->update(['updated_at' =>  Carbon::now()->toDateTimeString()]);
 
+             $user = User::find(Auth::id());
+            event(new MessageEvent($msg,$user));
+
             return $userMsg;
           }
         }else {
@@ -165,6 +172,9 @@ class MessageController extends Controller
                 DB::table('conversation')
             ->where('id', $conID_new)
             ->update(['updated_at' =>  Carbon::now()->toDateTimeString()]);
+
+             $user = User::find(Auth::id());
+            event(new MessageEvent($msg,$user));
 
             return $userMsg;
           }
