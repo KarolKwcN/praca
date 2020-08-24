@@ -194,7 +194,7 @@ export default {
           "Środa",
           "Czwartek",
           "Piątek",
-          "Sobota"
+          "Sobota",
         ],
         dayOfWeekNamesShort: ["Ni", "Po", "Wt", "Śr", "Cz", "Pi", "So"],
         monthNames: [
@@ -209,7 +209,7 @@ export default {
           "Wrzesień",
           "Pażdziernik",
           "Listopad",
-          "Grudzień"
+          "Grudzień",
         ],
         monthNamesShort: [
           "Sty",
@@ -223,8 +223,8 @@ export default {
           "Wrz",
           "Paź",
           "Lis",
-          "Gru"
-        ]
+          "Gru",
+        ],
       },
       isHidden: false,
       privateMsgs: [],
@@ -232,21 +232,21 @@ export default {
       selected: undefined,
       msgFrom: "",
       newMessage: false,
-      users: []
+      users: [],
     };
   },
   methods: {
     loadMessages() {
       axios
         .get("/getMessages")
-        .then(response => (this.privateMsgs = response.data));
+        .then((response) => (this.privateMsgs = response.data));
     },
     loadUsers() {
-      axios.get("/getUsers").then(response => (this.users = response.data));
+      axios.get("/getUsers").then((response) => (this.users = response.data));
     },
     messagess(id) {
       this.selected = id;
-      axios.get("/api/getMessages/" + id).then(response => {
+      axios.get("/api/getMessages/" + id).then((response) => {
         console.log(response.data); // show if success
         this.singleMsgs = response.data;
         this.isHidden = true;
@@ -270,14 +270,14 @@ export default {
         axios
           .post("/sendMessage", {
             conID: this.singleMsgs[0].conversation_id,
-            msg: this.msgFrom
+            msg: this.msgFrom,
           })
-          .then(response => {
+          .then((response) => {
             console.log(response.data); // show if success
             this.message = null;
             this.messagess(this.selected);
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error); // run if we have error
           });
       }
@@ -288,16 +288,16 @@ export default {
         axios
           .post("/sendNewMessage", {
             user_id: this.selected,
-            msg: this.msgFrom
+            msg: this.msgFrom,
           })
-          .then(response => {
+          .then((response) => {
             console.log(response.data); // show if success
 
             if (response.status === 200) {
               this.singleMsgs = response.data;
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error); // run if we have error
           });
       }
@@ -314,10 +314,10 @@ export default {
     },
     ostatnie() {
       this.newMessage = false;
-    }
+    },
   },
   mounted() {
-    Echo.private("message").listen("MessageEvent", e => {
+    Echo.private("message").listen("MessageEvent", (e) => {
       //this.singleMsgs.push(e.msgFrom);
       this.messagess(this.selected);
     });
@@ -328,7 +328,7 @@ export default {
   },
   updated() {
     this.scrollToEnd();
-  }
+  },
 };
 </script>
 

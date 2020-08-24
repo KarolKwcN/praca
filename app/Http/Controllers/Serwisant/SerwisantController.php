@@ -104,6 +104,19 @@ class SerwisantController extends Controller
 
     public function addStepRepair(Request $request,$repair)
     {
+                $messages = [
+                    "pics.max" => "Maksymalnie mogą być 3 zdjęcia.",
+                    "pics.required" => "Zdjęcia są wymagane."
+                ];
+
+          $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+              'pics' => 'required|max:3',
+        ],$messages);
+
+
+
         $naprawa = Repair::find($repair);
         $device_id=$naprawa->device_id;
         $name_repair=$naprawa->name;
@@ -150,6 +163,19 @@ class SerwisantController extends Controller
 
     public function updatestep(Request $request, $id )
     {
+
+      $messages = [
+                    "pics.max" => "Maksymalnie mogą być 3 zdjęcia.",
+                    //"pics.required" => "Zdjęcia są wymagane."
+                ];
+
+          $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+              'pics' => 'max:3',
+        ],$messages);
+
+
         $step = Step::findOrFail($id);
         $step->name = $request->name;
         $step->description = $request->description;
@@ -216,6 +242,12 @@ class SerwisantController extends Controller
 
     public function editRepair(Request $request, $id)
     {
+
+            $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+
         $repair = Repair::findOrFail($id);
         $repair->name = $request->name;
         $repair->description = $request->description;

@@ -14,9 +14,6 @@
                         <h5 class="text-info">Naprawy</h5>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
             </ul>
         </div>
         <adminuser-component></adminuser-component>

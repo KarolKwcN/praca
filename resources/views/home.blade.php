@@ -30,11 +30,15 @@
                 <p class="mb-3 mx-auto w-75 lead">Kategorie najczęstrzych napraw. Wybierz co Cię interesuje i napraw to.
                 </p>
                 <div class="row">
-                    <div class="col-md-3 mt-4 px-4 col-6"> <a href="/"><i class="fas fa-mobile-alt fa-7x"></i></a>
+                    <div class="col-md-3 mt-4 px-4 col-6">
+                        <a href="{{ url('/naprawy/telefony') }}"><i
+                                class="fas fa-mobile-alt fa-7x"></i></a>
                         <h5 class="mt-2"> <b>Smartfony</b></h5>
                         <p class="mb-3">I should be incapable of drawing a single stroke.</p>
                     </div>
-                    <div class="col-md-3 mt-4 px-4 col-6"> <a href="/"><i class="fas fa-laptop fa-7x"></i></a>
+                    <div class="col-md-3 mt-4 px-4 col-6"> <a
+                            href="{{ url('/naprawy/laptopy') }}"><i
+                                class="fas fa-laptop fa-7x"></i></a>
                         <h5 class="mt-2"> <b>Laptopy</b></h5>
                         <p class="mb-3">A wonderful serenity has taken possession.</p>
                     </div>
@@ -57,6 +61,7 @@
             <div class="col-lg-4 col-8 order-2 order-lg-1"> <img class=" img-fluid d-block mb-0 mx-auto img-thumbnail"
                     src={{ $repair->image }}>
             </div>
+
             <div class="col-lg-2 col-4 d-flex flex-column justify-content-between order-3 order-lg-2">
                 @foreach($images as $image)
                     <img class=" img-fluid d-block mb-2 mx-auto img-thumbnail" src={{ $image->image }}>
@@ -65,8 +70,13 @@
             <div class="px-md-5 p-3 d-flex flex-column justify-content-center col-lg-6 order-1 order-lg-3">
 
                 <h1>Najnowsza naprawa</h1>
-                <h3>{{ $repair->name }}</h3>
+                <a
+                    href="{{ url('/naprawa',[$repair->devices->brand->category->slug, $repair->devices->brand->slugi, $repair->devices->slugii, $repair->id, $repair->slugi_repair]) }}">
+
+                    <h3>{{ $repair->name }}</h3>
+                </a>
                 <p class="lead">{{ $repair->description }}</p>
+
             </div>
         </div>
     </div>

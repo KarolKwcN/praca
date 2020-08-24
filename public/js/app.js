@@ -2100,6 +2100,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2113,13 +2121,15 @@ __webpack_require__.r(__webpack_exports__);
         id: "",
         name: "",
         image: null
-      })
+      }),
+      errors: []
     };
   },
   methods: {
     updateCategory: function updateCategory(e) {
       var _this = this;
 
+      this.errors = [];
       e.preventDefault();
       var currentObj = this;
       var self = this;
@@ -2136,7 +2146,9 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit("AfterDelete");
         self.hideedit("modal-edytuj-kategorie"); //window.location.reload();
       })["catch"](function (error) {
-        return _this.errors.record(error.response.data);
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
     },
     editCategory: function editCategory(ind) {
@@ -2165,6 +2177,7 @@ __webpack_require__.r(__webpack_exports__);
     addCategory: function addCategory() {
       var _this3 = this;
 
+      this.errors = [];
       var formData = new FormData();
       formData.append("image", this.form.image);
       formData.append("name", this.form.name);
@@ -2172,6 +2185,10 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit("AfterDelete");
 
         _this3.$modal.hide("modal-step");
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this3.errors = error.response.data.errors;
+        }
       });
     },
     deleteCategory: function deleteCategory(id) {
@@ -2199,9 +2216,12 @@ __webpack_require__.r(__webpack_exports__);
       this.$modal.show("modal-step");
     },
     hideedit: function hideedit() {
+      this.errors = [];
       this.$modal.hide("modal-edytuj-kategorie");
+      Fire.$emit("AfterDelete");
     },
     hide: function hide() {
+      this.errors = [];
       this.$modal.hide("modal-step");
     },
     loadCategories: function loadCategories() {
@@ -2440,6 +2460,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2454,7 +2492,8 @@ __webpack_require__.r(__webpack_exports__);
         name: "",
         description: "",
         image: null
-      })
+      }),
+      errors: []
     };
   },
   methods: {
@@ -2467,6 +2506,7 @@ __webpack_require__.r(__webpack_exports__);
     updateDevice: function updateDevice(e) {
       var _this = this;
 
+      this.errors = [];
       e.preventDefault();
       var currentObj = this;
       var self = this;
@@ -2484,7 +2524,9 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit("AfterDelete");
         self.hideedit("modal-edytuj-urzadzenie"); //window.location.reload();
       })["catch"](function (error) {
-        return _this.errors.record(error.response.data);
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
     },
     editDevice: function editDevice(ind) {
@@ -2499,6 +2541,7 @@ __webpack_require__.r(__webpack_exports__);
     addDevice: function addDevice() {
       var _this2 = this;
 
+      this.errors = [];
       var formData = new FormData();
       formData.append("image", this.form.image);
       formData.append("name", this.form.name);
@@ -2507,6 +2550,10 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit("AfterDelete");
 
         _this2.$modal.hide("modal-step");
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this2.errors = error.response.data.errors;
+        }
       });
     },
     deleteDevice: function deleteDevice(id) {
@@ -2535,10 +2582,13 @@ __webpack_require__.r(__webpack_exports__);
       this.$modal.show("modal-step");
     },
     hide: function hide() {
+      this.errors = [];
       this.$modal.hide("modal-step");
     },
     hideedit: function hideedit() {
+      this.errors = [];
       this.$modal.hide("modal-edytuj-urzadzenie");
+      Fire.$emit("AfterDelete");
     },
     loadDevices: function loadDevices() {
       var _this3 = this;
@@ -2782,6 +2832,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2797,7 +2865,8 @@ __webpack_require__.r(__webpack_exports__);
         name: "",
         description: "",
         image: null
-      })
+      }),
+      errors: []
     };
   },
   methods: {
@@ -2819,6 +2888,7 @@ __webpack_require__.r(__webpack_exports__);
     updateBrand: function updateBrand(e) {
       var _this = this;
 
+      this.errors = [];
       e.preventDefault();
       var currentObj = this;
       var self = this;
@@ -2836,12 +2906,15 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit("AfterDelete");
         self.hideedit("modal-edytuj-marke"); //window.location.reload();
       })["catch"](function (error) {
-        return _this.errors.record(error.response.data);
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
     },
     addBrand: function addBrand() {
       var _this2 = this;
 
+      this.errors = [];
       var formData = new FormData();
       formData.append("image", this.form.image);
       formData.append("name", this.form.name);
@@ -2850,6 +2923,10 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit("AfterDelete");
 
         _this2.$modal.hide("modal-step");
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this2.errors = error.response.data.errors;
+        }
       });
     },
     deleteBrand: function deleteBrand(id) {
@@ -2877,6 +2954,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$modal.show("modal-step");
     },
     hide: function hide() {
+      this.errors = [];
       this.$modal.hide("modal-step");
     },
     loadBrands: function loadBrands() {
@@ -2887,7 +2965,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     hideedit: function hideedit() {
+      this.errors = [];
       this.$modal.hide("modal-edytuj-marke");
+      Fire.$emit("AfterDelete");
     },
     loadcategoryName: function loadcategoryName() {
       var _this4 = this;
@@ -4361,6 +4441,27 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var Errors = /*#__PURE__*/function () {
   function Errors() {
     _classCallCheck(this, Errors);
@@ -4389,7 +4490,7 @@ var Errors = /*#__PURE__*/function () {
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['device'],
+  props: ["device"],
   data: function data() {
     return {
       image: "",
@@ -4415,13 +4516,13 @@ var Errors = /*#__PURE__*/function () {
       var self = this;
       var config = {
         headers: {
-          'content-type': 'multipart/form-data'
+          "content-type": "multipart/form-data"
         }
       };
       var formData = new FormData();
-      formData.append('image', this.image);
-      formData.append('name', this.name);
-      formData.append('description', this.description);
+      formData.append("image", this.image);
+      formData.append("name", this.name);
+      formData.append("description", this.description);
       axios.post("/api/serwisant/addRepair/" + this.device, formData, config).then(function (response) {
         currentObj.success = response.data.success;
         Fire.$emit("AfterChange");
@@ -4442,6 +4543,7 @@ var Errors = /*#__PURE__*/function () {
     },
     hide: function hide() {
       this.$modal.hide("modal-step");
+      this.errors.errors = [];
     },
     loadRepairs: function loadRepairs() {
       var _this2 = this;
@@ -4704,6 +4806,46 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4723,6 +4865,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       name: "",
       description: "",
       uploadFiles: [],
+      errors: [],
       attachments: [],
       steps: [{
         repairs: []
@@ -4766,6 +4909,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     uploadFile: function uploadFile() {
       var _this = this;
 
+      this.errors = [];
+
       for (var i = 0; i < this.attachments.length; i++) {
         this.form.append("pics[]", this.attachments[i]);
       }
@@ -4784,7 +4929,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         Fire.$emit("AfterChange");
 
         _this.$modal.hide("modal-step");
-      })["catch"](function (response) {//error
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
       this.name = "";
       this.description = "";
@@ -4792,6 +4940,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     editStep: function editStep() {
       var _this2 = this;
+
+      this.errors = [];
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.form.append("pics[]", this.attachments[i]);
@@ -4816,13 +4966,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         Fire.$emit("AfterChange");
 
         _this2.$modal.hide("modal-update");
-      })["catch"](function (response) {//error
+
+        _this2.name = "";
+        _this2.description = "";
+        _this2.attachments = [];
+        _this2.update_step.imagesteps = [];
+        _this2.update_step = [];
+      })["catch"](function (error) {
+        if (error.response.status == 422) {
+          _this2.errors = error.response.data.errors;
+        }
       });
-      this.name = "";
-      this.description = "";
-      this.attachments = [];
-      this.update_step.imagesteps = [];
-      this.update_step = [];
     },
     deleteModal: function deleteModal(id) {
       Swal.fire({
@@ -4853,6 +5007,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     hide: function hide() {
       this.$modal.hide("modal-step");
+      this.errors = [];
+      this.name = "";
+      this.description = "";
+    },
+    hideEdit: function hideEdit() {
+      this.$modal.hide("modal-update");
+      this.errors = [];
     },
     loadSteps: function loadSteps() {
       var _this3 = this;
@@ -4953,11 +5114,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['repairedit'],
+  props: ["repairedit"],
   data: function data() {
     return {
       isHidden: false,
@@ -4967,6 +5167,7 @@ __webpack_require__.r(__webpack_exports__);
       name: "",
       description: "",
       image: "",
+      errors: [],
       form: new FormData()
     };
   },
@@ -4976,29 +5177,33 @@ __webpack_require__.r(__webpack_exports__);
     },
     hide: function hide() {
       this.$modal.hide("modal-edytuj-naprawe");
+      this.errors = [];
     },
     editRepair: function editRepair(e) {
       var _this = this;
 
+      this.errors = [];
       e.preventDefault();
       var currentObj = this;
       var self = this;
       var config = {
         headers: {
-          'content-type': 'multipart/form-data'
+          "content-type": "multipart/form-data"
         }
       };
       var formData = new FormData();
-      formData.append('image', this.image);
-      formData.append('name', this.repair[0].name);
-      formData.append('description', this.repair[0].description);
+      formData.append("image", this.image);
+      formData.append("name", this.repair[0].name);
+      formData.append("description", this.repair[0].description);
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/serwisant/editRepair/" + this.repairedit, formData, config).then(function (response) {
         currentObj.success = response.data.success;
         Fire.$emit("AfterLoadRepair");
         self.hide("modal-edytuj-naprawe");
         window.location.reload();
       })["catch"](function (error) {
-        return _this.errors.record(error.response.data);
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
       });
       this.image = "";
       this.name = "";
@@ -67204,7 +67409,18 @@ var render = function() {
                                     )
                                   }
                                 }
-                              })
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.name
+                                ? _c(
+                                    "span",
+                                    {
+                                      staticClass: "error",
+                                      staticStyle: { color: "red" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.errors.name[0]))]
+                                  )
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
@@ -67226,7 +67442,18 @@ var render = function() {
                                     type: "file"
                                   },
                                   on: { change: _vm.onImageChange }
-                                })
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.image
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "error",
+                                        staticStyle: { color: "red" }
+                                      },
+                                      [_vm._v(_vm._s(_vm.errors.image[0]))]
+                                    )
+                                  : _vm._e()
                               ])
                             ])
                           ]),
@@ -67372,7 +67599,18 @@ var render = function() {
                                   )
                                 }
                               }
-                            })
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.name
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass: "error",
+                                    staticStyle: { color: "red" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.errors.name[0]))]
+                                )
+                              : _vm._e()
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
@@ -67424,11 +67662,22 @@ var render = function() {
                                       staticClass: "input-file",
                                       attrs: {
                                         id: "upload-file",
-                                        name: "zdj",
+                                        name: "image",
                                         type: "file"
                                       },
                                       on: { change: _vm.onImageChangee }
-                                    })
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.errors.image
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass: "error",
+                                            staticStyle: { color: "red" }
+                                          },
+                                          [_vm._v(_vm._s(_vm.errors.image[0]))]
+                                        )
+                                      : _vm._e()
                                   ])
                                 ])
                               : _vm._e()
@@ -67726,7 +67975,18 @@ var render = function() {
                                     )
                                   }
                                 }
-                              })
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.name
+                                ? _c(
+                                    "span",
+                                    {
+                                      staticClass: "error",
+                                      staticStyle: { color: "red" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.errors.name[0]))]
+                                  )
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
@@ -67763,7 +68023,18 @@ var render = function() {
                                     )
                                   }
                                 }
-                              })
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.description
+                                ? _c(
+                                    "span",
+                                    {
+                                      staticClass: "error",
+                                      staticStyle: { color: "red" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.errors.description[0]))]
+                                  )
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
@@ -67785,7 +68056,18 @@ var render = function() {
                                     type: "file"
                                   },
                                   on: { change: _vm.onImageChange }
-                                })
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.image
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "error",
+                                        staticStyle: { color: "red" }
+                                      },
+                                      [_vm._v(_vm._s(_vm.errors.image[0]))]
+                                    )
+                                  : _vm._e()
                               ])
                             ])
                           ]),
@@ -67931,7 +68213,18 @@ var render = function() {
                                   )
                                 }
                               }
-                            })
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.name
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass: "error",
+                                    staticStyle: { color: "red" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.errors.name[0]))]
+                                )
+                              : _vm._e()
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
@@ -67968,7 +68261,18 @@ var render = function() {
                                   )
                                 }
                               }
-                            })
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.description
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass: "error",
+                                    staticStyle: { color: "red" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.errors.description[0]))]
+                                )
+                              : _vm._e()
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
@@ -68024,7 +68328,18 @@ var render = function() {
                                         type: "file"
                                       },
                                       on: { change: _vm.onImageChangee }
-                                    })
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.errors.image
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass: "error",
+                                            staticStyle: { color: "red" }
+                                          },
+                                          [_vm._v(_vm._s(_vm.errors.image[0]))]
+                                        )
+                                      : _vm._e()
                                   ])
                                 ])
                               : _vm._e()
@@ -68322,7 +68637,18 @@ var render = function() {
                                     )
                                   }
                                 }
-                              })
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.name
+                                ? _c(
+                                    "span",
+                                    {
+                                      staticClass: "error",
+                                      staticStyle: { color: "red" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.errors.name[0]))]
+                                  )
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
@@ -68359,7 +68685,18 @@ var render = function() {
                                     )
                                   }
                                 }
-                              })
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.description
+                                ? _c(
+                                    "span",
+                                    {
+                                      staticClass: "error",
+                                      staticStyle: { color: "red" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.errors.description[0]))]
+                                  )
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group" }, [
@@ -68381,7 +68718,18 @@ var render = function() {
                                     type: "file"
                                   },
                                   on: { change: _vm.onImageChange }
-                                })
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.image
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "error",
+                                        staticStyle: { color: "red" }
+                                      },
+                                      [_vm._v(_vm._s(_vm.errors.image[0]))]
+                                    )
+                                  : _vm._e()
                               ])
                             ])
                           ]),
@@ -68527,7 +68875,18 @@ var render = function() {
                                   )
                                 }
                               }
-                            })
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.name
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass: "error",
+                                    staticStyle: { color: "red" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.errors.name[0]))]
+                                )
+                              : _vm._e()
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
@@ -68564,7 +68923,18 @@ var render = function() {
                                   )
                                 }
                               }
-                            })
+                            }),
+                            _vm._v(" "),
+                            _vm.errors.description
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass: "error",
+                                    staticStyle: { color: "red" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.errors.description[0]))]
+                                )
+                              : _vm._e()
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
@@ -68620,7 +68990,18 @@ var render = function() {
                                         type: "file"
                                       },
                                       on: { change: _vm.onImageChangee }
-                                    })
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.errors.image
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass: "error",
+                                            staticStyle: { color: "red" }
+                                          },
+                                          [_vm._v(_vm._s(_vm.errors.image[0]))]
+                                        )
+                                      : _vm._e()
                                   ])
                                 ])
                               : _vm._e()
@@ -70528,23 +70909,12 @@ var render = function() {
                           repair.slugi_repair
                       }
                     },
-                    [
-                      _vm._v(
-                        "\r\n                                " +
-                          _vm._s(repair.name) +
-                          "\r\n                            "
-                      )
-                    ]
+                    [_vm._v(_vm._s(repair.name))]
                   )
                 ]),
                 _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    "\r\n                            " +
-                      _vm._s(repair.users.name) +
-                      "\r\n                        "
-                  )
-                ]),
+                _c("td", [_vm._v(_vm._s(repair.users.name))]),
+                _vm._v(" "),
                 _c("td", [
                   repair.status === 0
                     ? _c("span", [_vm._v("W realizacji")])
@@ -70707,13 +71077,7 @@ var render = function() {
                                 {
                                   staticClass: "invalide-feedback text-danger"
                                 },
-                                [
-                                  _vm._v(
-                                    "\r\n                                        " +
-                                      _vm._s(_vm.errors.get("name")) +
-                                      "\r\n                                    "
-                                  )
-                                ]
+                                [_vm._v(_vm._s(_vm.errors.get("name")))]
                               )
                             ]),
                             _vm._v(" "),
@@ -70754,13 +71118,7 @@ var render = function() {
                                 {
                                   staticClass: "invalide-feedback text-danger"
                                 },
-                                [
-                                  _vm._v(
-                                    "\r\n                                        " +
-                                      _vm._s(_vm.errors.get("description")) +
-                                      "\r\n                                    "
-                                  )
-                                ]
+                                [_vm._v(_vm._s(_vm.errors.get("description")))]
                               )
                             ]),
                             _vm._v(" "),
@@ -70791,13 +71149,7 @@ var render = function() {
                                 {
                                   staticClass: "invalide-feedback text-danger"
                                 },
-                                [
-                                  _vm._v(
-                                    "\r\n                                        " +
-                                      _vm._s(_vm.errors.get("image")) +
-                                      "\r\n                                    "
-                                  )
-                                ]
+                                [_vm._v(_vm._s(_vm.errors.get("image")))]
                               )
                             ])
                           ]),
@@ -71061,6 +71413,40 @@ var render = function() {
                 { staticClass: "modal-dialog", attrs: { role: "document" } },
                 [
                   _c("div", { staticClass: "modal-content" }, [
+                    _c("div", { staticClass: "modal-header" }, [
+                      _c(
+                        "h5",
+                        {
+                          staticClass: "modal-title",
+                          attrs: { id: "exampleModalLabel" }
+                        },
+                        [_vm._v("Dodaj krok")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "close",
+                          attrs: {
+                            type: "button",
+                            "data-dismiss": "modal",
+                            "aria-label": "Close"
+                          },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.hide($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("span", { attrs: { "aria-hidden": "true" } }, [
+                            _vm._v("×")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "div",
                       { staticClass: "modal-body" },
@@ -71090,12 +71476,23 @@ var render = function() {
                                 _vm.name = $event.target.value
                               }
                             }
-                          })
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.name
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass: "error",
+                                  staticStyle: { color: "red" }
+                                },
+                                [_vm._v(_vm._s(_vm.errors.name[0]))]
+                              )
+                            : _vm._e()
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
                           _c("div", { staticClass: "form-group" }, [
-                            _c("label", [_vm._v("Upload Files")]),
+                            _c("label", [_vm._v("Wybierz zdjęcia")]),
                             _vm._v(" "),
                             _c("input", {
                               staticClass: "form-control",
@@ -71122,68 +71519,81 @@ var render = function() {
                           _c(
                             "div",
                             { staticClass: "field" },
-                            _vm._l(_vm.attachments, function(file, indx) {
-                              return _c(
-                                "div",
-                                {
-                                  key: indx,
-                                  class:
-                                    "level " +
-                                    (file.invalidMessage && "text-danger")
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    { staticClass: "input-group pb-2" },
-                                    [
-                                      _vm._v(
-                                        "\n                    " +
-                                          _vm._s(file.name) +
-                                          "\n                    "
-                                      ),
-                                      file.invalidMessage
-                                        ? _c("span", [
-                                            _vm._v(
-                                              " - " +
-                                                _vm._s(file.invalidMessage)
-                                            )
-                                          ])
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "form-group-append" },
-                                        [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-danger mx-2",
-                                              attrs: { type: "button" },
-                                              on: {
-                                                click: function($event) {
-                                                  $event.preventDefault()
-                                                  _vm.attachments.splice(
-                                                    indx,
-                                                    1
-                                                  )
-                                                  _vm.uploadFiles.splice(
-                                                    indx,
-                                                    1
-                                                  )
+                            [
+                              _vm._l(_vm.attachments, function(file, indx) {
+                                return _c(
+                                  "div",
+                                  {
+                                    key: indx,
+                                    class:
+                                      "level " +
+                                      (file.invalidMessage && "text-danger")
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "input-group pb-2" },
+                                      [
+                                        _vm._v(
+                                          "\n                    " +
+                                            _vm._s(file.name) +
+                                            "\n                    "
+                                        ),
+                                        file.invalidMessage
+                                          ? _c("span", [
+                                              _vm._v(
+                                                " - " +
+                                                  _vm._s(file.invalidMessage)
+                                              )
+                                            ])
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          { staticClass: "form-group-append" },
+                                          [
+                                            _c(
+                                              "button",
+                                              {
+                                                staticClass:
+                                                  "btn btn-danger mx-2",
+                                                attrs: { type: "button" },
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.preventDefault()
+                                                    _vm.attachments.splice(
+                                                      indx,
+                                                      1
+                                                    )
+                                                    _vm.uploadFiles.splice(
+                                                      indx,
+                                                      1
+                                                    )
+                                                  }
                                                 }
-                                              }
-                                            },
-                                            [_vm._v("Usuń")]
-                                          )
-                                        ]
-                                      )
-                                    ]
+                                              },
+                                              [_vm._v("Usuń")]
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                )
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.pics
+                                ? _c(
+                                    "span",
+                                    {
+                                      staticClass: "error",
+                                      staticStyle: { color: "red" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.errors.pics[0]))]
                                   )
-                                ]
-                              )
-                            }),
-                            0
+                                : _vm._e()
+                            ],
+                            2
                           )
                         ]),
                         _vm._v(" "),
@@ -71196,7 +71606,18 @@ var render = function() {
                             },
                             expression: "description"
                           }
-                        })
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.description
+                          ? _c(
+                              "span",
+                              {
+                                staticClass: "error",
+                                staticStyle: { color: "red" }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.description[0]))]
+                            )
+                          : _vm._e()
                       ],
                       1
                     ),
@@ -71245,6 +71666,40 @@ var render = function() {
                 { staticClass: "modal-dialog", attrs: { role: "document" } },
                 [
                   _c("div", { staticClass: "modal-content" }, [
+                    _c("div", { staticClass: "modal-header" }, [
+                      _c(
+                        "h5",
+                        {
+                          staticClass: "modal-title",
+                          attrs: { id: "exampleModalLabel" }
+                        },
+                        [_vm._v("Edytuj krok")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "close",
+                          attrs: {
+                            type: "button",
+                            "data-dismiss": "modal",
+                            "aria-label": "Close"
+                          },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.hideEdit($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("span", { attrs: { "aria-hidden": "true" } }, [
+                            _vm._v("×")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "div",
                       { staticClass: "modal-body" },
@@ -71273,7 +71728,18 @@ var render = function() {
                                 )
                               }
                             }
-                          })
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.name
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass: "error",
+                                  staticStyle: { color: "red" }
+                                },
+                                [_vm._v(_vm._s(_vm.errors.name[0]))]
+                              )
+                            : _vm._e()
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
@@ -71435,7 +71901,18 @@ var render = function() {
                                     )
                                   ]
                                 )
-                              })
+                              }),
+                              _vm._v(" "),
+                              _vm.errors.pics
+                                ? _c(
+                                    "span",
+                                    {
+                                      staticClass: "error",
+                                      staticStyle: { color: "red" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.errors.pics[0]))]
+                                  )
+                                : _vm._e()
                             ],
                             2
                           )
@@ -71450,7 +71927,18 @@ var render = function() {
                             },
                             expression: "update_step.description"
                           }
-                        })
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.description
+                          ? _c(
+                              "span",
+                              {
+                                staticClass: "error",
+                                staticStyle: { color: "red" }
+                              },
+                              [_vm._v(_vm._s(_vm.errors.description[0]))]
+                            )
+                          : _vm._e()
                       ],
                       1
                     ),
@@ -71645,7 +72133,18 @@ var render = function() {
                                       _vm.$set(rep, "name", $event.target.value)
                                     }
                                   }
-                                })
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.name
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "error",
+                                        staticStyle: { color: "red" }
+                                      },
+                                      [_vm._v(_vm._s(_vm.errors.name[0]))]
+                                    )
+                                  : _vm._e()
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "form-group" }, [
@@ -71682,7 +72181,22 @@ var render = function() {
                                       )
                                     }
                                   }
-                                })
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.description
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "error",
+                                        staticStyle: { color: "red" }
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.description[0])
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e()
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "form-group" }, [
@@ -71736,7 +72250,22 @@ var render = function() {
                                             type: "file"
                                           },
                                           on: { change: _vm.onImageChange }
-                                        })
+                                        }),
+                                        _vm._v(" "),
+                                        _vm.errors.image
+                                          ? _c(
+                                              "span",
+                                              {
+                                                staticClass: "error",
+                                                staticStyle: { color: "red" }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(_vm.errors.image[0])
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e()
                                       ])
                                     ])
                                   : _vm._e()

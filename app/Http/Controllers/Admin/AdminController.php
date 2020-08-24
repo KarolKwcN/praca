@@ -111,6 +111,11 @@ class AdminController extends Controller
     public function addCategory(Request $request)
     {
       
+        $this->validate($request, [
+            'name' => 'required|unique:categories',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+        ]);
+
         $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('images/kategorie/'), $imageName);
         $category = New Category;
@@ -144,6 +149,12 @@ class AdminController extends Controller
     public function updateCategory(Request $request, $id)
     {
         
+        $this->validate($request, [
+            'name' => 'required',
+            //'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+        ]);
+
+
         $category = Category::findOrFail($id);
 
         $category->name = $request->name;
@@ -196,6 +207,12 @@ class AdminController extends Controller
     public function updateBrand(Request $request, $id)
     {
 
+$this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+            //'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+        ]);
+
            $brand = Brand::findOrFail($id);
 
         $brand->name = $request->name;
@@ -215,6 +232,13 @@ class AdminController extends Controller
 
     public function addBrand(Request $request, $id)
     {
+
+        $this->validate($request, [
+            'name' => 'required|unique:brands',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+        ]);
+
         $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('images/marka/'), $imageName);
         $brand = New Brand;
@@ -267,6 +291,12 @@ class AdminController extends Controller
     public function updateDevice(Request $request, $id)
     {
 
+            $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+            //'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+        ]);
+
             $device = Device::findOrFail($id);
 
         $device->name = $request->name;
@@ -286,6 +316,13 @@ class AdminController extends Controller
 
     public function addDevice(Request $request, $id)
     {
+
+          $this->validate($request, [
+            'name' => 'required|unique:brands',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+        ]);
+
         $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('images/urzadzenie/'), $imageName);
         $device = New Device;

@@ -60,14 +60,28 @@
       >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Dodaj krok</h5>
+
+              <button
+                @click.prevent="hide"
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
             <div class="modal-body">
               <div class="form-group">
                 <input type="text" v-model="name" name="name" id="name" placeholder="Nazwa kroku" />
+                <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
               </div>
 
               <div class="form-group">
                 <div class="form-group">
-                  <label>Upload Files</label>
+                  <label>Wybierz zdjęcia</label>
                   <input
                     id="upload-file"
                     type="file"
@@ -102,9 +116,15 @@
                       </div>
                     </div>
                   </div>
+                  <span style="color:red" v-if="errors.pics" class="error">{{errors.pics[0]}}</span>
                 </div>
               </div>
               <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
+              <span
+                style="color:red"
+                v-if="errors.description"
+                class="error"
+              >{{errors.description[0]}}</span>
             </div>
             <button class="btn btn-primary" @click="uploadFile">Submit</button>
           </div>
@@ -122,9 +142,23 @@
       >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edytuj krok</h5>
+
+              <button
+                @click.prevent="hideEdit"
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
             <div class="modal-body">
               <div class="form-group">
                 <input type="text" v-model="update_step.name" name="name" id="name" />
+                <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
               </div>
 
               <div class="form-group">
@@ -182,9 +216,15 @@
                       </div>
                     </div>
                   </div>
+                  <span style="color:red" v-if="errors.pics" class="error">{{errors.pics[0]}}</span>
                 </div>
               </div>
               <vue-editor v-model="update_step.description" :editorToolbar="customToolbar"></vue-editor>
+              <span
+                style="color:red"
+                v-if="errors.description"
+                class="error"
+              >{{errors.description[0]}}</span>
             </div>
             <button class="btn btn-primary" @click="editStep">Submit</button>
           </div>
@@ -207,7 +247,7 @@ export default {
     VueEditor,
     Hooper,
     Slide,
-    HooperNavigation
+    HooperNavigation,
   },
 
   data() {
@@ -216,39 +256,44 @@ export default {
       name: "",
       description: "",
       uploadFiles: [],
+      errors: [],
       attachments: [],
-      steps: [{ repairs: [] }],
+      steps: [
+        {
+          repairs: [],
+        },
+      ],
       customToolbar: [
         ["bold", "italic", "underline"],
         [
           {
-            list: "ordered"
+            list: "ordered",
           },
           {
-            list: "bullet"
-          }
+            list: "bullet",
+          },
         ],
         [
           {
-            align: ""
+            align: "",
           },
           {
-            align: "center"
+            align: "center",
           },
           {
-            align: "right"
+            align: "right",
           },
           {
-            align: "justify"
-          }
+            align: "justify",
+          },
         ],
         [
           {
-            color: []
-          }
-        ]
+            color: [],
+          },
+        ],
       ],
-      form: new FormData()
+      form: new FormData(),
     };
   },
 
@@ -268,6 +313,7 @@ export default {
       this.uploadFiles = [...this.uploadFiles, ...attachments];
     },
     uploadFile() {
+      this.errors = [];
       for (let i = 0; i < this.attachments.length; i++) {
         this.form.append("pics[]", this.attachments[i]);
       }
@@ -275,20 +321,22 @@ export default {
       this.form.append("description", this.description);
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       };
       document.getElementById("upload-file").value = [];
       axios
         .post("/api/serwisant/naprawa/step/" + this.repair, this.form, config)
-        .then(response => {
+        .then((response) => {
           //success
           console.log(response);
           Fire.$emit("AfterChange");
           this.$modal.hide("modal-step");
         })
-        .catch(response => {
-          //error
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors;
+          }
         });
 
       this.name = "";
@@ -296,6 +344,7 @@ export default {
       this.attachments = [];
     },
     editStep() {
+      this.errors = [];
       for (let i = 0; i < this.attachments.length; i++) {
         this.form.append("pics[]", this.attachments[i]);
       }
@@ -309,8 +358,8 @@ export default {
       this.form.append("description", this.update_step.description);
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       };
 
       document.getElementById("upload-file").value = [];
@@ -320,21 +369,22 @@ export default {
           this.form,
           config
         )
-        .then(response => {
+        .then((response) => {
           //success
           console.log(response);
           Fire.$emit("AfterChange");
           this.$modal.hide("modal-update");
+          this.name = "";
+          this.description = "";
+          this.attachments = [];
+          this.update_step.imagesteps = [];
+          this.update_step = [];
         })
-        .catch(response => {
-          //error
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors;
+          }
         });
-
-      this.name = "";
-      this.description = "";
-      this.attachments = [];
-      this.update_step.imagesteps = [];
-      this.update_step = [];
     },
     deleteModal(id) {
       Swal.fire({
@@ -344,8 +394,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Tak, usuń!"
-      }).then(result => {
+        confirmButtonText: "Tak, usuń!",
+      }).then((result) => {
         if (result.value) {
           axios
             .delete("/api/serwisant/deleteStep/" + id)
@@ -368,13 +418,20 @@ export default {
     },
     hide() {
       this.$modal.hide("modal-step");
+      this.errors = [];
+      this.name = "";
+      this.description = "";
+    },
+    hideEdit() {
+      this.$modal.hide("modal-update");
+      this.errors = [];
     },
     loadSteps() {
       this.steps = [];
       axios
         .get("/api/serwisant/showSteps/" + this.repair)
-        .then(response => (this.steps = response.data));
-    }
+        .then((response) => (this.steps = response.data));
+    },
   },
   created() {
     this.loadSteps();
@@ -383,7 +440,7 @@ export default {
       this.form.delete("picss[]");
       this.form.delete("pics[]");
     });
-  }
+  },
 };
 </script>
 

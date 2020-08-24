@@ -73,7 +73,7 @@ class MessageController extends Controller
             'user_to' => $userTo,
             'user_from' => Auth::user()->id,
             'msg' => $msg,
-            'status' => 1,
+            'status' => 0,
             'conversation_id' => $conID,
             'created_at' =>  Carbon::now()->toDateTimeString()
 
@@ -129,7 +129,7 @@ class MessageController extends Controller
             'user_to' => $user_id,
             'msg' => $msg,
             'conversation_id' =>  $conID_old,
-            'status' => 1,
+            'status' => 0,
             'created_at' =>  Carbon::now()->toDateTimeString()
           ]);
           if($MsgSent){

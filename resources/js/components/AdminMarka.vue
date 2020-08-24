@@ -72,6 +72,7 @@
                       class="form-control"
                       id="recipient-name"
                     />
+                    <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
                   </div>
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Opis marki:</label>
@@ -80,6 +81,11 @@
                       class="form-control"
                       id="recipient-description"
                     ></textarea>
+                    <span
+                      style="color:red"
+                      v-if="errors.description"
+                      class="error"
+                    >{{errors.description[0]}}</span>
                   </div>
                   <div class="form-group">
                     <label class="col-md-4 control-label" for="filebutton">Wybierz zdjęcie:</label>
@@ -91,6 +97,7 @@
                         class="input-file"
                         type="file"
                       />
+                      <span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span>
                     </div>
                   </div>
                 </div>
@@ -143,6 +150,7 @@
                       class="form-control"
                       id="recipient-name"
                     />
+                    <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
                   </div>
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Opis marki:</label>
@@ -151,6 +159,11 @@
                       class="form-control"
                       id="recipient-description"
                     ></textarea>
+                    <span
+                      style="color:red"
+                      v-if="errors.description"
+                      class="error"
+                    >{{errors.description[0]}}</span>
                   </div>
                   <div class="form-group">
                     <div v-if="!isHidden" class="input-group">
@@ -177,6 +190,11 @@
                           class="input-file"
                           type="file"
                         />
+                        <span
+                          style="color:red"
+                          v-if="errors.image"
+                          class="error"
+                        >{{errors.image[0]}}</span>
                       </div>
                     </div>
                   </div>
@@ -214,8 +232,9 @@ export default {
         id: "",
         name: "",
         description: "",
-        image: null
-      })
+        image: null,
+      }),
+      errors: [],
     };
   },
   methods: {
@@ -230,19 +249,20 @@ export default {
       this.$modal.show("modal-edytuj-marke");
       this.edit_brand = this.brands.data[ind];
     },
-    removeimage: function() {
+    removeimage: function () {
       this.edit_brand.image = "";
       this.isHidden = true;
     },
     updateBrand(e) {
+      this.errors = [];
       e.preventDefault();
       let currentObj = this;
       var self = this;
 
       const config = {
         headers: {
-          "content-type": "multipart/form-data"
-        }
+          "content-type": "multipart/form-data",
+        },
       };
 
       let formData = new FormData();
@@ -252,23 +272,35 @@ export default {
 
       axios
         .post("/api/admin/updateBrand/" + this.edit_brand.id, formData, config)
-        .then(function(response) {
+        .then(function (response) {
           currentObj.success = response.data.success;
           Fire.$emit("AfterDelete");
           self.hideedit("modal-edytuj-marke");
           //window.location.reload();
         })
-        .catch(error => this.errors.record(error.response.data));
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors;
+          }
+        });
     },
     addBrand() {
+      this.errors = [];
       let formData = new FormData();
       formData.append("image", this.form.image);
       formData.append("name", this.form.name);
       formData.append("description", this.form.description);
-      axios.post("/api/admin/addBrand/" + this.category, formData).then(() => {
-        Fire.$emit("AfterDelete");
-        this.$modal.hide("modal-step");
-      });
+      axios
+        .post("/api/admin/addBrand/" + this.category, formData)
+        .then(() => {
+          Fire.$emit("AfterDelete");
+          this.$modal.hide("modal-step");
+        })
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors;
+          }
+        });
     },
     deleteBrand(id) {
       Swal.fire({
@@ -278,8 +310,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Tak, usuń!"
-      }).then(result => {
+        confirmButtonText: "Tak, usuń!",
+      }).then((result) => {
         if (result.value) {
           axios
             .delete("/api/admin/deleteBrand/" + id)
@@ -298,28 +330,31 @@ export default {
       this.$modal.show("modal-step");
     },
     hide() {
+      this.errors = [];
       this.$modal.hide("modal-step");
     },
     loadBrands() {
       axios
         .get("/api/admin/showBrands/" + this.category)
-        .then(response => (this.brands = response.data));
+        .then((response) => (this.brands = response.data));
     },
     hideedit() {
+      this.errors = [];
       this.$modal.hide("modal-edytuj-marke");
+      Fire.$emit("AfterDelete");
     },
     loadcategoryName() {
       axios
         .get("/api/admin/categoryName/" + this.category)
-        .then(response => (this.categoryName = response.data));
+        .then((response) => (this.categoryName = response.data));
     },
     getResults(page = 1) {
       axios
         .get("/api/admin/showBrands/" + this.category + "?page=" + page)
-        .then(response => {
+        .then((response) => {
           this.brands = response.data;
         });
-    }
+    },
   },
   created() {
     this.loadBrands();
@@ -328,7 +363,7 @@ export default {
       this.loadBrands();
       this.loadcategoryName();
     });
-  }
+  },
 };
 </script>
 
