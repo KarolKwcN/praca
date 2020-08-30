@@ -37,8 +37,10 @@
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item"> <a class="nav-link"
                                 href="{{ url('/naprawy') }}">Naprawy</a> </li>
-                        <li class="nav-item"> <a class="nav-link" href="#">O nas</a> </li>
-                        <li class="nav-item"> <a class="nav-link" href="#">Kontakt</a> </li>
+                        <li class="nav-item"> <a class="nav-link" href="{{ url('/onas') }}">O
+                                nas</a> </li>
+                        <li class="nav-item"> <a class="nav-link"
+                                href="{{ url('/kontakt') }}">Kontakt</a> </li>
                         @if(Auth::check())
                             @if(Auth::user()->hasRole('Admin'))
                                 <li class="nav-item"> <a class="nav-link"
@@ -61,9 +63,9 @@
                             <unread-component></unread-component>
 
 
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/logout') }}">
-                                    <i class="fas fa-user"></i></a></li>
+                                    <i class="fas fa-user"></i></a></li> -->
                             <li class="nav-item"> <a class="nav-link" href="{{ url('/logout') }}">
                                     <i class="fas fa-sign-out-alt"></i>
                                 </a> </li>
@@ -91,10 +93,14 @@
                 <div class="row">
                     <div class="col-md-12 text-center d-md-flex align-items-center">
                         <ul class="nav mx-md-auto d-flex justify-content-center">
-                            <li class="nav-item"> <a class="nav-link active" href="#">Strona główna</a> </li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Naprawy</a> </li>
-                            <li class="nav-item"> <a class="nav-link" href="#">O nas</a> </li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Kontakt</a> </li>
+                            <li class="nav-item"> <a class="nav-link active"
+                                    href="{{ url('/') }}">Strona główna</a> </li>
+                            <li class="nav-item"> <a class="nav-link"
+                                    href="{{ url('/naprawy') }}">Naprawy</a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ url('/onas') }}">O
+                                    nas</a> </li>
+                            <li class="nav-item"> <a class="nav-link"
+                                    href="{{ url('/kontakt') }}">Kontakt</a> </li>
                         </ul>
                         <div class="row">
                             <div

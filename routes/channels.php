@@ -26,4 +26,6 @@ Broadcast::channel('count', function (){
     return true;
 });
 
-
+Broadcast::channel('comments', function (){
+    return true;
+});

@@ -6,7 +6,6 @@
         <table class="table table-bordered table-striped">
           <thead>
             <tr class="text-center bg-info text-light">
-              <th>ID</th>
               <th>Imię</th>
               <th>E-Mail</th>
               <th>Ban</th>
@@ -18,7 +17,6 @@
           </thead>
           <tbody>
             <tr v-for="user in users.data" :key="user.id">
-              <td>{{user.id}}</td>
               <td>{{user.name}}</td>
               <td>{{user.email}}</td>
               <td v-if="user.banned_until === null">
@@ -92,12 +90,12 @@
 export default {
   data() {
     return {
-      users: {}
+      users: {},
     };
   },
   methods: {
     getResults(page = 1) {
-      axios.get("api/ShowUser?page=" + page).then(response => {
+      axios.get("api/ShowUser?page=" + page).then((response) => {
         this.users = response.data;
       });
     },
@@ -109,8 +107,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Tak, usuń!"
-      }).then(result => {
+        confirmButtonText: "Tak, usuń!",
+      }).then((result) => {
         if (result.value) {
           axios
             .delete("api/DeleteUser/" + id)
@@ -131,8 +129,8 @@ export default {
         icon: "success",
         title: "Rola została dodana",
         showConfirmButton: false,
-        timer: 1500
-      }).then(result => {
+        timer: 1500,
+      }).then((result) => {
         axios
           .delete("api/AddSerwisant/" + id)
           .then(() => {
@@ -150,8 +148,8 @@ export default {
         icon: "success",
         title: "Rola została dodana",
         showConfirmButton: false,
-        timer: 1500
-      }).then(result => {
+        timer: 1500,
+      }).then((result) => {
         axios
           .delete("api/AddAdmin/" + id)
           .then(() => {
@@ -169,8 +167,8 @@ export default {
         icon: "success",
         title: "Rola została usunięta",
         showConfirmButton: false,
-        timer: 1500
-      }).then(result => {
+        timer: 1500,
+      }).then((result) => {
         axios
           .delete("api/DeleteSerwisant/" + id)
           .then(() => {
@@ -188,8 +186,8 @@ export default {
         icon: "success",
         title: "Rola została usunięta",
         showConfirmButton: false,
-        timer: 1500
-      }).then(result => {
+        timer: 1500,
+      }).then((result) => {
         axios
           .delete("api/DeleteAdmin/" + id)
           .then(() => {
@@ -209,17 +207,17 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Tak!"
-      }).then(result => {
+        confirmButtonText: "Tak!",
+      }).then((result) => {
         if (result.value) {
-        axios
-          .delete("api/AddBan/" + id)
-          .then(() => {
-            Fire.$emit("AfterDelete");
-          })
-          .catch(() => {
-            Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
-          });
+          axios
+            .delete("api/AddBan/" + id)
+            .then(() => {
+              Fire.$emit("AfterDelete");
+            })
+            .catch(() => {
+              Swal("Błąd!", "Coś poszło nie tak.", "Uwaga");
+            });
         }
       });
     },
@@ -232,8 +230,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Tak!"
-      }).then(result => {
+        confirmButtonText: "Tak!",
+      }).then((result) => {
         axios
           .delete("api/DeleteBan/" + id)
           .then(() => {
@@ -246,15 +244,17 @@ export default {
     },
 
     loadUsers() {
-      axios.get("api/ShowUser").then(response => (this.users = response.data));
-    }
+      axios
+        .get("api/ShowUser")
+        .then((response) => (this.users = response.data));
+    },
   },
   created() {
     this.loadUsers();
     Fire.$on("AfterDelete", () => {
       this.loadUsers();
     });
-  }
+  },
 };
 </script>
 

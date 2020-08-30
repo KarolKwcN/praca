@@ -3494,8 +3494,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3858,6 +3856,13 @@ __webpack_require__.r(__webpack_exports__);
     this.loadComments();
     Fire.$on("AfterAddComent", function () {
       _this2.loadComments();
+    });
+  },
+  mounted: function mounted() {
+    var _this3 = this;
+
+    Echo["private"]("comments").listen("CommentsEvent", function (e) {
+      _this3.loadComments();
     });
   }
 });
@@ -4377,8 +4382,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-//
-//
 //
 //
 //
@@ -69802,8 +69805,6 @@ var render = function() {
             "tbody",
             _vm._l(_vm.users.data, function(user) {
               return _c("tr", { key: user.id }, [
-                _c("td", [_vm._v(_vm._s(user.id))]),
-                _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(user.name))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(user.email))]),
@@ -69993,8 +69994,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", { staticClass: "text-center bg-info text-light" }, [
-        _c("th", [_vm._v("ID")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Imię")]),
         _vm._v(" "),
         _c("th", [_vm._v("E-Mail")]),
@@ -70582,7 +70581,7 @@ var render = function() {
                               _c("h5", [
                                 _vm._v(
                                   "\n                    " +
-                                    _vm._s(privateMsg.name) +
+                                    _vm._s(privateMsg.email) +
                                     "\n                    "
                                 ),
                                 _c("span", { staticClass: "chat_date" }, [
@@ -70646,7 +70645,7 @@ var render = function() {
                             "div",
                             { staticClass: "chat_ib" },
                             [
-                              _c("h5", [_vm._v(_vm._s(user.name))]),
+                              _c("h5", [_vm._v(_vm._s(user.email))]),
                               _vm._v(" "),
                               _vm._l(user.roles, function(role) {
                                 return _c("p", { key: role.id }, [
@@ -71018,8 +71017,6 @@ var render = function() {
             "tbody",
             _vm._l(_vm.repairs, function(repair) {
               return _c("tr", { key: repair.id, staticClass: "text-center" }, [
-                _c("td", [_vm._v(_vm._s(repair.id))]),
-                _vm._v(" "),
                 _c("td", [
                   _c(
                     "a",
@@ -71324,8 +71321,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", { staticClass: "text-center bg-info text-light" }, [
-        _c("th", [_vm._v("Id.")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Nazwa")]),
         _vm._v(" "),
         _c("th", [_vm._v("Użytkownik")]),

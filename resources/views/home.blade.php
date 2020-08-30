@@ -89,10 +89,8 @@
                     src="images/15710.jpg"> </div>
             <div class="p-3 col-md-7 mr-auto bg-white text-dark">
                 <div class="blockquote mb-0">
-                    <p>"A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring
-                        which I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot,
-                        which was created for the bliss of souls like mine."</p>
-                    <div class="blockquote-footer"> <b>J. W. Goethe</b>, CEO at Werther Inc.</div>
+                    <p>"To smutne, że głupcy są tacy pewni siebie, a ludzie rozsądni tacy pełni wątpliwości."</p>
+                    <div class="blockquote-footer"> <b>Bertrand Russel </b></div>
                 </div>
             </div>
         </div>

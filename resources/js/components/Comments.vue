@@ -134,15 +134,15 @@ export default {
       comments: [],
       edit_comment: [],
       form: new Form({
-        comment: ""
-      })
+        comment: "",
+      }),
     };
   },
   methods: {
     loadComments() {
       axios
         .get("/api/showComments/" + this.repair)
-        .then(response => (this.comments = response.data));
+        .then((response) => (this.comments = response.data));
     },
     addComment() {
       let formData = new FormData();
@@ -160,8 +160,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Tak, usuń!"
-      }).then(result => {
+        confirmButtonText: "Tak, usuń!",
+      }).then((result) => {
         if (result.value) {
           axios
             .delete("/api/deleteComment/" + id)
@@ -185,7 +185,7 @@ export default {
       formData.append("comment", this.edit_comment.comment);
       axios
         .post("/api/updateComment/" + this.edit_comment.id, formData)
-        .then(function(response) {
+        .then(function (response) {
           Fire.$emit("AfterAddComent");
           self.hidecomment("modal-edytuj-komentarz");
           //window.location.reload();
@@ -193,14 +193,19 @@ export default {
     },
     hidecomment() {
       this.$modal.hide("modal-edytuj-komentarz");
-    }
+    },
   },
   created() {
     this.loadComments();
     Fire.$on("AfterAddComent", () => {
       this.loadComments();
     });
-  }
+  },
+  mounted() {
+    Echo.private("comments").listen("CommentsEvent", (e) => {
+      this.loadComments();
+    });
+  },
 };
 </script>
 

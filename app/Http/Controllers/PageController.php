@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\CommentsEvent;
 
 use App\User;
 use App\Role;
@@ -73,6 +74,8 @@ class PageController extends Controller
         $comment->comment = $request->comment;
       
         $comment->save();
+        $user = User::find(Auth::id());
+        event(new CommentsEvent($user,$comment));
         
     
     }
@@ -91,6 +94,8 @@ class PageController extends Controller
       
 
         $comment->update();
+        $user = User::find(Auth::id());
+        event(new CommentsEvent($user,$comment));
 
     }
 

@@ -8,7 +8,6 @@
         <table class="table table-bordered table-striped">
           <thead>
             <tr class="text-center bg-info text-light">
-              <th>Id.</th>
               <th>Nazwa</th>
               <th>Użytkownik</th>
               <th>Status</th>
@@ -18,7 +17,6 @@
           </thead>
           <tbody>
             <tr v-for="repair in repairs" :key="repair.id" class="text-center">
-              <td>{{repair.id}}</td>
               <td>
                 <a
                   :href="`/serwisant/naprawa/`+device+`/`+repair.id+`/`+repair.slugi_repair"

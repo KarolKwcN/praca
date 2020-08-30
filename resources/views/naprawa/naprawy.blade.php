@@ -22,31 +22,28 @@
         </div>
     </div>
 </div>
-<div class="py-5">
+
+
+<div class="py-4 text-center">
     <div class="container">
+
+        <h1>{{ $device->name }}</h1>
         <div class="row">
-            <div class="col-md-12 text-center">
-                <h1>{{ $device->name }}</h1>
-            </div>
-        </div>
-        <div class="row justify-content-center">
             @foreach($repairs as $repair)
-                <div class="col-lg-5 col-md-6 p-3">
-                    <div class="row">
-                        <div class="col-3 p-0">
+                <div class="h-25 col-lg-2">
+                    <div class="card">
+                        <div class="card-body p-1 m-1">
                             <a
                                 href="{{ url('/naprawa',[$category->slug, $brand->slugi, $device->slugii, $repair->id, $repair->slugi_repair]) }}">
-                                <img class="img-fluid d-block" src="{{ $repair->image }}"> </div>
-                        <div class="col-9">
-                            <p class="mb-0">{{ $repair->name }}</p>
+                                <img class="img-fluid d-block mb-0 mx-auto img-thumbnail" src="{{ $repair->image }}"
+                                    width="150">
+                                <h5>{{ $repair->name }}</h5>
                             </a>
                         </div>
-
                     </div>
                 </div>
             @endforeach
-        </div>
 
+        </div>
     </div>
-</div>
-@endsection
+    @endsection

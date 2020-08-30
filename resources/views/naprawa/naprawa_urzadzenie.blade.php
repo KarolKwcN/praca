@@ -19,7 +19,7 @@
         </div>
     </div>
 </div>
-<<div class="py-4 text-center">
+<div class="py-4 text-center">
     <div class="container">
 
         <h1>{{ $brand->name }}</h1>
@@ -41,5 +41,5 @@
 
         </div>
     </div>
-    </>
+
     @endsection

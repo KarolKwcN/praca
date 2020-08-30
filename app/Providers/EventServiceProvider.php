@@ -25,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
            'App\Events\MessageCount' => [
             'App\Listeners\MessageCountListener'
         ],
+             'App\Events\CommentsEvent' => [
+            'App\Listeners\CommentsListener'
+        ],
     ];
 
     /**
