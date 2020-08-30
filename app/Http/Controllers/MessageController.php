@@ -221,4 +221,18 @@ class MessageController extends Controller
 
     return  $count;
     }
+
+    public function getCountmessages($id){
+
+        $count = DB::table('messages')
+    ->where('status',0)
+    ->where('user_to', Auth::user()->id)
+    ->where('user_from', $id)
+    ->count();
+
+      
+
+    return  $count;
+
+    }
 }

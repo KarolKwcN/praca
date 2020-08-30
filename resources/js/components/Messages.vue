@@ -62,7 +62,7 @@
                       </span>
                     </h5>
                     <p v-for="role in privateMsg.roles" :key="role.id">{{ role.name }}</p>
-                    <span style="float:right" class="chat_date">Wiadomości</span>
+                    <countmessages-component :uzytkownik_id="privateMsg.id"></countmessages-component>
                   </div>
                 </div>
               </div>

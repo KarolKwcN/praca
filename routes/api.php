@@ -102,6 +102,8 @@ Route::get('/getMessages/{id}','MessageController@getMessagesID');
 
 Route::get('/messagecount','MessageController@getCount');
 
+Route::get('/countmessages/{id}','MessageController@getCountmessages');
+
 
 
 

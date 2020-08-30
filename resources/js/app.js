@@ -62,6 +62,12 @@ Vue.component(
     require("./components/Unread.vue").default
 );
 
+Vue.component(
+    "countmessages-component",
+    require("./components/CountMessages.vue").default
+);
+
+
 
 
 Vue.component("pagination", require("laravel-vue-pagination"));

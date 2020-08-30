@@ -438,3 +438,7 @@ Route::get('/Wyszukane', [
 
 Route::get('api/messagecount','MessageController@getCount');
 
+Route::get('api/countmessages/{id}','MessageController@getCountmessages');
+        
+
+
