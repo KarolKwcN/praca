@@ -22,4 +22,8 @@ Broadcast::channel('message', function (){
     return true;
 });
 
+Broadcast::channel('count', function (){
+    return true;
+});
+
 

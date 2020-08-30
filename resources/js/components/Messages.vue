@@ -8,7 +8,7 @@
             <div class="headind_srch">
               <div class="recent_heading">
                 <h4 v-if="newMessage == false">Ostatnie</h4>
-                <h4 v-else>Wszystkie</h4>
+                <h4 v-else>Wszyscy użytkownicy</h4>
               </div>
               <div class="srch_bar">
                 <div v-if="newMessage == false" class="stylish-input-group">
@@ -17,8 +17,7 @@
                     class="btn btn new-message"
                     style="background:#05728f; color:#fff"
                   >
-                    <i class="fa fa-envelope"></i> Nowa
-                    wiadomość
+                    <i class="fa fa-envelope"></i> Wszyscy użytkownicy
                   </a>
                 </div>
                 <div v-else class="stylish-input-group">
@@ -27,7 +26,7 @@
                     class="btn btn new-message"
                     style="background:#05728f; color:#fff"
                   >
-                    <i class="fa fa-envelope"></i> Ostatnie
+                    <i class="fa fa-envelope"></i> Ostatnie wiaodmości
                   </a>
                 </div>
               </div>
@@ -56,13 +55,14 @@
                         privateMsg.updated_at
                         )
                         | dateFormat(
-                        "MMM.DD HH:mm:ss",
+                        "MMM. DD HH:mm:ss",
                         dateFormatConfig
                         )
                         }}
                       </span>
                     </h5>
                     <p v-for="role in privateMsg.roles" :key="role.id">{{ role.name }}</p>
+                    <span style="float:right" class="chat_date">Wiadomości</span>
                   </div>
                 </div>
               </div>

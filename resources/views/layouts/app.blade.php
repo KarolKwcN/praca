@@ -58,6 +58,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/wiadomosci') }}">
                                     <i class="fas fa-envelope"></i></a></li>
+                            <unread-component></unread-component>
+
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/logout') }}">
                                     <i class="fas fa-user"></i></a></li>

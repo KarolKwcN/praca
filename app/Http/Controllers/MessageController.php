@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 use App\User;
 use App\Role;
+use App\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Carbon\Carbon;
 use App\Events\MessageEvent;
+use App\Events\MessageCount;
 
 class MessageController extends Controller
 {
@@ -22,7 +24,20 @@ class MessageController extends Controller
     ->select('users.*','conversation.updated_at')
     ->Join('conversation','users.id','conversation.user_two')
     ->where('conversation.user_one',Auth::user()->id)->get();
-    return array_merge($allUsers1->toArray(), $allUsers2->toArray());
+
+
+     $arr = array_merge($allUsers1->toArray(), $allUsers2->toArray());
+
+      foreach ($arr as $key => $row) {
+      $a[$key]  = $row['updated_at'];
+      $b[$key] = $row['updated_at'];
+}
+
+  array_multisort($a, SORT_DESC, $b, SORT_DESC, $arr);
+
+    
+
+    return $arr;
     }
 
     public function getMessagesID($id){
@@ -46,6 +61,16 @@ class MessageController extends Controller
                   'users.name',            
           )
         ->get();
+
+
+        Message::where('status',0)
+        ->where('user_to', Auth::user()->id)
+        ->where('user_from', $id)
+        ->update(["status" => "1"]);
+
+        $user = User::find(Auth::id());
+         event(new MessageCount($user));
+
         return $userMsg;
          }
     }
@@ -65,7 +90,7 @@ class MessageController extends Controller
         // fetch user_to
         $fetch_userTo = DB::table('messages')->where('conversation_id', $conID)
         ->get();
-          $userTo = $fetch_userTo[0]->user_to;
+          $userTo = $fetch_userTo[0]->user_from;
         }
   
           // now send message
@@ -89,6 +114,7 @@ class MessageController extends Controller
 
             $user = User::find(Auth::id());
             event(new MessageEvent($msg,$user));
+            event(new MessageCount($user));
 
             return $userMsg;
           }
@@ -100,6 +126,7 @@ class MessageController extends Controller
         $allUsers = User::with('roles')
         ->select('users.*')
         ->where('id', '!=', Auth::user()->id)
+        ->orderBy('name', 'ASC')
         ->get();
 
         return $allUsers;
@@ -143,6 +170,7 @@ class MessageController extends Controller
 
              $user = User::find(Auth::id());
             event(new MessageEvent($msg,$user));
+            event(new MessageCount($user));
 
             return $userMsg;
           }
@@ -161,7 +189,7 @@ class MessageController extends Controller
             'user_to' => $user_id,
             'msg' => $msg,
             'conversation_id' =>  $conID_new,
-            'status' => 1,
+            'status' => 0,
             'created_at' =>  Carbon::now()->toDateTimeString()
           ]);
               if($MsgSent){
@@ -175,10 +203,22 @@ class MessageController extends Controller
 
              $user = User::find(Auth::id());
             event(new MessageEvent($msg,$user));
+            event(new MessageCount($user));
 
             return $userMsg;
           }
         }
          
+    }
+
+    public function getCount(){
+       $count = DB::table('messages')
+    ->where('status',0)
+    ->where('user_to', Auth::user()->id)
+    ->count();
+
+      
+
+    return  $count;
     }
 }

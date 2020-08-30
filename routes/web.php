@@ -431,9 +431,10 @@ Route::get('/getUsers', 'MessageController@getUsers')->middleware('verified');
 Route::post('/sendNewMessage', 'MessageController@sendNewMessage')->middleware('verified');
 
 
-
-
 Route::get('/Wyszukane', [
     'uses' => 'PageController@szukaj',
     'as' => 'wyszukaj.naprawe',
 ]);
+
+Route::get('api/messagecount','MessageController@getCount');
+
