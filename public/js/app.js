@@ -4937,6 +4937,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4956,7 +4963,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       name: "",
       description: "",
       uploadFiles: [],
-      errors: [],
+      errors: {},
       attachments: [],
       picsss: "",
       steps: [{
@@ -4982,7 +4989,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   methods: {
     fieldChange: function fieldChange(e) {
-      this.errors = [];
+      //this.errors = [];
       var selectedFiles = e.target.files;
 
       if (!selectedFiles.length) {
@@ -71644,12 +71651,19 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _vm._l(_vm.errors, function(result, index) {
-                        return _c("ul", { key: index }, [
-                          _c("li", { staticClass: "text-danger" }, [
-                            _vm._v(_vm._s(result))
-                          ])
-                        ])
+                      _vm._l(_vm.errors, function(error) {
+                        return _c(
+                          "div",
+                          { key: error.id },
+                          _vm._l(error, function(err) {
+                            return _c("ul", { key: err.id }, [
+                              _c("li", { staticClass: "text-danger" }, [
+                                _vm._v(_vm._s(err))
+                              ])
+                            ])
+                          }),
+                          0
+                        )
                       }),
                       _vm._v(" "),
                       _c(
@@ -71703,7 +71717,7 @@ var render = function() {
                               _c("input", {
                                 attrs: {
                                   type: "button",
-                                  value: "Browse...",
+                                  value: "Przeglądaj...",
                                   onclick:
                                     "document.getElementById('upload-file').click();"
                                 }
@@ -71890,13 +71904,31 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _vm._l(_vm.errors, function(result, index) {
-                        return _c("ul", { key: index }, [
-                          _c("li", { staticClass: "text-danger" }, [
-                            _vm._v(_vm._s(result))
-                          ])
-                        ])
+                      _vm._l(_vm.errors, function(error) {
+                        return _c(
+                          "div",
+                          { key: error.id },
+                          _vm._l(error, function(err) {
+                            return _c("ul", { key: err.id }, [
+                              _c("li", { staticClass: "text-danger" }, [
+                                _vm._v(_vm._s(err))
+                              ])
+                            ])
+                          }),
+                          0
+                        )
                       }),
+                      _vm._v(" "),
+                      _vm.errors.pics
+                        ? _c(
+                            "span",
+                            {
+                              staticClass: "error",
+                              staticStyle: { color: "red" }
+                            },
+                            [_vm._v(_vm._s(_vm.errors.name[0]))]
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -71931,7 +71963,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
                             _c("div", { staticClass: "form-group" }, [
-                              _c("label", [_vm._v("Upload Files")]),
+                              _c("label", [_vm._v("Wybierz zdjęcia")]),
                               _vm._v(" "),
                               _c("input", {
                                 staticClass: "form-control",
@@ -71948,7 +71980,7 @@ var render = function() {
                               _c("input", {
                                 attrs: {
                                   type: "button",
-                                  value: "Browse...",
+                                  value: "Przeglądaj...",
                                   onclick:
                                     "document.getElementById('upload-file').click();"
                                 }
@@ -72153,7 +72185,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("input", {
                           staticClass: "btn btn-primary",
-                          attrs: { type: "submit", value: "Dodaj" },
+                          attrs: { type: "submit", value: "Edytuj" },
                           on: { click: _vm.editStep }
                         })
                       ])

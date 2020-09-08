@@ -106,9 +106,9 @@ class SerwisantController extends Controller
     {
                  $messages = [
                     "pics.max" => "Maksymalnie mogą być 3 zdjęcia.",
-                    "pics.required" => "Zdjęcia są wymagane.",
+                    "pics.required" => "Zdjęcia są wymagane",
                     "pics.*.max" => "Zdjęcie może mieć maksymalnie 1 mb",
-                    "pics.*.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg.",
+                    "pics.*.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg",
                     "pics.*.image" => "Zdjęcie musi być obrazkiem",
                     "name.required" => 'Nazwa kroku jest wymagana',
                     "description.required" => "Opis jest wymagany"
@@ -174,11 +174,11 @@ class SerwisantController extends Controller
 
         $messages = [
                     "picsss.max" => "Maksymalnie mogą być 3 zdjęcia.",
-                    "picsss.required" => "Zdjęcia są wymagane.",
+                    "picsss.required" => "Zdjęcia są wymagane",
                     "name.required" => 'Nazwa kroku jest wymagana',
                     "description.required" => "Opis jest wymagany",
                     "pics.*.max" => "Zdjęcie może mieć maksymalnie 1 mb",
-                    "pics.*.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg.",
+                    "pics.*.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg",
                     "pics.*.image" => "Zdjęcie musi być obrazkiem",
                 ];
             

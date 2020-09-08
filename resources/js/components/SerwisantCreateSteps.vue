@@ -79,9 +79,12 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <ul v-for="(result, index) in errors" :key="index">
-              <li class="text-danger">{{ result }}</li>
-            </ul>
+            <div v-for="error in errors" :key="error.id">
+              <ul v-for="err in error" :key="err.id">
+                <li class="text-danger">{{ err }}</li>
+              </ul>
+            </div>
+
             <div class="modal-body">
               <div class="form-group">
                 <input type="text" v-model="name" name="name" id="name" placeholder="Nazwa kroku" />
@@ -102,7 +105,7 @@
                   />
                   <input
                     type="button"
-                    value="Browse..."
+                    value="Przeglądaj..."
                     onclick="document.getElementById('upload-file').click();"
                   />
                 </div>
@@ -173,9 +176,13 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <ul v-for="(result, index) in errors" :key="index">
-              <li class="text-danger">{{ result }}</li>
-            </ul>
+            <div v-for="error in errors" :key="error.id">
+              <ul v-for="err in error" :key="err.id">
+                <li class="text-danger">{{ err }}</li>
+              </ul>
+            </div>
+
+            <span style="color:red" v-if="errors.pics" class="error">{{errors.name[0]}}</span>
             <div class="modal-body">
               <div class="form-group">
                 <input type="text" v-model="update_step.name" name="name" id="name" />
@@ -184,7 +191,7 @@
 
               <div class="form-group">
                 <div class="form-group">
-                  <label>Upload Files</label>
+                  <label>Wybierz zdjęcia</label>
                   <input
                     id="upload-file"
                     type="file"
@@ -196,7 +203,7 @@
                   />
                   <input
                     type="button"
-                    value="Browse..."
+                    value="Przeglądaj..."
                     onclick="document.getElementById('upload-file').click();"
                   />
                 </div>
@@ -253,7 +260,7 @@
                 class="btn btn-secondary"
                 data-dismiss="modal"
               >Zamknij</button>
-              <input type="submit" @click="editStep" value="Dodaj" class="btn btn-primary" />
+              <input type="submit" @click="editStep" value="Edytuj" class="btn btn-primary" />
             </div>
           </div>
         </div>
@@ -284,7 +291,7 @@ export default {
       name: "",
       description: "",
       uploadFiles: [],
-      errors: [],
+      errors: {},
       attachments: [],
       picsss: "",
       steps: [
@@ -328,7 +335,7 @@ export default {
 
   methods: {
     fieldChange(e) {
-      this.errors = [];
+      //this.errors = [];
       let selectedFiles = e.target.files;
       if (!selectedFiles.length) {
         return false;
