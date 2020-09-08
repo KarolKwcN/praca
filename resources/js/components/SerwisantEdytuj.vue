@@ -4,7 +4,7 @@
       <button type="button" @click.prevent="show" class="btn btn-primary">Edytuj</button>
       <button type="button" @click="endRepair" class="btn btn-success">Przekaż do zaakceptowania</button>
     </span>
-    <modal name="modal-edytuj-naprawe" height="auto" classes="demo-modal-class">
+    <modal name="modal-edytuj-naprawe" height="auto" classes="demo-modal-class" @closed="Closed">
       <div
         id="exampleModal"
         tabindex="-1"
@@ -125,6 +125,7 @@ export default {
     hide() {
       this.$modal.hide("modal-edytuj-naprawe");
       this.errors = [];
+      Fire.$emit("AfterLoadRepair");
     },
     editRepair(e) {
       this.errors = [];
@@ -199,6 +200,10 @@ export default {
             });
         }
       });
+    },
+    Closed(event) {
+      this.isHidden = false;
+      Fire.$emit("AfterLoadRepair");
     },
   },
   created() {

@@ -17,13 +17,17 @@ use App\ImageStep;
 Route::get('/', function () {
      $repair = Repair::with('steps')->where('accept', '1')->orderBY('id','desc')->first();
 
-     $step_id = $repair->steps[0]->id;
 
-    $images = ImageStep::where('step_id', $step_id)->orderBY('id', 'asc')->get();
+    if($repair){
+          $step_id = $repair->steps[0]->id;
 
-    
+          $images = ImageStep::where('step_id', $step_id)->orderBY('id', 'asc')->get();
 
-        return view('home', compact('repair', 'images'));
+
+             return view('home', compact('repair', 'images'));
+          }else{
+            return view('home');  
+          }
     
 });
 
@@ -309,7 +313,7 @@ Route::get('/api/serwisant/showRepairs/{id}', [
     'uses' => 'Serwisant\SerwisantController@showRepairs',
     'as' => 'serwisant.showrepairs',
     'middleware' => 'roles',
-    'roles' => ['Serwisant']
+    'roles' => ['Admin', 'Serwisant']
 ]);
 
 Route::get('serwisant/naprawa/{device}/{id}/{slugi_repair}', [

@@ -13,11 +13,21 @@
         <div class="row">
             @foreach($categories as $category)
 
-                <div class="col-md-3 col-6 p-5 text-center">
-                    <a href="{{ url('/naprawy', $category->slug) }}">
-                        <img class="img-fluid mx-auto d-block img-responsive" src="{{ $category->image }}">
-                        <h4 class="mt-3 mb-0"> <b>{{ $category->name }}&nbsp;</b> </h4>
-                    </a>
+                <div class="col-lg-2 col-md-2 m-2" style="">
+
+                    <div class="row">
+                        <div class="col-3 col-md-12 p-2 border" style="">
+                            <a href="{{ url('/naprawy', $category->slug) }}">
+                                <img style="max-width: 100%;
+                                height: 150px;" src="{{ $category->image }}" style="">
+                                <div class="col-9 col-md-12">
+                                    <p class="lead mb-1"> <b>{{ $category->name }}</b> </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+
                 </div>
 
             @endforeach

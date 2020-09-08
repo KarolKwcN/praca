@@ -44,7 +44,9 @@
                                     <td><a
                                             href="{{ route('serwisant_urzadzenie', ['slug'=> $category->slug , 'slugi' => $brand->slugi, 'slugii' => $device->slugii]) }}">{{ $device->name }}</a>
                                     </td>
-                                    <td><a href="">{{ $device->description }}</a></td>
+                                    <td>
+                                        <p>{{ $device->description }}</p>
+                                    </td>
                                 </tr>
 
                             @endforeach

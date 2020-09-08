@@ -104,16 +104,24 @@ class SerwisantController extends Controller
 
     public function addStepRepair(Request $request,$repair)
     {
-                $messages = [
+                 $messages = [
                     "pics.max" => "Maksymalnie mogą być 3 zdjęcia.",
-                    "pics.required" => "Zdjęcia są wymagane."
+                    "pics.required" => "Zdjęcia są wymagane.",
+                    "pics.*.max" => "Zdjęcie może mieć maksymalnie 1 mb",
+                    "pics.*.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg.",
+                    "pics.*.image" => "Zdjęcie musi być obrazkiem",
+                    "name.required" => 'Nazwa kroku jest wymagana',
+                    "description.required" => "Opis jest wymagany"
                 ];
-
+                
           $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-              'pics' => 'required|max:3',
-        ],$messages);
+              'pics.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+              'pics' => 'required|max:3'
+        ]
+        ,$messages
+                );
 
 
 
@@ -164,16 +172,26 @@ class SerwisantController extends Controller
     public function updatestep(Request $request, $id )
     {
 
-      $messages = [
-                    "pics.max" => "Maksymalnie mogą być 3 zdjęcia.",
-                    //"pics.required" => "Zdjęcia są wymagane."
+        $messages = [
+                    "picsss.max" => "Maksymalnie mogą być 3 zdjęcia.",
+                    "picsss.required" => "Zdjęcia są wymagane.",
+                    "name.required" => 'Nazwa kroku jest wymagana',
+                    "description.required" => "Opis jest wymagany",
+                    "pics.*.max" => "Zdjęcie może mieć maksymalnie 1 mb",
+                    "pics.*.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg.",
+                    "pics.*.image" => "Zdjęcie musi być obrazkiem",
                 ];
-
+            
           $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-              'pics' => 'max:3',
-        ],$messages);
+              'picsss' => 'required|numeric|max:3',
+              'pics.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+        ]
+        ,$messages
+                );
+
+                
 
 
         $step = Step::findOrFail($id);

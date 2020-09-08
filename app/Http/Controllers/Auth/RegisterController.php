@@ -95,12 +95,12 @@ class RegisterController extends Controller
     if(!$user->verified) {
       $verifyUser->user->verified = 1;
       $verifyUser->user->save();
-      $status = "Your e-mail is verified. You can now login.";
+      $status = "Twój e-mail jest zweryfikowany. Możesz się teraz zalogować.";
     } else {
-      $status = "Your e-mail is already verified. You can now login.";
+      $status = "Twój adres e-mail jest już zweryfikowany. Możesz się teraz zalogować.";
     }
   } else {
-    return redirect('/login')->with('warning', "Sorry your email cannot be identified.");
+    return redirect('/login')->with('warning', "Przepraszamy, nie można zidentyfikować Twojego adresu e-mail.");
   }
   return redirect('/login')->with('status', $status);
 
@@ -109,7 +109,7 @@ class RegisterController extends Controller
 protected function registered(Request $request, $user)
 {
   $this->guard()->logout();
-  return redirect('/login')->with('status', 'We sent you an activation code. Check your email and click on the link to verify.');
+  return redirect('/login')->with('status', 'Wysłaliśmy Ci kod aktywacyjny. Sprawdź swoją skrzynkę e-mail i kliknij link, aby zweryfikować.');
 }
 
 }

@@ -133,6 +133,7 @@ export default {
     return {
       comments: [],
       edit_comment: [],
+      repairr: {},
       form: new Form({
         comment: "",
       }),
@@ -143,6 +144,11 @@ export default {
       axios
         .get("/api/showComments/" + this.repair)
         .then((response) => (this.comments = response.data));
+    },
+    loadRepair() {
+      axios
+        .get("/api/serwisant/showRepair/" + this.repair)
+        .then((response) => (this.repairr = response.data));
     },
     addComment() {
       let formData = new FormData();
@@ -197,6 +203,7 @@ export default {
   },
   created() {
     this.loadComments();
+    this.loadRepair();
     Fire.$on("AfterAddComent", () => {
       this.loadComments();
     });

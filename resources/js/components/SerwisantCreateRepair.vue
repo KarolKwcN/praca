@@ -32,7 +32,11 @@
                 <span v-else>Tak</span>
               </td>
               <td>
-                <a href="#" @click="deleterepair(repair.id)">
+                <a
+                  v-if="repair.user_id === user_id || isadmin"
+                  href="#"
+                  @click="deleterepair(repair.id)"
+                >
                   <button type="button" class="btn btn-danger">
                     <i class="far fa-trash-alt"></i>
                   </button>
@@ -149,7 +153,7 @@ import Vue from "vue";
 import Form from "vform";
 import { required, minLength } from "vuelidate/lib/validators";
 export default {
-  props: ["device"],
+  props: ["device", "user_id", "isadmin"],
   data() {
     return {
       image: "",

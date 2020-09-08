@@ -3792,6 +3792,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       comments: [],
       edit_comment: [],
+      repairr: {},
       form: new vform__WEBPACK_IMPORTED_MODULE_1___default.a({
         comment: ""
       })
@@ -3803,6 +3804,13 @@ __webpack_require__.r(__webpack_exports__);
 
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/api/showComments/" + this.repair).then(function (response) {
         return _this.comments = response.data;
+      });
+    },
+    loadRepair: function loadRepair() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/api/serwisant/showRepair/" + this.repair).then(function (response) {
+        return _this2.repairr = response.data;
       });
     },
     addComment: function addComment() {
@@ -3851,18 +3859,19 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.loadComments();
+    this.loadRepair();
     Fire.$on("AfterAddComent", function () {
-      _this2.loadComments();
+      _this3.loadComments();
     });
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     Echo["private"]("comments").listen("CommentsEvent", function (e) {
-      _this3.loadComments();
+      _this4.loadComments();
     });
   }
 });
@@ -4512,6 +4521,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 //
 //
 //
+//
+//
+//
+//
 var Errors = /*#__PURE__*/function () {
   function Errors() {
     _classCallCheck(this, Errors);
@@ -4540,7 +4553,7 @@ var Errors = /*#__PURE__*/function () {
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["device"],
+  props: ["device", "user_id", "isadmin"],
   data: function data() {
     return {
       image: "",
@@ -4896,6 +4909,34 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4917,6 +4958,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       uploadFiles: [],
       errors: [],
       attachments: [],
+      picsss: "",
       steps: [{
         repairs: []
       }],
@@ -4940,6 +4982,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   methods: {
     fieldChange: function fieldChange(e) {
+      this.errors = [];
       var selectedFiles = e.target.files;
 
       if (!selectedFiles.length) {
@@ -4953,12 +4996,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       console.log(this.attachments);
     },
     selectFile: function selectFile() {
+      this.errors = [];
       var attachments = this.$refs.attachments.attachments;
       this.uploadFiles = [].concat(_toConsumableArray(this.uploadFiles), _toConsumableArray(attachments));
     },
     uploadFile: function uploadFile() {
       var _this = this;
 
+      this.form["delete"]("pics[]");
       this.errors = [];
 
       for (var i = 0; i < this.attachments.length; i++) {
@@ -4991,18 +5036,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     editStep: function editStep() {
       var _this2 = this;
 
+      this.form["delete"]("pics[]");
+      this.form["delete"]("picss[]");
       this.errors = [];
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.form.append("pics[]", this.attachments[i]);
+        this.picsss++;
       }
 
       for (var _i = 0; _i < this.update_step.imagesteps.length; _i++) {
         this.form.append("picss[]", this.update_step.imagesteps[_i].image);
+        this.picsss++;
       }
 
       this.form.append("id", this.update_step.id);
       this.form.append("name", this.update_step.name);
+      this.form.append("picsss", this.picsss);
       this.form.append("description", this.update_step.description);
       var config = {
         headers: {
@@ -5022,9 +5072,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this2.attachments = [];
         _this2.update_step.imagesteps = [];
         _this2.update_step = [];
+        _this2.picsss = "";
       })["catch"](function (error) {
         if (error.response.status == 422) {
           _this2.errors = error.response.data.errors;
+          _this2.picsss = "";
         }
       });
     },
@@ -5052,18 +5104,32 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.$modal.show("modal-update");
       this.update_step = this.steps[indx];
     },
+    Closed: function Closed(event) {
+      this.errors = [];
+      this.attachments = [];
+      this.name = "";
+      this.description = "";
+    },
+    editClosed: function editClosed(event) {
+      this.attachments = [];
+      Fire.$emit("AfterChange");
+    },
     show: function show() {
       this.$modal.show("modal-step");
     },
     hide: function hide() {
       this.$modal.hide("modal-step");
       this.errors = [];
+      this.attachments = [];
       this.name = "";
       this.description = "";
     },
     hideEdit: function hideEdit() {
       this.$modal.hide("modal-update");
       this.errors = [];
+      this.name = "";
+      this.description = "";
+      Fire.$emit("AfterChange");
     },
     loadSteps: function loadSteps() {
       var _this3 = this;
@@ -5228,6 +5294,7 @@ __webpack_require__.r(__webpack_exports__);
     hide: function hide() {
       this.$modal.hide("modal-edytuj-naprawe");
       this.errors = [];
+      Fire.$emit("AfterLoadRepair");
     },
     editRepair: function editRepair(e) {
       var _this = this;
@@ -5297,6 +5364,10 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       });
+    },
+    Closed: function Closed(event) {
+      this.isHidden = false;
+      Fire.$emit("AfterLoadRepair");
     }
   },
   created: function created() {
@@ -71050,18 +71121,20 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", [
-                  _c(
-                    "a",
-                    {
-                      attrs: { href: "#" },
-                      on: {
-                        click: function($event) {
-                          return _vm.deleterepair(repair.id)
-                        }
-                      }
-                    },
-                    [_vm._m(1, true)]
-                  )
+                  repair.user_id === _vm.user_id || _vm.isadmin
+                    ? _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleterepair(repair.id)
+                            }
+                          }
+                        },
+                        [_vm._m(1, true)]
+                      )
+                    : _vm._e()
                 ])
               ])
             }),
@@ -71513,7 +71586,8 @@ var render = function() {
             name: "modal-step",
             height: "auto",
             classes: "demo-modal-class"
-          }
+          },
+          on: { closed: _vm.Closed }
         },
         [
           _c(
@@ -71532,114 +71606,113 @@ var render = function() {
                 "div",
                 { staticClass: "modal-dialog", attrs: { role: "document" } },
                 [
-                  _c("div", { staticClass: "modal-content" }, [
-                    _c("div", { staticClass: "modal-header" }, [
-                      _c(
-                        "h5",
-                        {
-                          staticClass: "modal-title",
-                          attrs: { id: "exampleModalLabel" }
-                        },
-                        [_vm._v("Dodaj krok")]
-                      ),
+                  _c(
+                    "div",
+                    { staticClass: "modal-content" },
+                    [
+                      _c("div", { staticClass: "modal-header" }, [
+                        _c(
+                          "h5",
+                          {
+                            staticClass: "modal-title",
+                            attrs: { id: "exampleModalLabel" }
+                          },
+                          [_vm._v("Dodaj krok")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "close",
+                            attrs: {
+                              type: "button",
+                              "data-dismiss": "modal",
+                              "aria-label": "Close"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.hide($event)
+                              }
+                            }
+                          },
+                          [
+                            _c("span", { attrs: { "aria-hidden": "true" } }, [
+                              _vm._v("×")
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.errors, function(result, index) {
+                        return _c("ul", { key: index }, [
+                          _c("li", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(result))
+                          ])
+                        ])
+                      }),
                       _vm._v(" "),
                       _c(
-                        "button",
-                        {
-                          staticClass: "close",
-                          attrs: {
-                            type: "button",
-                            "data-dismiss": "modal",
-                            "aria-label": "Close"
-                          },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.hide($event)
-                            }
-                          }
-                        },
+                        "div",
+                        { staticClass: "modal-body" },
                         [
-                          _c("span", { attrs: { "aria-hidden": "true" } }, [
-                            _vm._v("×")
-                          ])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "modal-body" },
-                      [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.name,
-                                expression: "name"
-                              }
-                            ],
-                            attrs: {
-                              type: "text",
-                              name: "name",
-                              id: "name",
-                              placeholder: "Nazwa kroku"
-                            },
-                            domProps: { value: _vm.name },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.name = $event.target.value
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.name
-                            ? _c(
-                                "span",
-                                {
-                                  staticClass: "error",
-                                  staticStyle: { color: "red" }
-                                },
-                                [_vm._v(_vm._s(_vm.errors.name[0]))]
-                              )
-                            : _vm._e()
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
                           _c("div", { staticClass: "form-group" }, [
-                            _c("label", [_vm._v("Wybierz zdjęcia")]),
-                            _vm._v(" "),
                             _c("input", {
-                              staticClass: "form-control",
-                              staticStyle: { display: "none" },
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.name,
+                                  expression: "name"
+                                }
+                              ],
                               attrs: {
-                                id: "upload-file",
-                                type: "file",
-                                accept: "image/*",
-                                multiple: ""
+                                type: "text",
+                                name: "name",
+                                id: "name",
+                                placeholder: "Nazwa kroku"
                               },
-                              on: { change: _vm.fieldChange }
-                            }),
-                            _vm._v(" "),
-                            _c("input", {
-                              attrs: {
-                                type: "button",
-                                value: "Browse...",
-                                onclick:
-                                  "document.getElementById('upload-file').click();"
+                              domProps: { value: _vm.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.name = $event.target.value
+                                }
                               }
                             })
                           ]),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "field" },
-                            [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [_vm._v("Wybierz zdjęcia")]),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass: "form-control",
+                                staticStyle: { display: "none" },
+                                attrs: {
+                                  id: "upload-file",
+                                  type: "file",
+                                  accept: "image/*",
+                                  multiple: ""
+                                },
+                                on: { change: _vm.fieldChange }
+                              }),
+                              _vm._v(" "),
+                              _c("input", {
+                                attrs: {
+                                  type: "button",
+                                  value: "Browse...",
+                                  onclick:
+                                    "document.getElementById('upload-file').click();"
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "field" },
                               _vm._l(_vm.attachments, function(file, indx) {
                                 return _c(
                                   "div",
@@ -71701,56 +71774,49 @@ var render = function() {
                                   ]
                                 )
                               }),
-                              _vm._v(" "),
-                              _vm.errors.pics
-                                ? _c(
-                                    "span",
-                                    {
-                                      staticClass: "error",
-                                      staticStyle: { color: "red" }
-                                    },
-                                    [_vm._v(_vm._s(_vm.errors.pics[0]))]
-                                  )
-                                : _vm._e()
-                            ],
-                            2
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("vue-editor", {
-                          attrs: { editorToolbar: _vm.customToolbar },
-                          model: {
-                            value: _vm.description,
-                            callback: function($$v) {
-                              _vm.description = $$v
-                            },
-                            expression: "description"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.description
-                          ? _c(
-                              "span",
-                              {
-                                staticClass: "error",
-                                staticStyle: { color: "red" }
-                              },
-                              [_vm._v(_vm._s(_vm.errors.description[0]))]
+                              0
                             )
-                          : _vm._e()
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        on: { click: _vm.uploadFile }
-                      },
-                      [_vm._v("Submit")]
-                    )
-                  ])
+                          ]),
+                          _vm._v(" "),
+                          _c("vue-editor", {
+                            attrs: { editorToolbar: _vm.customToolbar },
+                            model: {
+                              value: _vm.description,
+                              callback: function($$v) {
+                                _vm.description = $$v
+                              },
+                              expression: "description"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-footer" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button", "data-dismiss": "modal" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.hide($event)
+                              }
+                            }
+                          },
+                          [_vm._v("Zamknij")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit", value: "Dodaj" },
+                          on: { click: _vm.uploadFile }
+                        })
+                      ])
+                    ],
+                    2
+                  )
                 ]
               )
             ]
@@ -71766,7 +71832,8 @@ var render = function() {
             name: "modal-update",
             height: "auto",
             classes: "demo-modal-class"
-          }
+          },
+          on: { closed: _vm.editClosed }
         },
         [
           _c(
@@ -71785,293 +71852,314 @@ var render = function() {
                 "div",
                 { staticClass: "modal-dialog", attrs: { role: "document" } },
                 [
-                  _c("div", { staticClass: "modal-content" }, [
-                    _c("div", { staticClass: "modal-header" }, [
-                      _c(
-                        "h5",
-                        {
-                          staticClass: "modal-title",
-                          attrs: { id: "exampleModalLabel" }
-                        },
-                        [_vm._v("Edytuj krok")]
-                      ),
+                  _c(
+                    "div",
+                    { staticClass: "modal-content" },
+                    [
+                      _c("div", { staticClass: "modal-header" }, [
+                        _c(
+                          "h5",
+                          {
+                            staticClass: "modal-title",
+                            attrs: { id: "exampleModalLabel" }
+                          },
+                          [_vm._v("Edytuj krok")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "close",
+                            attrs: {
+                              type: "button",
+                              "data-dismiss": "modal",
+                              "aria-label": "Close"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.hideEdit($event)
+                              }
+                            }
+                          },
+                          [
+                            _c("span", { attrs: { "aria-hidden": "true" } }, [
+                              _vm._v("×")
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.errors, function(result, index) {
+                        return _c("ul", { key: index }, [
+                          _c("li", { staticClass: "text-danger" }, [
+                            _vm._v(_vm._s(result))
+                          ])
+                        ])
+                      }),
                       _vm._v(" "),
                       _c(
-                        "button",
-                        {
-                          staticClass: "close",
-                          attrs: {
-                            type: "button",
-                            "data-dismiss": "modal",
-                            "aria-label": "Close"
-                          },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.hideEdit($event)
-                            }
-                          }
-                        },
+                        "div",
+                        { staticClass: "modal-body" },
                         [
-                          _c("span", { attrs: { "aria-hidden": "true" } }, [
-                            _vm._v("×")
-                          ])
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "modal-body" },
-                      [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.update_step.name,
-                                expression: "update_step.name"
-                              }
-                            ],
-                            attrs: { type: "text", name: "name", id: "name" },
-                            domProps: { value: _vm.update_step.name },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.update_step,
-                                  "name",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.errors.name
-                            ? _c(
-                                "span",
-                                {
-                                  staticClass: "error",
-                                  staticStyle: { color: "red" }
-                                },
-                                [_vm._v(_vm._s(_vm.errors.name[0]))]
-                              )
-                            : _vm._e()
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
                           _c("div", { staticClass: "form-group" }, [
-                            _c("label", [_vm._v("Upload Files")]),
-                            _vm._v(" "),
                             _c("input", {
-                              staticClass: "form-control",
-                              staticStyle: { display: "none" },
-                              attrs: {
-                                id: "upload-file",
-                                type: "file",
-                                accept: "image/*",
-                                multiple: ""
-                              },
-                              on: { change: _vm.fieldChange }
-                            }),
-                            _vm._v(" "),
-                            _c("input", {
-                              attrs: {
-                                type: "button",
-                                value: "Browse...",
-                                onclick:
-                                  "document.getElementById('upload-file').click();"
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.update_step.name,
+                                  expression: "update_step.name"
+                                }
+                              ],
+                              attrs: { type: "text", name: "name", id: "name" },
+                              domProps: { value: _vm.update_step.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.update_step,
+                                    "name",
+                                    $event.target.value
+                                  )
+                                }
                               }
                             })
                           ]),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "field" },
-                            [
-                              _vm._l(_vm.update_step.imagesteps, function(
-                                file,
-                                index
-                              ) {
-                                return _c(
-                                  "div",
-                                  {
-                                    key: index,
-                                    class:
-                                      "level " +
-                                      (file.invalidMessage && "text-danger")
-                                  },
-                                  [
-                                    _c(
-                                      "div",
-                                      { staticClass: "input-group pb-3" },
-                                      [
-                                        _c("img", {
-                                          staticClass:
-                                            "img-fluid d-block new2 mx-2",
-                                          attrs: {
-                                            width: "150px",
-                                            src: file.image
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        file.invalidMessage
-                                          ? _c("span", [
-                                              _vm._v(
-                                                " - " +
-                                                  _vm._s(file.invalidMessage)
-                                              )
-                                            ])
-                                          : _vm._e(),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          { staticClass: "form-group-append" },
-                                          [
-                                            _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "btn btn-danger mx-2",
-                                                attrs: { type: "button" },
-                                                on: {
-                                                  click: function($event) {
-                                                    $event.preventDefault()
-                                                    _vm.update_step.imagesteps.splice(
-                                                      index,
-                                                      1
-                                                    )
-                                                    _vm.uploadFiles.splice(
-                                                      index,
-                                                      1
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [_vm._v("Usuń")]
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  ]
-                                )
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [_vm._v("Upload Files")]),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass: "form-control",
+                                staticStyle: { display: "none" },
+                                attrs: {
+                                  id: "upload-file",
+                                  type: "file",
+                                  accept: "image/*",
+                                  multiple: ""
+                                },
+                                on: { change: _vm.fieldChange }
                               }),
                               _vm._v(" "),
-                              _vm._l(_vm.attachments, function(file, indx) {
-                                return _c(
-                                  "div",
-                                  {
-                                    key: indx,
-                                    class:
-                                      "level " +
-                                      (file.invalidMessage && "text-danger")
-                                  },
-                                  [
-                                    _c(
-                                      "div",
-                                      { staticClass: "input-group pb-2" },
-                                      [
-                                        _vm._v(
-                                          "\n                    " +
-                                            _vm._s(file.name) +
-                                            "\n                    "
-                                        ),
-                                        file.invalidMessage
-                                          ? _c("span", [
-                                              _vm._v(
-                                                " - " +
-                                                  _vm._s(file.invalidMessage)
-                                              )
-                                            ])
-                                          : _vm._e(),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          { staticClass: "form-group-append" },
-                                          [
-                                            _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "btn btn-danger mx-2",
-                                                attrs: { type: "button" },
-                                                on: {
-                                                  click: function($event) {
-                                                    $event.preventDefault()
-                                                    _vm.attachments.splice(
-                                                      indx,
-                                                      1
-                                                    )
-                                                    _vm.uploadFiles.splice(
-                                                      indx,
-                                                      1
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [_vm._v("Usuń")]
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  ]
-                                )
-                              }),
-                              _vm._v(" "),
-                              _vm.errors.pics
-                                ? _c(
-                                    "span",
+                              _c("input", {
+                                attrs: {
+                                  type: "button",
+                                  value: "Browse...",
+                                  onclick:
+                                    "document.getElementById('upload-file').click();"
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "field" },
+                              [
+                                _vm._l(_vm.update_step.imagesteps, function(
+                                  file,
+                                  index
+                                ) {
+                                  return _c(
+                                    "div",
                                     {
-                                      staticClass: "error",
-                                      staticStyle: { color: "red" }
+                                      key: index,
+                                      class:
+                                        "level " +
+                                        (file.invalidMessage && "text-danger")
                                     },
-                                    [_vm._v(_vm._s(_vm.errors.pics[0]))]
+                                    [
+                                      _c(
+                                        "div",
+                                        { staticClass: "input-group pb-3" },
+                                        [
+                                          _c("img", {
+                                            staticClass:
+                                              "img-fluid d-block new2 mx-2",
+                                            attrs: {
+                                              width: "150px",
+                                              src: file.image
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          file.invalidMessage
+                                            ? _c("span", [
+                                                _vm._v(
+                                                  " - " +
+                                                    _vm._s(file.invalidMessage)
+                                                )
+                                              ])
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "form-group-append"
+                                            },
+                                            [
+                                              _c(
+                                                "button",
+                                                {
+                                                  staticClass:
+                                                    "btn btn-danger mx-2",
+                                                  attrs: { type: "button" },
+                                                  on: {
+                                                    click: function($event) {
+                                                      $event.preventDefault()
+                                                      _vm.update_step.imagesteps.splice(
+                                                        index,
+                                                        1
+                                                      )
+                                                      _vm.uploadFiles.splice(
+                                                        index,
+                                                        1
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v("Usuń")]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ]
                                   )
-                                : _vm._e()
-                            ],
-                            2
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("vue-editor", {
-                          attrs: { editorToolbar: _vm.customToolbar },
-                          model: {
-                            value: _vm.update_step.description,
-                            callback: function($$v) {
-                              _vm.$set(_vm.update_step, "description", $$v)
-                            },
-                            expression: "update_step.description"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.description
-                          ? _c(
-                              "span",
-                              {
-                                staticClass: "error",
-                                staticStyle: { color: "red" }
-                              },
-                              [_vm._v(_vm._s(_vm.errors.description[0]))]
+                                }),
+                                _vm._v(" "),
+                                _vm._l(_vm.attachments, function(file, indx) {
+                                  return _c(
+                                    "div",
+                                    {
+                                      key: indx,
+                                      class:
+                                        "level " +
+                                        (file.invalidMessage && "text-danger")
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        { staticClass: "input-group pb-2" },
+                                        [
+                                          _vm._v(
+                                            "\n                    " +
+                                              _vm._s(file.name) +
+                                              "\n                    "
+                                          ),
+                                          file.invalidMessage
+                                            ? _c("span", [
+                                                _vm._v(
+                                                  " - " +
+                                                    _vm._s(file.invalidMessage)
+                                                )
+                                              ])
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "form-group-append"
+                                            },
+                                            [
+                                              _c(
+                                                "button",
+                                                {
+                                                  staticClass:
+                                                    "btn btn-danger mx-2",
+                                                  attrs: { type: "button" },
+                                                  on: {
+                                                    click: function($event) {
+                                                      $event.preventDefault()
+                                                      _vm.attachments.splice(
+                                                        indx,
+                                                        1
+                                                      )
+                                                      _vm.uploadFiles.splice(
+                                                        indx,
+                                                        1
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v("Usuń")]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.picsss
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass: "error",
+                                        staticStyle: { color: "red" }
+                                      },
+                                      [
+                                        _vm._l(_vm.errors.picsss, function(
+                                          error
+                                        ) {
+                                          return _c("span", { key: error.id })
+                                        }),
+                                        _vm._v(
+                                          "\n                  " +
+                                            _vm._s(_vm.error) +
+                                            "\n                "
+                                        )
+                                      ],
+                                      2
+                                    )
+                                  : _vm._e()
+                              ],
+                              2
                             )
-                          : _vm._e()
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        on: { click: _vm.editStep }
-                      },
-                      [_vm._v("Submit")]
-                    )
-                  ])
+                          ]),
+                          _vm._v(" "),
+                          _c("vue-editor", {
+                            attrs: { editorToolbar: _vm.customToolbar },
+                            model: {
+                              value: _vm.update_step.description,
+                              callback: function($$v) {
+                                _vm.$set(_vm.update_step, "description", $$v)
+                              },
+                              expression: "update_step.description"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-footer" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button", "data-dismiss": "modal" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.hideEdit($event)
+                              }
+                            }
+                          },
+                          [_vm._v("Zamknij")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit", value: "Dodaj" },
+                          on: { click: _vm.editStep }
+                        })
+                      ])
+                    ],
+                    2
+                  )
                 ]
               )
             ]
@@ -72157,7 +72245,8 @@ var render = function() {
             name: "modal-edytuj-naprawe",
             height: "auto",
             classes: "demo-modal-class"
-          }
+          },
+          on: { closed: _vm.Closed }
         },
         [
           _c(

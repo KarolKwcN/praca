@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Domowy Serwis') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -75,7 +75,7 @@
                                     <i class="fas fa-sign-in-alt"></i>
                                 </a> </li>
                             <li class="nav-item"> <a class="nav-link"
-                                    href="{{ route('register') }}">Zarejestrój
+                                    href="{{ route('register') }}">Zarejestruj
                                     <i class="fas fa-key"></i>
                                 </a> </li>
                         @endif

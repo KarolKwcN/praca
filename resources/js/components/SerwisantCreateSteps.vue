@@ -50,7 +50,13 @@
       </div>
     </div>
 
-    <modal style="overflow-y: auto;" name="modal-step" height="auto" classes="demo-modal-class">
+    <modal
+      style="overflow-y: auto;"
+      name="modal-step"
+      height="auto"
+      classes="demo-modal-class"
+      @closed="Closed"
+    >
       <div
         id="exampleModal"
         tabindex="-1"
@@ -73,10 +79,13 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+            <ul v-for="(result, index) in errors" :key="index">
+              <li class="text-danger">{{ result }}</li>
+            </ul>
             <div class="modal-body">
               <div class="form-group">
                 <input type="text" v-model="name" name="name" id="name" placeholder="Nazwa kroku" />
-                <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
+                <!-- <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>-->
               </div>
 
               <div class="form-group">
@@ -116,23 +125,32 @@
                       </div>
                     </div>
                   </div>
-                  <span style="color:red" v-if="errors.pics" class="error">{{errors.pics[0]}}</span>
                 </div>
               </div>
               <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
-              <span
-                style="color:red"
-                v-if="errors.description"
-                class="error"
-              >{{errors.description[0]}}</span>
+              <!-- <span style="color:red" v-if="errors.description" class="error">{{errors.description[0]}}</span>-->
             </div>
-            <button class="btn btn-primary" @click="uploadFile">Submit</button>
+            <div class="modal-footer">
+              <button
+                @click.prevent="hide"
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >Zamknij</button>
+              <input type="submit" @click="uploadFile" value="Dodaj" class="btn btn-primary" />
+            </div>
           </div>
         </div>
       </div>
     </modal>
 
-    <modal style="overflow-y: auto;" name="modal-update" height="auto" classes="demo-modal-class">
+    <modal
+      style="overflow-y: auto;"
+      name="modal-update"
+      height="auto"
+      classes="demo-modal-class"
+      @closed="editClosed"
+    >
       <div
         id="exampleModal"
         tabindex="-1"
@@ -155,10 +173,13 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+            <ul v-for="(result, index) in errors" :key="index">
+              <li class="text-danger">{{ result }}</li>
+            </ul>
             <div class="modal-body">
               <div class="form-group">
                 <input type="text" v-model="update_step.name" name="name" id="name" />
-                <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
+                <!--  <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>-->
               </div>
 
               <div class="form-group">
@@ -216,17 +237,24 @@
                       </div>
                     </div>
                   </div>
-                  <span style="color:red" v-if="errors.pics" class="error">{{errors.pics[0]}}</span>
+                  <span style="color:red" v-if="errors.picsss" class="error">
+                    <span v-for="error in errors.picsss" :key="error.id"></span>
+                    {{error}}
+                  </span>
                 </div>
               </div>
               <vue-editor v-model="update_step.description" :editorToolbar="customToolbar"></vue-editor>
-              <span
-                style="color:red"
-                v-if="errors.description"
-                class="error"
-              >{{errors.description[0]}}</span>
+              <!-- <span style="color:red" v-if="errors.description" class="error">{{errors.description[0]}}</span>-->
             </div>
-            <button class="btn btn-primary" @click="editStep">Submit</button>
+            <div class="modal-footer">
+              <button
+                @click.prevent="hideEdit"
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >Zamknij</button>
+              <input type="submit" @click="editStep" value="Dodaj" class="btn btn-primary" />
+            </div>
           </div>
         </div>
       </div>
@@ -258,6 +286,7 @@ export default {
       uploadFiles: [],
       errors: [],
       attachments: [],
+      picsss: "",
       steps: [
         {
           repairs: [],
@@ -299,6 +328,7 @@ export default {
 
   methods: {
     fieldChange(e) {
+      this.errors = [];
       let selectedFiles = e.target.files;
       if (!selectedFiles.length) {
         return false;
@@ -309,10 +339,12 @@ export default {
       console.log(this.attachments);
     },
     selectFile() {
+      this.errors = [];
       const attachments = this.$refs.attachments.attachments;
       this.uploadFiles = [...this.uploadFiles, ...attachments];
     },
     uploadFile() {
+      this.form.delete("pics[]");
       this.errors = [];
       for (let i = 0; i < this.attachments.length; i++) {
         this.form.append("pics[]", this.attachments[i]);
@@ -338,23 +370,27 @@ export default {
             this.errors = error.response.data.errors;
           }
         });
-
       this.name = "";
       this.description = "";
       this.attachments = [];
     },
     editStep() {
+      this.form.delete("pics[]");
+      this.form.delete("picss[]");
       this.errors = [];
       for (let i = 0; i < this.attachments.length; i++) {
         this.form.append("pics[]", this.attachments[i]);
+        this.picsss++;
       }
 
       for (let i = 0; i < this.update_step.imagesteps.length; i++) {
         this.form.append("picss[]", this.update_step.imagesteps[i].image);
+        this.picsss++;
       }
 
       this.form.append("id", this.update_step.id);
       this.form.append("name", this.update_step.name);
+      this.form.append("picsss", this.picsss);
       this.form.append("description", this.update_step.description);
       const config = {
         headers: {
@@ -379,10 +415,12 @@ export default {
           this.attachments = [];
           this.update_step.imagesteps = [];
           this.update_step = [];
+          this.picsss = "";
         })
         .catch((error) => {
           if (error.response.status == 422) {
             this.errors = error.response.data.errors;
+            this.picsss = "";
           }
         });
     },
@@ -413,18 +451,32 @@ export default {
       this.$modal.show("modal-update");
       this.update_step = this.steps[indx];
     },
+    Closed(event) {
+      this.errors = [];
+      this.attachments = [];
+      this.name = "";
+      this.description = "";
+    },
+    editClosed(event) {
+      this.attachments = [];
+      Fire.$emit("AfterChange");
+    },
     show() {
       this.$modal.show("modal-step");
     },
     hide() {
       this.$modal.hide("modal-step");
       this.errors = [];
+      this.attachments = [];
       this.name = "";
       this.description = "";
     },
     hideEdit() {
       this.$modal.hide("modal-update");
       this.errors = [];
+      this.name = "";
+      this.description = "";
+      Fire.$emit("AfterChange");
     },
     loadSteps() {
       this.steps = [];

@@ -28,9 +28,13 @@
             </div><br>
             <hr class="bg-info">
 
-
-            <serwisantcreaterepair-component :device="{{ $device->id }}"></serwisantcreaterepair-component>
-
+            @if(Auth::user()->hasRole('Admin'))
+                <serwisantcreaterepair-component :device="{{ $device->id }}" :user_id="{{ Auth::user()->id }}"
+                    :isadmin=" 1 "></serwisantcreaterepair-component>
+            @else
+                <serwisantcreaterepair-component :device="{{ $device->id }}" :user_id="{{ Auth::user()->id }}">
+                </serwisantcreaterepair-component>
+            @endif
 
         </div>
     </div>
