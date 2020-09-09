@@ -449,6 +449,11 @@ Route::get('/kontakt', function(){
     return view('kontakt');
 });
 
+Route::post('/kontakt', 'ContactController@wyslij');
+
+
 Route::get('/onas', function(){
     return view('onas');
 });
+
+

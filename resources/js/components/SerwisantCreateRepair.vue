@@ -50,7 +50,7 @@
       </div>
     </div>
     <div>
-      <modal name="modal-step" height="auto" classes="demo-modal-class">
+      <modal name="modal-step" height="auto" classes="demo-modal-class" @closed="Closed">
         <div
           id="exampleModal"
           tabindex="-1"
@@ -73,6 +73,11 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <div class="text-left" v-for="error in errors" :key="error.id">
+                <ul v-for="err in error" :key="err.id">
+                  <li class="text-danger">{{ err }}</li>
+                </ul>
+              </div>
               <form
                 action="/api/serwisant/addRepair"
                 enctype="multipart/form-data"
@@ -88,17 +93,10 @@
                       class="form-control"
                       id="recipient-name"
                     />
-
-                    <p
-                      class="text-danger"
-                      v-if="!$v.name.minLength"
-                    >Nazwa powinna zawierać minimum 4 znaki!</p>
-                    <div class="invalide-feedback text-danger">{{errors.get('name')}}</div>
                   </div>
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Opis:</label>
                     <textarea v-model="description" class="form-control" id="recipient-description"></textarea>
-                    <div class="invalide-feedback text-danger">{{errors.get('description')}}</div>
                   </div>
                   <div class="form-group">
                     <label class="col-md-4 control-label" for="filebutton">Wybierz zdjęcie:</label>
@@ -111,7 +109,6 @@
                         type="file"
                       />
                     </div>
-                    <div class="invalide-feedback text-danger">{{errors.get('image')}}</div>
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -133,25 +130,7 @@
 </template>
 
 <script>
-class Errors {
-  constructor() {
-    this.errors = {};
-  }
-
-  get(field) {
-    if (this.errors[field]) {
-      return this.errors[field][0];
-    }
-  }
-
-  record(errors) {
-    this.errors = errors.errors;
-  }
-}
-
 import Vue from "vue";
-import Form from "vform";
-import { required, minLength } from "vuelidate/lib/validators";
 export default {
   props: ["device", "user_id", "isadmin"],
   data() {
@@ -161,17 +140,12 @@ export default {
       repairs: {},
       name: "",
       description: "",
-      errors: new Errors(),
+      errors: [],
     };
-  },
-  validations: {
-    name: {
-      required,
-      minLength: minLength(4),
-    },
   },
   methods: {
     addRepair(e) {
+      this.errors = [];
       e.preventDefault();
       let currentObj = this;
       var self = this;
@@ -194,11 +168,11 @@ export default {
           Fire.$emit("AfterChange");
           self.hide("modal-step");
         })
-        .catch((error) => this.errors.record(error.response.data));
-
-      this.image = "";
-      this.name = "";
-      this.description = "";
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors;
+          }
+        });
     },
     onImageChange(e) {
       console.log(e.target.files[0]);
@@ -209,7 +183,16 @@ export default {
     },
     hide() {
       this.$modal.hide("modal-step");
-      this.errors.errors = [];
+      this.errors = [];
+      this.image = "";
+      this.name = "";
+      this.description = "";
+    },
+    Closed(event) {
+      this.errors = [];
+      this.image = "";
+      this.name = "";
+      this.description = "";
     },
     loadRepairs() {
       axios

@@ -54,12 +54,27 @@ class SerwisantController extends Controller
     public function addRepair(Request $request, $id)
     {
         
+
+        
+         $messages = [              
+                    "name.required" => 'Nazwa naprawy jest wymagana',
+                    "description.required" => 'Opis jest wymagany',
+                    
+                    "image.max" => "Zdjęcie może mieć maksymalnie 1 mb",
+                    "image.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg",
+                    "image.image" => "Zdjęcie musi być obrazkiem",
+                    "image.required" => 'Zdjęcie jest wymagane',
+                ];
+
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
 
-        ]);
+        ] ,$messages
+                );
+
+      
         
         
 
@@ -117,7 +132,7 @@ class SerwisantController extends Controller
           $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-              'pics.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+              'pics.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
               'pics' => 'required|max:3'
         ]
         ,$messages
@@ -186,7 +201,7 @@ class SerwisantController extends Controller
             'name' => 'required',
             'description' => 'required',
               'picsss' => 'required|numeric|max:3',
-              'pics.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1000',
+              'pics.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
         ]
         ,$messages
                 );

@@ -16,14 +16,19 @@
                         scrolling="no" frameborder="0"></iframe> </div>
                 <div class="px-4 order-1 order-md-2 col-lg-6">
 
-                    <form>
-                        <div class="form-group"> <input type="text" class="form-control" id="form44" placeholder="Name">
+                    <form action="{{ url('kontakt') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="name" id="form44" placeholder="Imię">
                         </div>
-                        <div class="form-group"> <input type="email" class="form-control" id="form45"
-                                placeholder="Email"> </div>
-                        <div class="form-group"> <textarea class="form-control" id="form46" rows="3"
-                                placeholder="Your message"></textarea> </div> <button type="submit"
-                            class="btn btn-primary">Send</button>
+                        <div class="form-group">
+                            <input type="email" class="form-control" name="email" id="form45" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" id="form46" rows="3" name="message_body"
+                                placeholder="Wiadomość"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Wyślij</button>
                     </form>
                 </div>
             </div>

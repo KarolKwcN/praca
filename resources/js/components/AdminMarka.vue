@@ -39,7 +39,7 @@
       </div>
     </div>
     <div>
-      <modal name="modal-step" height="auto" classes="demo-modal-class">
+      <modal name="modal-step" height="auto" classes="demo-modal-class" @closed="Closed">
         <div
           id="exampleModal"
           tabindex="-1"
@@ -61,6 +61,11 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <div class="text-left" v-for="error in errors" :key="error.id">
+                <ul v-for="err in error" :key="err.id">
+                  <li class="text-danger">{{ err }}</li>
+                </ul>
+              </div>
               <form enctype="multipart/form-data" method="POST" @submit.prevent="addBrand()">
                 <div class="modal-body">
                   <div class="form-group">
@@ -72,7 +77,7 @@
                       class="form-control"
                       id="recipient-name"
                     />
-                    <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
+                    <!-- <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>-->
                   </div>
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Opis marki:</label>
@@ -81,11 +86,7 @@
                       class="form-control"
                       id="recipient-description"
                     ></textarea>
-                    <span
-                      style="color:red"
-                      v-if="errors.description"
-                      class="error"
-                    >{{errors.description[0]}}</span>
+                    <!--  <span style="color:red" v-if="errors.description" class="error">{{errors.description[0]}}</span>-->
                   </div>
                   <div class="form-group">
                     <label class="col-md-4 control-label" for="filebutton">Wybierz zdjęcie:</label>
@@ -97,7 +98,7 @@
                         class="input-file"
                         type="file"
                       />
-                      <span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span>
+                      <!-- <span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span>-->
                     </div>
                   </div>
                 </div>
@@ -117,7 +118,12 @@
       </modal>
     </div>
     <div>
-      <modal name="modal-edytuj-marke" height="auto" classes="demo-modal-class">
+      <modal
+        name="modal-edytuj-marke"
+        height="auto"
+        classes="demo-modal-class"
+        @closed="editClosed"
+      >
         <div
           id="exampleModal"
           tabindex="-1"
@@ -139,6 +145,11 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <div class="text-left" v-for="error in errors" :key="error.id">
+                <ul v-for="err in error" :key="err.id">
+                  <li class="text-danger">{{ err }}</li>
+                </ul>
+              </div>
               <form>
                 <div class="modal-body">
                   <div class="form-group">
@@ -150,7 +161,7 @@
                       class="form-control"
                       id="recipient-name"
                     />
-                    <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
+                    <!-- <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span> -->
                   </div>
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Opis marki:</label>
@@ -159,11 +170,7 @@
                       class="form-control"
                       id="recipient-description"
                     ></textarea>
-                    <span
-                      style="color:red"
-                      v-if="errors.description"
-                      class="error"
-                    >{{errors.description[0]}}</span>
+                    <!-- <span style="color:red" v-if="errors.description" class="error">{{errors.description[0]}}</span> -->
                   </div>
                   <div class="form-group">
                     <div v-if="!isHidden" class="input-group">
@@ -190,11 +197,7 @@
                           class="input-file"
                           type="file"
                         />
-                        <span
-                          style="color:red"
-                          v-if="errors.image"
-                          class="error"
-                        >{{errors.image[0]}}</span>
+                        <!-- <span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span> -->
                       </div>
                     </div>
                   </div>
@@ -228,11 +231,13 @@ export default {
       brands: {},
       edit_brand: [],
       categoryName: {},
+      picsss: 1,
+      edit_image: null,
       form: new Form({
         id: "",
         name: "",
         description: "",
-        image: null,
+        image: "",
       }),
       errors: [],
     };
@@ -242,7 +247,8 @@ export default {
       this.form.image = e.target.files[0];
     },
     onImageChangee(e) {
-      this.edit_brand.image = e.target.files[0];
+      this.edit_image = e.target.files[0];
+      this.picsss = 1;
     },
     editBrand(ind) {
       this.isHidden = false;
@@ -252,6 +258,7 @@ export default {
     removeimage: function () {
       this.edit_brand.image = "";
       this.isHidden = true;
+      this.picsss = "";
     },
     updateBrand(e) {
       this.errors = [];
@@ -266,9 +273,14 @@ export default {
       };
 
       let formData = new FormData();
-      formData.append("image", this.edit_brand.image);
+
+      if (this.edit_image) {
+        formData.append("image", this.edit_image);
+      }
+
       formData.append("name", this.edit_brand.name);
       formData.append("description", this.edit_brand.description);
+      formData.append("picsss", this.picsss);
 
       axios
         .post("/api/admin/updateBrand/" + this.edit_brand.id, formData, config)
@@ -333,6 +345,18 @@ export default {
       this.errors = [];
       this.$modal.hide("modal-step");
     },
+    editClosed(event) {
+      this.errors = [];
+      Fire.$emit("AfterDelete");
+      this.picsss = 1;
+    },
+    Closed(event) {
+      this.errors = [];
+      this.image = "";
+      this.name = "";
+      this.description = "";
+    },
+
     loadBrands() {
       axios
         .get("/api/admin/showBrands/" + this.category)
@@ -342,6 +366,7 @@ export default {
       this.errors = [];
       this.$modal.hide("modal-edytuj-marke");
       Fire.$emit("AfterDelete");
+      this.picsss = 1;
     },
     loadcategoryName() {
       axios

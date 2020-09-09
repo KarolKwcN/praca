@@ -110,11 +110,26 @@ class AdminController extends Controller
 
     public function addCategory(Request $request)
     {
+
+
+
+        $messages = [              
+                    "name.required" => 'Nazwa kategorii jest wymagana',
+                    "name.unique" => 'Już istnieje taka kategoria',
+                    
+                    "image.max" => "Zdjęcie może mieć maksymalnie 1 mb",
+                    "image.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg",
+                    "image.image" => "Zdjęcie musi być obrazkiem",
+                    "image.required" => 'Zdjęcie jest wymagane',
+                ];
       
         $this->validate($request, [
             'name' => 'required|unique:categories',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
-        ]);
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+        ],$messages);
+
+
+            
 
         $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('images/kategorie/'), $imageName);
@@ -149,10 +164,22 @@ class AdminController extends Controller
     public function updateCategory(Request $request, $id)
     {
         
+       $messages = [              
+                    "name.required" => 'Nazwa kategorii jest wymagana',
+                    "name.unique" => 'Już istnieje taka kategoria',
+                    
+                    "image.max" => "Zdjęcie może mieć maksymalnie 1 mb",
+                    "image.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg",
+                    "image.image" => "Zdjęcie musi być obrazkiem",
+                    "picsss.required" => 'Zdjęcie jest wymagane',
+                ];
+      
         $this->validate($request, [
             'name' => 'required',
-            //'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
-        ]);
+           'picsss' => 'required|numeric',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+        ],$messages);
+
 
 
         $category = Category::findOrFail($id);
@@ -207,11 +234,24 @@ class AdminController extends Controller
     public function updateBrand(Request $request, $id)
     {
 
-$this->validate($request, [
+              $messages = [              
+                    "name.required" => 'Nazwa marki jest wymagana',
+                    "name.unique" => 'Już istnieje taka marka',
+                    "description.required" => 'Opis jest wymagany',
+                    
+                    "image.max" => "Zdjęcie może mieć maksymalnie 1 mb",
+                    "image.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg",
+                    "image.image" => "Zdjęcie musi być obrazkiem",
+                    "picsss.required" => 'Zdjęcie jest wymagane',
+                ];
+      
+        $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            //'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
-        ]);
+           'picsss' => 'required|numeric',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+        ],$messages);
+
 
            $brand = Brand::findOrFail($id);
 
@@ -233,11 +273,25 @@ $this->validate($request, [
     public function addBrand(Request $request, $id)
     {
 
+
+            $messages = [              
+                    "name.required" => 'Nazwa marki jest wymagana',
+                    "name.unique" => 'Już istnieje taka marka',
+                    "description.required" => 'Opis jest wymagany',
+                    
+                    "image.max" => "Zdjęcie może mieć maksymalnie 1 mb",
+                    "image.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg",
+                    "image.image" => "Zdjęcie musi być obrazkiem",
+                    "image.required" => 'Zdjęcie jest wymagane',
+                ];
+      
         $this->validate($request, [
             'name' => 'required|unique:brands',
             'description' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
-        ]);
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+        ],$messages);
+
+
 
         $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('images/marka/'), $imageName);
@@ -291,11 +345,23 @@ $this->validate($request, [
     public function updateDevice(Request $request, $id)
     {
 
-            $this->validate($request, [
+           $messages = [              
+                    "name.required" => 'Nazwa urządzenia jest wymagana',
+                    "name.unique" => 'Już istnieje takie urządzenie',
+                    "description.required" => 'Opis jest wymagany',
+                    
+                    "image.max" => "Zdjęcie może mieć maksymalnie 1 mb",
+                    "image.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg",
+                    "image.image" => "Zdjęcie musi być obrazkiem",
+                    "picsss.required" => 'Zdjęcie jest wymagane',
+                ];
+      
+        $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            //'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
-        ]);
+           'picsss' => 'required|numeric',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+        ],$messages);
 
             $device = Device::findOrFail($id);
 
@@ -317,11 +383,22 @@ $this->validate($request, [
     public function addDevice(Request $request, $id)
     {
 
-          $this->validate($request, [
+          $messages = [              
+                    "name.required" => 'Nazwa urządzenia jest wymagana',
+                    "name.unique" => 'Już istnieje takie urządzenie',
+                    "description.required" => 'Opis jest wymagany',
+                    
+                    "image.max" => "Zdjęcie może mieć maksymalnie 1 mb",
+                    "image.mimes" => "Zdjęcie może mieć tylko rozszerzenie: jpeg, png, jpg, giv, svg",
+                    "image.image" => "Zdjęcie musi być obrazkiem",
+                    "image.required" => 'Zdjęcie jest wymagane',
+                ];
+      
+        $this->validate($request, [
             'name' => 'required|unique:brands',
             'description' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1000',
-        ]);
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+        ],$messages);
 
         $imageName = rand().time().'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('images/urzadzenie/'), $imageName);

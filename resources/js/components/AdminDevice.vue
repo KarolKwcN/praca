@@ -41,7 +41,7 @@
       </div>
     </div>
     <div>
-      <modal name="modal-step" height="auto" classes="demo-modal-class">
+      <modal name="modal-step" height="auto" classes="demo-modal-class" @closed="Closed">
         <div
           id="exampleModal"
           tabindex="-1"
@@ -63,6 +63,11 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <div class="text-left" v-for="error in errors" :key="error.id">
+                <ul v-for="err in error" :key="err.id">
+                  <li class="text-danger">{{ err }}</li>
+                </ul>
+              </div>
               <form enctype="multipart/form-data" method="POST" @submit.prevent="addDevice()">
                 <div class="modal-body">
                   <div class="form-group">
@@ -74,7 +79,7 @@
                       class="form-control"
                       id="recipient-name"
                     />
-                    <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
+                    <!-- <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>-->
                   </div>
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Opis:</label>
@@ -83,11 +88,7 @@
                       class="form-control"
                       id="recipient-description"
                     ></textarea>
-                    <span
-                      style="color:red"
-                      v-if="errors.description"
-                      class="error"
-                    >{{errors.description[0]}}</span>
+                    <!--  <span style="color:red" v-if="errors.description" class="error">{{errors.description[0]}}</span>-->
                   </div>
                   <div class="form-group">
                     <label class="col-md-4 control-label" for="filebutton">Wybierz zdjęcie:</label>
@@ -99,7 +100,7 @@
                         class="input-file"
                         type="file"
                       />
-                      <span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span>
+                      <!-- <span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span>-->
                     </div>
                   </div>
                 </div>
@@ -119,7 +120,12 @@
       </modal>
     </div>
     <div>
-      <modal name="modal-edytuj-urzadzenie" height="auto" classes="demo-modal-class">
+      <modal
+        name="modal-edytuj-urzadzenie"
+        height="auto"
+        classes="demo-modal-class"
+        @closed="editClosed"
+      >
         <div
           id="exampleModal"
           tabindex="-1"
@@ -141,6 +147,11 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <div class="text-left" v-for="error in errors" :key="error.id">
+                <ul v-for="err in error" :key="err.id">
+                  <li class="text-danger">{{ err }}</li>
+                </ul>
+              </div>
               <form>
                 <div class="modal-body">
                   <div class="form-group">
@@ -152,7 +163,7 @@
                       class="form-control"
                       id="recipient-name"
                     />
-                    <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
+                    <!-- <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span> -->
                   </div>
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Opis:</label>
@@ -161,11 +172,7 @@
                       class="form-control"
                       id="recipient-description"
                     ></textarea>
-                    <span
-                      style="color:red"
-                      v-if="errors.description"
-                      class="error"
-                    >{{errors.description[0]}}</span>
+                    <!-- <span style="color:red" v-if="errors.description" class="error">{{errors.description[0]}}</span> -->
                   </div>
                   <div class="form-group">
                     <div v-if="!isHidden" class="input-group">
@@ -192,11 +199,7 @@
                           class="input-file"
                           type="file"
                         />
-                        <span
-                          style="color:red"
-                          v-if="errors.image"
-                          class="error"
-                        >{{errors.image[0]}}</span>
+                        <!--  <span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span> -->
                       </div>
                     </div>
                   </div>
@@ -229,11 +232,13 @@ export default {
       isHidden: false,
       devices: {},
       edit_device: [],
+      picsss: 1,
+      edit_image: null,
       form: new Form({
         id: "",
         name: "",
         description: "",
-        image: null,
+        image: "",
       }),
       errors: [],
     };
@@ -244,6 +249,7 @@ export default {
     },
     onImageChangee(e) {
       this.edit_device.image = e.target.files[0];
+      this.picsss = 1;
     },
     updateDevice(e) {
       this.errors = [];
@@ -258,9 +264,14 @@ export default {
       };
 
       let formData = new FormData();
-      formData.append("image", this.edit_device.image);
+
+      if (this.edit_image) {
+        formData.append("image", this.edit_image);
+      }
+
       formData.append("name", this.edit_device.name);
       formData.append("description", this.edit_device.description);
+      formData.append("picsss", this.picsss);
 
       axios
         .post(
@@ -288,6 +299,7 @@ export default {
     removeimage: function () {
       this.edit_device.image = "";
       this.isHidden = true;
+      this.picsss = "";
     },
     addDevice() {
       this.errors = [];
@@ -306,6 +318,17 @@ export default {
             this.errors = error.response.data.errors;
           }
         });
+    },
+    Closed(event) {
+      this.errors = [];
+      this.image = "";
+      this.name = "";
+      this.description = "";
+    },
+    editClosed(event) {
+      this.errors = [];
+      Fire.$emit("AfterDelete");
+      this.picsss = 1;
     },
     deleteDevice(id) {
       Swal.fire({
@@ -343,6 +366,7 @@ export default {
       this.errors = [];
       this.$modal.hide("modal-edytuj-urzadzenie");
       Fire.$emit("AfterDelete");
+      this.picsss = 1;
     },
     loadDevices() {
       axios

@@ -35,7 +35,7 @@
       </div>
     </div>
     <div>
-      <modal name="modal-step" height="auto" classes="demo-modal-class">
+      <modal name="modal-step" height="auto" classes="demo-modal-class" @closed="Closed">
         <div
           id="exampleModal"
           tabindex="-1"
@@ -57,6 +57,11 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <div class="text-left" v-for="error in errors" :key="error.id">
+                <ul v-for="err in error" :key="err.id">
+                  <li class="text-danger">{{ err }}</li>
+                </ul>
+              </div>
               <form enctype="multipart/form-data" method="POST" @submit.prevent="addCategory()">
                 <div class="modal-body">
                   <div class="form-group">
@@ -68,7 +73,7 @@
                       class="form-control"
                       id="recipient-name"
                     />
-                    <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
+                    <!--<span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>-->
                   </div>
                   <div class="form-group">
                     <label class="col-md-4 control-label" for="filebutton">Wybierz zdjęcie:</label>
@@ -80,7 +85,7 @@
                         class="input-file"
                         type="file"
                       />
-                      <span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span>
+                      <!--<span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span>-->
                     </div>
                   </div>
                 </div>
@@ -100,7 +105,12 @@
       </modal>
     </div>
     <div>
-      <modal name="modal-edytuj-kategorie" height="auto" classes="demo-modal-class">
+      <modal
+        name="modal-edytuj-kategorie"
+        height="auto"
+        classes="demo-modal-class"
+        @closed="editClosed"
+      >
         <div
           id="exampleModal"
           tabindex="-1"
@@ -122,6 +132,11 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <div class="text-left" v-for="error in errors" :key="error.id">
+                <ul v-for="err in error" :key="err.id">
+                  <li class="text-danger">{{ err }}</li>
+                </ul>
+              </div>
               <form>
                 <div class="modal-body">
                   <div class="form-group">
@@ -133,7 +148,7 @@
                       class="form-control"
                       id="recipient-name"
                     />
-                    <span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>
+                    <!--<span style="color:red" v-if="errors.name" class="error">{{errors.name[0]}}</span>-->
                   </div>
                   <div class="form-group">
                     <div v-if="!isHidden" class="input-group">
@@ -160,11 +175,7 @@
                           class="input-file"
                           type="file"
                         />
-                        <span
-                          style="color:red"
-                          v-if="errors.image"
-                          class="error"
-                        >{{errors.image[0]}}</span>
+                        <!-- <span style="color:red" v-if="errors.image" class="error">{{errors.image[0]}}</span> -->
                       </div>
                     </div>
                   </div>
@@ -203,10 +214,12 @@ export default {
       isHidden: false,
       edit_category: [],
       categories: {},
+      picsss: 1,
+      edit_image: null,
       form: new Form({
         id: "",
         name: "",
-        image: null,
+        image: "",
       }),
       errors: [],
     };
@@ -218,22 +231,16 @@ export default {
       let currentObj = this;
       var self = this;
 
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      };
-
       let formData = new FormData();
-      formData.append("image", this.edit_category.image);
+      if (this.edit_image) {
+        formData.append("image", this.edit_image);
+      }
+
       formData.append("name", this.edit_category.name);
+      formData.append("picsss", this.picsss);
 
       axios
-        .post(
-          "/api/admin/updateCategory/" + this.edit_category.id,
-          formData,
-          config
-        )
+        .post("/api/admin/updateCategory/" + this.edit_category.id, formData)
         .then(function (response) {
           currentObj.success = response.data.success;
           Fire.$emit("AfterDelete");
@@ -254,6 +261,7 @@ export default {
     removeimage: function () {
       this.edit_category.image = "";
       this.isHidden = true;
+      this.picsss = "";
     },
     getResults(page = 1) {
       axios.get("/api/admin/showCategory?page=" + page).then((response) => {
@@ -264,7 +272,8 @@ export default {
       this.form.image = e.target.files[0];
     },
     onImageChangee(e) {
-      this.edit_category.image = e.target.files[0];
+      this.edit_image = e.target.files[0];
+      this.picsss = 1;
     },
     addCategory() {
       this.errors = [];
@@ -284,7 +293,16 @@ export default {
           }
         });
     },
-
+    Closed(event) {
+      this.errors = [];
+      this.image = "";
+      this.name = "";
+    },
+    editClosed(event) {
+      this.errors = [];
+      Fire.$emit("AfterDelete");
+      this.picsss = 1;
+    },
     deleteCategory(id) {
       Swal.fire({
         title: "Napewno chcesz usunąć kategorię ?",
@@ -316,6 +334,7 @@ export default {
       this.errors = [];
       this.$modal.hide("modal-edytuj-kategorie");
       Fire.$emit("AfterDelete");
+      this.picsss = 1;
     },
     hide() {
       this.errors = [];
