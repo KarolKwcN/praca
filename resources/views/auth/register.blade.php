@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="py-5 text-center"
-    style="background-image: url('https://static.pingendo.com/cover-bubble-dark.svg');background-size:cover;">
+<div class="py-5 text-center" style="background-image: url('images/543654745672.jpg');background-size:cover;">
     <div class="row">
-        <div class="mx-auto col-md-6 col-10 bg-white p-5">
+        <div class="mx-auto col-md-6 col-10 bg-white p-5 rounded">
             <h1 class="mb-4">Rejestracja</h1>
             <form method="POST" action="{{ route('register') }}">
                 @csrf

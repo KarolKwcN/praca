@@ -7,9 +7,7 @@
         <div class="row">
             <div class="p-3 mx-auto mx-md-0 mr-md-auto col-10 col-md-7">
                 <h3 class="display-3">Wyszukaj</h3>
-                <p class="mb-3 lead">Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle
-                    poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia
-                    tekstem próbnej książki.</p>
+                <h2 class="display-4">naprawę</h2>
                 <form action="{{ route('wyszukaj.naprawe') }}" method="GET"
                     class="form-inline d-flex">
                     <div class="input-group"> <input type="text" class="form-control"
@@ -30,25 +28,25 @@
                 <p class="mb-3 mx-auto w-75 lead">Kategorie najczęstrzych napraw. Wybierz co Cię interesuje i napraw to.
                 </p>
                 <div class="row">
-                    <div class="col-md-3 mt-4 px-4 col-6">
+                    <div class="col-md-4 mt-4 px-4 col-6">
                         <a href="{{ url('/naprawy/telefony') }}"><i
                                 class="fas fa-mobile-alt fa-7x"></i></a>
                         <h5 class="mt-2"> <b>Smartfony</b></h5>
-                        <p class="mb-3">I should be incapable of drawing a single stroke.</p>
+                        <p class="mb-3">Wymiana wyświetlacza, baterii, itp...</p>
                     </div>
-                    <div class="col-md-3 mt-4 px-4 col-6"> <a
+                    <div class="col-md-4 mt-4 px-4 col-6"> <a
                             href="{{ url('/naprawy/laptopy') }}"><i
                                 class="fas fa-laptop fa-7x"></i></a>
                         <h5 class="mt-2"> <b>Laptopy</b></h5>
-                        <p class="mb-3">A wonderful serenity has taken possession.</p>
+                        <p class="mb-3">Wymiana dysku twardego, klawiatury, czyszczenie, itp...</p>
                     </div>
-                    <div class="col-md-3 mt-4 px-4 col-6"> <a href="/"><i class="fas fa-print fa-7x"></i></a>
+                    {{-- <div class="col-md-3 mt-4 px-4 col-6"> <a href="/"><i class="fas fa-print fa-7x"></i></a>
                         <h5> <b>Drukarki</b> </h5>
-                        <p class="mb-3">Like these sweet mornings of spring.</p>
-                    </div>
-                    <div class="col-md-3 mt-4 px-4 col-6"> <a href="/"><i class="fab fa-windows fa-7x"></i></a>
+                        <p class="mb-3">Zacięcie pa</p>
+                    </div> --}}
+                    <div class="col-md-4 mt-4 px-4 col-6"> <a href="/"><i class="fab fa-windows fa-7x"></i></a>
                         <h5> <b>Systemowe</b> </h5>
-                        <p class="mb-3">I enjoy with my whole heart.</p>
+                        <p class="mb-3">Naprawa resetowania systemu, itp... </p>
                     </div>
                 </div>
             </div>
@@ -85,12 +83,13 @@
     background-repeat: repeat; background-attachment: fixed;">
     <div class="container">
         <div class="row">
-            <div class="ml-auto p-3 col-md-2 bg-white"> <img class="img-fluid d-block rounded-circle"
+            <div class="ml-auto p-3 col-md-2 bg-white rounded-left"> <img class="img-fluid d-block rounded-circle"
                     src="images/15710.jpg"> </div>
-            <div class="p-3 col-md-7 mr-auto bg-white text-dark">
+            <div class="p-3 col-md-7 mr-auto bg-white text-dark rounded-right">
                 <div class="blockquote mb-0">
-                    <p>"To smutne, że głupcy są tacy pewni siebie, a ludzie rozsądni tacy pełni wątpliwości."</p>
-                    <div class="blockquote-footer"> <b>Bertrand Russel </b></div>
+                    <p>"Jak będziesz spędzał zbyt wiele czasu myśląc nad czymś, nigdy tego nie zrobisz. Zrób
+                        przynajmniej jeden krok dziennie w kierunku swojego celu."</p>
+                    <div class="blockquote-footer"> <b>Bruce Lee</b></div>
                 </div>
             </div>
         </div>

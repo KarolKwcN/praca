@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="py-5 text-center"
-    style="background-image: url('https://static.pingendo.com/cover-bubble-dark.svg');background-size:cover;">
+<div class="py-5 text-center" style="background-image: url('543654745672.jpg');background-size:cover;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -21,7 +20,7 @@
 
                             <div class="form-group row">
                                 <label for="email"
-                                    class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                                    class="col-md-4 col-form-label text-md-right">{{ __('E-Mail') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="email"

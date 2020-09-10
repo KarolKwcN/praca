@@ -70198,7 +70198,9 @@ var render = function() {
                         )
                       ]),
                   _vm._v(" "),
-                  _c("h3", [_vm._v(_vm._s(_vm.comments.length) + " Comments")]),
+                  _c("h3", [
+                    _vm._v(_vm._s(_vm.comments.length) + " Komentarzy")
+                  ]),
                   _vm._v(" "),
                   _vm._l(_vm.comments, function(comment, ind) {
                     return _c("span", { key: ind, attrs: { index: ind } }, [

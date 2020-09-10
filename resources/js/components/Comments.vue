@@ -28,7 +28,7 @@
                 </fieldset>
               </form>
               <h6 v-else>Dodawanie komentarzy tylko dla zalogowanych użytkowników.</h6>
-              <h3>{{ comments.length }} Comments</h3>
+              <h3>{{ comments.length }} Komentarzy</h3>
               <span v-for="(comment, ind) in comments" :key="ind" :index="ind">
                 <!-- COMMENT 1 - START -->
                 <div class="media">

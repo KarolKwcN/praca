@@ -1,4 +1,3 @@
-Message from : {{ $name }}
-<p> Name: {{ $name }}</p>
+Wiadomość od : {{ $name }}
 <p>E-mail: {{ $email }}</p>
-<p>Message: {{ $message_body }}</p>
+<p>Wiadomość: {{ $message_body }}</p>

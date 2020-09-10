@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>brak uprawnień</h1>
-
-
+<div class="py-5 text-center">
+    <h1>Brak dostępu</h1>
+</div>
 
 @endsection

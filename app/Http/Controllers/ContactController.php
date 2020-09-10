@@ -10,8 +10,17 @@ class ContactController extends Controller
 {
     public function wyslij(Request $request){
 
+$messages = [              
+                    "name.required" => 'Imię jest wymagane',
+                    "email.required" => 'Email jest wymagany',
+                    
+                    "email.email" => "Email jest niepoprawny",
+                    "message_body.required" => "Wiadomość jest wymagana",
+                    "message_body.min" => "Wiadomość musi mieć minimalnie 20 znaków",
+                ];
 
-        $this->validate($request, ['name' => 'required', 'email' => 'required|email', 'message_body' => 'required|min:20']);
+
+        $this->validate($request, ['name' => 'required', 'email' => 'required|email', 'message_body' => 'required|min:20'],$messages);
 
         $data = array('name' => $request->name , 'email' => $request->email , 'message_body' => $request->message_body );
 
@@ -19,11 +28,11 @@ class ContactController extends Controller
         {
             $message->from($data['email'], $data['name']);
             $message->to('karol.kwiecien91@gmail.com', 'Admin')
-                ->subject('Laravel Article Feedback');
+                ->subject('Domowy Serwis');
         });
 
         return redirect()
             ->back()
-            ->with('success', 'Thank you for your feedback');
+            ->with('success', 'Wiadomość została wysłana');
     }
 }
