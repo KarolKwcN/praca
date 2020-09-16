@@ -316,7 +316,7 @@ export default {
     },
     deleteBrand(id) {
       Swal.fire({
-        title: "Napewno chcesz usunąć markę ?",
+        title: "Na pewno chcesz usunąć markę ?",
         text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,

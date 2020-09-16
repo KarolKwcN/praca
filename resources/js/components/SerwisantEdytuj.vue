@@ -180,7 +180,7 @@ export default {
     },
     endRepair: function () {
       Swal.fire({
-        title: "Napewno chcesz zakończyć naprawę i przekazać do akceptacji ?",
+        title: "Na pewno chcesz zakończyć naprawę i przekazać do akceptacji ?",
         text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,

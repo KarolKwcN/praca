@@ -101,7 +101,7 @@ export default {
     },
     deleteUser(id) {
       Swal.fire({
-        title: "Napewno chcesz usunąć użytkownika ?",
+        title: "Na pewno chcesz usunąć użytkownika ?",
         text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,
@@ -201,7 +201,7 @@ export default {
 
     addBan(id) {
       Swal.fire({
-        title: "Napewno chcesz zbanować użytkownika ?",
+        title: "Na pewno chcesz zbanować użytkownika ?",
         text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,
@@ -224,7 +224,7 @@ export default {
 
     deleteBan(id) {
       Swal.fire({
-        title: "Napewno chcesz odbanować użytkownika ?",
+        title: "Na pewno chcesz odbanować użytkownika ?",
         text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,

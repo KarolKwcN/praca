@@ -433,7 +433,7 @@ export default {
     },
     deleteModal(id) {
       Swal.fire({
-        title: "Napewno chcesz usunąć krok ?",
+        title: "Na pewno chcesz usunąć krok ?",
         text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,

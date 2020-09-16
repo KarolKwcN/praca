@@ -332,7 +332,7 @@ export default {
     },
     deleteDevice(id) {
       Swal.fire({
-        title: "Napewno chcesz usunąć model ?",
+        title: "Na pewno chcesz usunąć model ?",
         text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,

@@ -305,7 +305,7 @@ export default {
     },
     deleteCategory(id) {
       Swal.fire({
-        title: "Napewno chcesz usunąć kategorię ?",
+        title: "Na pewno chcesz usunąć kategorię ?",
         text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,

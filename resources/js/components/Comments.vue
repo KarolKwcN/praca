@@ -160,7 +160,7 @@ export default {
     },
     deleteComment(id) {
       Swal.fire({
-        title: "Napewno chcesz usunąć komentarz ?",
+        title: "Na pewno chcesz usunąć komentarz ?",
         text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,

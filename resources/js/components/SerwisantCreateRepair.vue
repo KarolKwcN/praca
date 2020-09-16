@@ -201,7 +201,7 @@ export default {
     },
     deleterepair(id) {
       Swal.fire({
-        title: "Napewno chcesz usunąc naprawę ?",
+        title: "Na pewno chcesz usunąc naprawę ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

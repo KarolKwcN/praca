@@ -48,7 +48,7 @@
                   </div>
                   <div class="chat_ib">
                     <h5>
-                      {{ privateMsg.email }}
+                      {{ privateMsg.name }}
                       <span class="chat_date">
                         {{
                         new Date(
@@ -81,7 +81,7 @@
                     <i class="fas fa-user-alt fa-3x"></i>
                   </div>
                   <div class="chat_ib">
-                    <h5>{{ user.email }}</h5>
+                    <h5>{{ user.name }}</h5>
                     <p v-for="role in user.roles" :key="role.id">{{ role.name }}</p>
                   </div>
                 </div>
