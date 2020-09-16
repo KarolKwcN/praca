@@ -9,7 +9,7 @@
           <thead>
             <tr class="text-center bg-info text-light">
               <th>Nazwa</th>
-              <th>Użytkownik</th>
+              <th>Serwisant</th>
               <th>Status</th>
               <th>Zaakceptowane</th>
               <th>Usuń</th>
