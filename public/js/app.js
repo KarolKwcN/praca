@@ -3680,7 +3680,6 @@ __webpack_require__.r(__webpack_exports__);
     addBan: function addBan(id) {
       Swal.fire({
         title: "Na pewno chcesz zbanować użytkownika ?",
-        text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -3699,7 +3698,6 @@ __webpack_require__.r(__webpack_exports__);
     deleteBan: function deleteBan(id) {
       Swal.fire({
         title: "Na pewno chcesz odbanować użytkownika ?",
-        text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -71383,7 +71381,7 @@ var staticRenderFns = [
       _c("tr", { staticClass: "text-center bg-info text-light" }, [
         _c("th", [_vm._v("Nazwa")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Użytkownik")]),
+        _c("th", [_vm._v("Serwisant")]),
         _vm._v(" "),
         _c("th", [_vm._v("Status")]),
         _vm._v(" "),

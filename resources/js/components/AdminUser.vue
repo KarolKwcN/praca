@@ -202,7 +202,6 @@ export default {
     addBan(id) {
       Swal.fire({
         title: "Na pewno chcesz zbanować użytkownika ?",
-        text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -225,7 +224,6 @@ export default {
     deleteBan(id) {
       Swal.fire({
         title: "Na pewno chcesz odbanować użytkownika ?",
-        text: "Nie będzie można tego cofnąć.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
